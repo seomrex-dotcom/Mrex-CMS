@@ -263,17 +263,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return found || EMPLOYEES[0];
   });
 
-  const [bgTheme, setBgThemeState] = useState<BackgroundTheme>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.BG_THEME);
-    return (saved as BackgroundTheme) || 'glass_gradient';
-  });
-
-  const setBgTheme = (theme: BackgroundTheme) => {
-    setBgThemeState(theme);
-    localStorage.setItem(STORAGE_KEYS.BG_THEME, theme);
-  };
-
-  // Company Brand & Theme Customization (Ban Quản Trị)
+  // Cài đặt giao diện & thương hiệu của Ban Giám Đốc (áp dụng đồng bộ cho toàn bộ các cấp)
   const [brandConfig, setBrandConfig] = useState<CompanyBrandConfig>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.BRAND_CONFIG);
     if (saved) {
@@ -286,6 +276,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return DEFAULT_BRAND_CONFIG;
   });
 
+  // Nền không gian làm việc luôn luôn đồng bộ theo cấu hình của Ban Giám Đốc cho toàn bộ nhân sự
+  const [bgTheme, setBgThemeState] = useState<BackgroundTheme>(() => {
+    const savedBrand = localStorage.getItem(STORAGE_KEYS.BRAND_CONFIG);
+    if (savedBrand) {
+      try {
+        const parsed = JSON.parse(savedBrand);
+        if (parsed.backgroundTheme) return parsed.backgroundTheme;
+      } catch {}
+    }
+    return DEFAULT_BRAND_CONFIG.backgroundTheme || 'glass_gradient';
+  });
+
+  // Khi Ban Giám Đốc thay đổi kiểu nền, cập nhật và lưu vào cấu hình thương hiệu chung toàn công ty
+  const setBgTheme = (theme: BackgroundTheme) => {
+    setBgThemeState(theme);
+    localStorage.setItem(STORAGE_KEYS.BG_THEME, theme);
+
+    // Cập nhật cấu hình thương hiệu toàn công ty để áp dụng cho tất cả tài khoản
+    setBrandConfig(prev => {
+      const next: CompanyBrandConfig = {
+        ...prev,
+        backgroundTheme: theme,
+        updatedAt: new Date().toISOString().replace('T', ' ').slice(0, 16),
+        updatedBy: `${currentUser.name} (${currentUser.roleTitle})`
+      };
+      localStorage.setItem(STORAGE_KEYS.BRAND_CONFIG, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  // Cập nhật cấu hình thương hiệu toàn doanh nghiệp từ Ban Giám Đốc
   const updateBrandConfig = (updates: Partial<CompanyBrandConfig>) => {
     setBrandConfig(prev => {
       const next: CompanyBrandConfig = {
@@ -295,8 +316,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updatedBy: `${currentUser.name} (${currentUser.roleTitle})`
       };
       localStorage.setItem(STORAGE_KEYS.BRAND_CONFIG, JSON.stringify(next));
-      if (updates.backgroundTheme && updates.backgroundTheme !== bgTheme) {
-        setBgTheme(updates.backgroundTheme);
+      if (next.backgroundTheme) {
+        setBgThemeState(next.backgroundTheme);
+        localStorage.setItem(STORAGE_KEYS.BG_THEME, next.backgroundTheme);
       }
       return next;
     });
@@ -312,16 +334,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     celebrate();
   };
 
-  // Apply dynamic font and brand color variables to document
+  // Áp dụng cài đặt giao diện của Ban Giám Đốc cho toàn bộ hệ thống
   useEffect(() => {
+    // 1. Màu chủ đạo doanh nghiệp
     document.documentElement.style.setProperty('--brand-primary', brandConfig.primaryColorHex);
+
+    // 2. Phông chữ chuẩn toàn hệ thống
     const fontStack = `"${brandConfig.fontFamily}", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
     document.documentElement.style.setProperty('--brand-font', fontStack);
     document.documentElement.style.fontFamily = fontStack;
     document.body.style.fontFamily = fontStack;
 
+    // 3. Tên thương hiệu trên thanh tiêu đề
     if (brandConfig.companyName) {
       document.title = `${brandConfig.companyName} - Quản Trị Doanh Nghiệp`;
+    }
+
+    // 4. Đồng bộ nền không gian làm việc (backgroundTheme) cho tất cả các cấp
+    if (brandConfig.backgroundTheme && brandConfig.backgroundTheme !== bgTheme) {
+      setBgThemeState(brandConfig.backgroundTheme);
+      localStorage.setItem(STORAGE_KEYS.BG_THEME, brandConfig.backgroundTheme);
     }
   }, [brandConfig]);
 
