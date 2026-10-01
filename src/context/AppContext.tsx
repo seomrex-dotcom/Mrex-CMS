@@ -1,3 +1,4 @@
+import { verifyPassword, hashPassword, DEFAULT_PASSWORD_HASH } from '../utils/security';
 import { StorageOptimizer } from '../services/storageOptimizer';
 ﻿import React, { createContext, useContext, useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
@@ -226,7 +227,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const missing = EMPLOYEES.filter(e => !existingIds.has(e.id));
         return [...parsed, ...missing].map(e => ({
           ...e,
-          password: e.password || '123456',
+          password: e.password && e.password.startsWith('mrex_hash_') ? e.password : (e.password ? hashPassword(e.password) : DEFAULT_PASSWORD_HASH),
           accountStatus: e.accountStatus || 'ACTIVE'
         }));
       } catch (err) {
@@ -346,9 +347,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return { success: false, message: 'Vui lòng nhập mật khẩu đăng nhập.' };
     }
 
-    const expectedPassword = (found.password || '123456').trim();
-    if (inputPass !== expectedPassword) {
-      return { success: false, message: 'Mật khẩu không chính xác! (Mật khẩu mặc định hệ thống: 123456)' };
+    const isPasswordValid = verifyPassword(inputPass, found.password);
+    if (!isPasswordValid) {
+      return { success: false, message: 'Email hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.' };
     }
 
     setCurrentUser(found);
@@ -771,7 +772,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const addEmployee = (emp: Employee) => {
     const newEmp: Employee = {
       ...emp,
-      password: emp.password?.trim() || '123456',
+      password: hashPassword(emp.password?.trim() || '123456'),
       accountStatus: emp.accountStatus || 'ACTIVE'
     };
     setEmployees(prev => {
@@ -783,12 +784,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const resetEmployeePassword = (employeeId: string, newPassword: string) => {
-    updateEmployee(employeeId, { password: newPassword.trim() || '123456' });
+    updateEmployee(employeeId, { password: hashPassword(newPassword.trim() || '123456') });
   };
 
   const updateEmployee = (id: string, updates: Partial<Employee>) => {
+    const safeUpdates = { ...updates };
+    if (safeUpdates.password && !safeUpdates.password.startsWith('mrex_hash_')) {
+      safeUpdates.password = hashPassword(safeUpdates.password);
+    }
     setEmployees(prev => {
-      const next = prev.map(e => (e.id === id ? { ...e, ...updates } : e));
+      const next = prev.map(e => (e.id === id ? { ...e, ...safeUpdates } : e));
       localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(next));
       return next;
     });
@@ -796,7 +801,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // If current active user was edited, update currentUser state too
     if (currentUser.id === id) {
       setCurrentUserState(prev => {
-        const updated = { ...prev, ...updates };
+        const updated = { ...prev, ...safeUpdates };
         return updated;
       });
     }

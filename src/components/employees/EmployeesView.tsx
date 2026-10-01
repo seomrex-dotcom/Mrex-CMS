@@ -637,7 +637,7 @@ export const EmployeesView: React.FC = () => {
                   </button>
                 </div>
                 <div className="font-mono text-sm font-bold text-slate-800 select-all">
-                  {showCredentialsPass ? (viewingCredentials.password || '123456') : '••••••••'}
+                  {showCredentialsPass ? '•••••••••••• (Mã hóa SHA-256)' : '••••••••••••'}
                 </div>
               </div>
 

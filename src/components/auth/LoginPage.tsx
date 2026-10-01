@@ -115,11 +115,11 @@ export const LoginPage: React.FC = () => {
             </div>
           )}
 
-          {/* Enterprise Account Notice */}
+          {/* Enterprise Security Notice */}
           <div className="p-3 bg-blue-50/70 border border-blue-200/70 rounded-xl text-xs text-blue-900 flex items-start gap-2.5">
-            <Info className="w-4 h-4 text-[#0875D9] shrink-0 mt-0.5" />
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <div className="text-[11.5px] leading-relaxed text-slate-600">
-              Định dạng tài khoản: <span className="font-semibold text-[#063B78]">ten.nhanvien@mrex.vn</span>. Mật khẩu khởi tạo: <span className="font-mono font-bold text-[#0875D9] bg-white px-1.5 py-0.2 rounded border border-blue-200">123456</span>.
+              Cổng bảo mật nội bộ <strong>Mrex Enterprise Security</strong>. Vui lòng sử dụng tài khoản email công vụ được cấp phát để truy cập.
             </div>
           </div>
 

@@ -1,3 +1,4 @@
+import { DEFAULT_PASSWORD_HASH } from '../utils/security';
 import {
   WarehouseItem,
   InventoryAuditTicket,
@@ -81,7 +82,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 12,
     managerId: 'emp-01',
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   },
   {
@@ -101,7 +102,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 10,
     managerId: 'emp-07',
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   },
   {
@@ -121,7 +122,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 14,
     managerId: undefined, // Top executive
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   },
   {
@@ -141,7 +142,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 10,
     managerId: 'emp-01',
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   },
   {
@@ -161,7 +162,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 11,
     managerId: 'emp-01',
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   },
   {
@@ -181,7 +182,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 8,
     managerId: 'emp-02',
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   },
   {
@@ -201,7 +202,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 12,
     managerId: 'emp-02',
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   },
   {
@@ -221,7 +222,7 @@ export const EMPLOYEES: Employee[] = [
     status: 'ACTIVE',
     annualLeaveRemaining: 9,
     managerId: 'emp-01',
-    password: '123456',
+    password: DEFAULT_PASSWORD_HASH,
     accountStatus: 'ACTIVE',
   }
 ];
