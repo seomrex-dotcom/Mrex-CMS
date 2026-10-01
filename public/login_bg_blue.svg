@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgBase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#02092c"/>
+      <stop offset="30%" stop-color="#031448"/>
+      <stop offset="65%" stop-color="#052474"/>
+      <stop offset="100%" stop-color="#010b30"/>
+    </linearGradient>
+
+    <radialGradient id="electricSapphire" cx="58%" cy="58%" r="52%">
+      <stop offset="0%" stop-color="#1d5bf7" stop-opacity="0.9"/>
+      <stop offset="35%" stop-color="#0d3ec9" stop-opacity="0.75"/>
+      <stop offset="70%" stop-color="#052285" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#020b33" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="topRightAura" cx="85%" cy="25%" r="48%">
+      <stop offset="0%" stop-color="#154ce0" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#082b99" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#020a30" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="leftShadowFold" cx="22%" cy="48%" r="42%">
+      <stop offset="0%" stop-color="#000414" stop-opacity="0.95"/>
+      <stop offset="55%" stop-color="#010a29" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#03154f" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="silkBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="95"/>
+    </filter>
+  </defs>
+
+  <!-- Deep Rich Base -->
+  <rect width="1920" height="1080" fill="url(#bgBase)"/>
+
+  <!-- Fluid wave layers with silky organic curves -->
+  <g filter="url(#silkBlur)">
+    <!-- Silk flow 1: Luminous main wave across lower center -->
+    <path d="M-150,520 C320,780 750,820 1150,600 C1550,380 1850,460 2100,430 L2100,1250 L-150,1250 Z" fill="#0b38c2" opacity="0.85"/>
+    
+    <!-- Silk flow 2: Bright electric core spine -->
+    <path d="M-80,680 C380,850 920,750 1380,540 C1750,370 1980,490 2100,460" fill="none" stroke="#2563eb" stroke-width="280" opacity="0.7"/>
+    
+    <!-- Deep fold shadow along the left flank creating the 3D drape fold -->
+    <ellipse cx="260" cy="490" rx="450" ry="700" fill="#000518" opacity="0.95" transform="rotate(-18 260 490)"/>
+
+    <!-- Silk flow 3: Upper soft billow -->
+    <ellipse cx="1450" cy="320" rx="720" ry="420" fill="#0d40cf" opacity="0.5" transform="rotate(18 1450 320)"/>
+
+    <!-- Ambient glows -->
+    <rect width="1920" height="1080" fill="url(#electricSapphire)"/>
+    <rect width="1920" height="1080" fill="url(#topRightAura)"/>
+    <rect width="1920" height="1080" fill="url(#leftShadowFold)"/>
+  </g>
+</svg>

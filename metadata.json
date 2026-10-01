@@ -1,0 +1,10 @@
+{
+  "name": "Mrex",
+  "description": "Hệ thống quản trị doanh nghiệp toàn diện: Chấm công thông minh, Giao việc \u0026 Dự án, Đánh giá hiệu suất KPI/OKR và Báo cáo điều hành.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

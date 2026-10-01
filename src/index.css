@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--brand-font, 'Be Vietnam Pro', 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  :root {
+    --brand-font: 'Be Vietnam Pro', 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+    /* Primary Blues */
+    --primary-blue: #0875D9;
+    --deep-blue: #0B4FA8;
+    --dark-navy: #063B78;
+    --sky-blue: #39A9FF;
+    --light-blue: #A8D8FF;
+    --ice-blue: #EAF5FF;
+
+    /* Backgrounds & Glass */
+    --bg-main: #F4F8FC;
+    --bg-secondary: #EAF3FC;
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-bg-hover: rgba(255, 255, 255, 0.88);
+    --glass-border: rgba(255, 255, 255, 0.80);
+    --glass-border-subtle: rgba(255, 255, 255, 0.45);
+
+    /* Typography */
+    --text-primary: #172B45;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+
+    /* Status Colors */
+    --status-success: #16C784;
+    --status-warning: #F5B942;
+    --status-danger: #EF5350;
+    --status-info: #39A9FF;
+
+    /* Gradients */
+    --grad-primary: linear-gradient(135deg, #0875D9 0%, #39A9FF 100%);
+    --grad-deep: linear-gradient(135deg, #063B78 0%, #0875D9 100%);
+    --grad-bg: linear-gradient(135deg, #EAF5FF 0%, #F4F8FC 55%, #DCEEFF 100%);
+  }
+
+  html, body, #root {
+    font-family: var(--brand-font);
+    font-optical-sizing: auto;
+    letter-spacing: -0.011em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--grad-bg);
+    min-height: 100vh;
+  }
+
+  button, input, optgroup, select, textarea {
+    font-family: inherit;
+  }
+
+  .font-sans {
+    font-family: var(--brand-font) !important;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-feature-settings: 'tnum' on, 'zero' on;
+  }
+}
+
+/* Background Theme Styles Updated to Glassmorphism */
+.theme-glass_gradient,
+.theme-default {
+  background: transparent;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(57, 169, 255, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(8, 117, 217, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(234, 245, 255, 0.4) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
+.theme-modern_grid {
+  background-color: transparent;
+  background-image: radial-gradient(rgba(8, 117, 217, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.theme-soft_mesh {
+  background-color: transparent;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(57, 169, 255, 0.10) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(8, 117, 217, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(168, 216, 255, 0.12) 0px, transparent 50%);
+}
+
+.theme-pure_white {
+  background-color: #ffffff;
+}
+
+.theme-warm_zinc {
+  background-color: #fbfbfa;
+}
+
+.theme-dark_executive {
+  background-color: #040d21;
+}
+
+/* Glassmorphism Classes */
+.glass-card {
+  background: rgba(255, 255, 255, 0.76) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 10px 30px rgba(30, 90, 150, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+}
+
+.glass-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(30, 90, 150, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.glass-panel-navy {
+  background: linear-gradient(135deg, rgba(6, 59, 120, 0.95) 0%, rgba(8, 117, 217, 0.92) 100%);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 40px rgba(6, 59, 120, 0.25);
+}
+
+.glass-pill-blue {
+  background: linear-gradient(135deg, #0875D9 0%, #39A9FF 100%);
+  box-shadow: 0 4px 14px rgba(8, 117, 217, 0.35);
+}
+
+.glow-blue-sm {
+  box-shadow: 0 0 15px rgba(8, 117, 217, 0.3);
+}
+
+/* Animations */
+@keyframes floatSlow {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 30px) scale(1.08); }
+  100% { transform: translate(-30px, 50px) scale(0.95); }
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(8deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+@keyframes waveHand {
+  0%, 100% { transform: rotate(0deg); }
+  20%, 60% { transform: rotate(14deg); }
+  40%, 80% { transform: rotate(-14deg); }
+}
+
+/* Marquee Animation */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 32s linear infinite;
+}
+
+.animate-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Trống Đồng Đông Sơn Rotating Background Animations */
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinSlowReverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 90s linear infinite;
+}
+
+.animate-spin-slow-reverse {
+  animation: spinSlowReverse 120s linear infinite;
+}
