@@ -206,12 +206,12 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
                 celebrate();
               }}
               disabled={isCurrentUser}
-              className={`py-1.5 px-2 rounded-lg text-[11px] transition-colors flex items-center justify-center ${
+              className={`hidden md:flex py-1.5 px-2 rounded-lg text-[11px] transition-colors items-center justify-center ${
                 isCurrentUser
                   ? 'bg-slate-100 text-slate-400 cursor-default'
                   : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
               }`}
-              title="Chuyển quyền đăng nhập sang người này"
+              title="Chuyển quyền đăng nhập sang người này (chỉ khả dụng trên máy tính)"
             >
               <UserCheck className="w-3 h-3 text-slate-500" />
             </button>

@@ -445,7 +445,7 @@ export const EmployeesView: React.FC = () => {
                         setCurrentUser(emp);
                         celebrate();
                       }}
-                      className={`flex-1 py-2 text-center text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1.5 min-h-[38px] ${
+                      className={`hidden md:flex flex-1 py-2 text-center text-xs font-semibold rounded-lg transition-colors items-center justify-center gap-1.5 min-h-[38px] ${
                         isCurrentActive
                           ? 'bg-slate-100 text-slate-500 cursor-default'
                           : 'bg-indigo-50 hover:bg-indigo-100 text-indigo-700'

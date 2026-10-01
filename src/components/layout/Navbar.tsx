@@ -210,14 +210,15 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
             )}
           </div>
 
-          {/* Background Theme Selector */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                setShowThemePicker(!showThemePicker);
-                setShowNotifications(false);
-                setShowUserDropdown(false);
-              }}
+          {/* Background Theme Selector - CHỈ DÀNH CHO BAN GIÁM ĐỐC (CEO) */}
+          {currentUser.role === 'CEO' && (
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setShowThemePicker(!showThemePicker);
+                  setShowNotifications(false);
+                  setShowUserDropdown(false);
+                }}
               className={`p-2 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
                 showThemePicker
                   ? 'bg-indigo-50 text-indigo-600'
@@ -277,6 +278,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
               </div>
             )}
           </div>
+          )}
 
           {/* Reset data button for testing (hidden on smallest screen) */}
           <button

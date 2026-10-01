@@ -205,17 +205,19 @@ export const BoardView: React.FC = () => {
           <span>Cơ Cấu Tổ Chức</span>
         </button>
 
-        <button
-          onClick={() => setActiveBoardTab('branding')}
-          className={`px-3 py-2 rounded-lg font-semibold transition-colors shrink-0 min-h-[40px] flex items-center gap-1.5 ${
-            activeBoardTab === 'branding'
-              ? 'bg-indigo-600 text-white'
-              : 'text-slate-600 hover:bg-slate-100'
-          }`}
-        >
-          <Palette className="w-3.5 h-3.5 text-amber-400" />
-          <span>Cài Đặt Thương Hiệu, Logo & Theme</span>
-        </button>
+        {isCEO && (
+          <button
+            onClick={() => setActiveBoardTab('branding')}
+            className={`px-3 py-2 rounded-lg font-semibold transition-colors shrink-0 min-h-[40px] flex items-center gap-1.5 ${
+              activeBoardTab === 'branding'
+                ? 'bg-indigo-600 text-white'
+                : 'text-slate-600 hover:bg-slate-100'
+            }`}
+          >
+            <Palette className="w-3.5 h-3.5 text-amber-400" />
+            <span>Cài Đặt Thương Hiệu, Logo & Theme</span>
+          </button>
+        )}
       </div>
 
       {/* Tab 1: Budgets */}
@@ -397,7 +399,7 @@ export const BoardView: React.FC = () => {
       {activeBoardTab === 'org_structure' && <DepartmentsManagementView />}
 
       {/* Tab: Brand Customization, Logo, Typography & Themes (Ban Quan Tri) */}
-      {activeBoardTab === 'branding' && <BoardBrandSettings />}
+      {activeBoardTab === 'branding' && isCEO && <BoardBrandSettings />}
     </div>
   );
 };

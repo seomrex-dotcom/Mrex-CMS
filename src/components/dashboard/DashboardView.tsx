@@ -434,7 +434,7 @@ export const DashboardView: React.FC = () => {
             </div>
           )}
 
-          {isExec && (
+          {currentUser.role === 'CEO' && (
             <button
               onClick={() => setIsBrandOpen(true)}
               className="px-3.5 py-2.5 bg-white/80 border border-slate-200/80 text-slate-700 text-xs font-semibold rounded-xl hover:bg-white shadow-xs flex items-center gap-1.5 cursor-pointer backdrop-blur-md transition-all hover:-translate-y-0.5"

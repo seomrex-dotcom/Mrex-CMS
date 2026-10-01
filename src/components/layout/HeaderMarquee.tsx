@@ -11,7 +11,8 @@ import {
   Shield,
   Menu,
   Users,
-  CheckSquare
+  CheckSquare,
+  LogOut
 } from 'lucide-react';
 import { EMPLOYEES } from '../../data/mockData';
 import { OnlineUsersModal } from '../common/OnlineUsersModal';
@@ -29,6 +30,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
     employees,
     setActiveTab,
     openProfileModal,
+    logout,
     celebrate
   } = useApp();
 
@@ -168,6 +170,13 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
                 <div
                   className="absolute right-0 top-full mt-1.5 w-64 bg-white/95 backdrop-blur-2xl border border-white/90 rounded-2xl shadow-2xl z-50 p-2 text-xs space-y-1 text-slate-800 animate-in zoom-in-95"
                 >
+                  {/* Current User Summary on Mobile/Desktop */}
+                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 mb-1">
+                    <div className="font-bold text-slate-900 truncate">{currentUser.name}</div>
+                    <div className="text-[11px] text-[#0875D9] font-semibold">{currentUser.roleTitle}</div>
+                    <div className="text-[10px] text-slate-400 truncate">{currentUser.email}</div>
+                  </div>
+
                   <button
                     id="btn-header-profile"
                     type="button"
@@ -181,42 +190,60 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
                     <span>Cài Đặt Thông Tin Cá Nhân</span>
                   </button>
 
-                  <div className="px-2 py-1.5 text-[10px] text-slate-400 uppercase font-bold tracking-wider border-b border-slate-100">
-                    Chuyển Tài Khoản Nhân Sự
+                  {/* Chuyển Tài Khoản Nhân Sự - CHỈ HIỂN THỊ TRÊN DESKTOP, ẨN HOÀN TOÀN TRÊN MOBILE */}
+                  <div className="hidden md:block pt-1 border-t border-slate-100">
+                    <div className="px-2 py-1.5 text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                      Chuyển Tài Khoản Nhân Sự
+                    </div>
+
+                    <div className="max-h-56 overflow-y-auto space-y-0.5">
+                      {EMPLOYEES.map(emp => (
+                        <button
+                          key={emp.id}
+                          onClick={() => {
+                            setCurrentUser(emp);
+                            setShowRoleDropdown(false);
+                            celebrate();
+                          }}
+                          className={`w-full flex items-center justify-between p-2 rounded-xl transition-colors text-left cursor-pointer ${
+                            currentUser.id === emp.id
+                              ? 'bg-[#0875D9]/12 text-[#0875D9] font-bold border border-[#0875D9]/20'
+                              : 'hover:bg-slate-50 text-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <img
+                              src={emp.avatar}
+                              alt={emp.name}
+                              className="w-5 h-5 rounded-full object-cover shrink-0 ring-1 ring-slate-200"
+                            />
+                            <div className="truncate">
+                              <div className="truncate font-semibold text-xs">{emp.name}</div>
+                              <div className="text-[10px] text-slate-400 truncate">
+                                {emp.roleTitle}
+                              </div>
+                            </div>
+                          </div>
+                          <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 shrink-0 ml-1 font-semibold">
+                            {emp.role}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  {EMPLOYEES.map(emp => (
-                    <button
-                      key={emp.id}
-                      onClick={() => {
-                        setCurrentUser(emp);
-                        setShowRoleDropdown(false);
-                        celebrate();
-                      }}
-                      className={`w-full flex items-center justify-between p-2 rounded-xl transition-colors text-left cursor-pointer ${
-                        currentUser.id === emp.id
-                          ? 'bg-[#0875D9]/12 text-[#0875D9] font-bold border border-[#0875D9]/20'
-                          : 'hover:bg-slate-50 text-slate-700'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <img
-                          src={emp.avatar}
-                          alt={emp.name}
-                          className="w-5 h-5 rounded-full object-cover shrink-0 ring-1 ring-slate-200"
-                        />
-                        <div className="truncate">
-                          <div className="truncate font-semibold text-xs">{emp.name}</div>
-                          <div className="text-[10px] text-slate-400 truncate">
-                            {emp.roleTitle}
-                          </div>
-                        </div>
-                      </div>
-                      <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 shrink-0 ml-1 font-semibold">
-                        {emp.role}
-                      </span>
-                    </button>
-                  ))}
+                  {/* Đăng xuất tài khoản */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowRoleDropdown(false);
+                      logout();
+                    }}
+                    className="w-full flex items-center gap-2 p-2 rounded-xl text-left hover:bg-rose-50 text-rose-600 font-semibold text-xs cursor-pointer border border-rose-100 mt-1"
+                  >
+                    <LogOut className="w-4 h-4 text-rose-500" />
+                    <span>Đăng Xuất</span>
+                  </button>
                 </div>
               </>
             )}

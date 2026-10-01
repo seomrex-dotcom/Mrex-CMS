@@ -47,6 +47,9 @@ export const BoardBrandSettingsModal: React.FC<Props> = ({ isOpen, onClose }) =>
 
   const isCEO = currentUser.role === 'CEO';
 
+  // Chức năng cài đặt giao diện / thương hiệu chỉ dành riêng cho Ban Giám Đốc (CEO)
+  if (!isOpen || !isCEO) return null;
+
   // Draft state
   const [formData, setFormData] = useState<CompanyBrandConfig>({ ...brandConfig });
   const [activeTab, setActiveTab] = useState<'logo_info' | 'fonts' | 'colors' | 'background'>('logo_info');

@@ -258,63 +258,6 @@ export const MobileNav: React.FC<MobileNavProps> = ({
                 </nav>
               </div>
 
-              {/* Background Theme Selector in mobile drawer */}
-              <div className="pt-2 border-t border-slate-100">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2 flex items-center gap-1.5">
-                  <Palette className="w-3.5 h-3.5 text-[#0875D9]" />
-                  <span>Chọn kiểu nền hiển thị</span>
-                </div>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {BG_THEMES.map(theme => {
-                    const isSelected = bgTheme === theme.id;
-                    return (
-                      <button
-                        key={theme.id}
-                        onClick={() => setBgTheme(theme.id)}
-                        className={`p-2 rounded-lg flex items-center gap-2 text-left text-xs transition-colors border ${
-                          isSelected
-                            ? 'bg-[#EAF5FF] border-[#0875D9]/40 text-[#0875D9] font-semibold'
-                            : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                        }`}
-                      >
-                        <div className={`w-4 h-4 rounded border shrink-0 ${theme.preview}`} />
-                        <span className="truncate text-[11px]">{theme.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Role switcher inside mobile drawer */}
-              <div className="pt-2 border-t border-slate-100">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">
-                  Chuyển Tài Khoản Nhân Sự
-                </div>
-                <div className="space-y-1">
-                  {EMPLOYEES.slice(0, 6).map(emp => (
-                    <button
-                      key={emp.id}
-                      onClick={() => {
-                        setCurrentUser(emp);
-                        celebrate();
-                        onCloseDrawer();
-                      }}
-                      className={`w-full text-left px-2.5 py-1.5 rounded-lg flex items-center gap-2 text-xs transition-colors min-h-[40px] ${
-                        emp.id === currentUser.id ? 'bg-[#EAF5FF] text-[#0875D9] font-semibold' : 'text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      <img
-                        src={emp.avatar}
-                        alt=""
-                        referrerPolicy="no-referrer"
-                        className="w-6 h-6 rounded-full object-cover border border-slate-200"
-                      />
-                      <span className="truncate flex-1">{emp.name} ({emp.role})</span>
-                      {emp.id === currentUser.id && <UserCheck className="w-3.5 h-3.5 text-[#0875D9] shrink-0" />}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </div>
 
             {/* Bottom Actions */}
