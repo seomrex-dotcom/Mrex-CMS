@@ -23,9 +23,11 @@ export const SupportWidget: React.FC = () => {
   // State ẩn/hiện bảng thông báo sinh nhật & tin nhóm
   const [isCardVisible, setIsCardVisible] = useState<boolean>(() => {
     try {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      if (isMobile) return false;
       return localStorage.getItem('mrex_widget_card_visible') !== 'false';
     } catch {
-      return true;
+      return false;
     }
   });
 
@@ -83,9 +85,10 @@ export const SupportWidget: React.FC = () => {
 
   return (
     <>
+      {/* Desktop Floating Mascot & Card - Hidden on Mobile to keep screen clear */}
       <aside
         aria-label="Thông báo sinh nhật và tin nhắn nhóm Mrex"
-        className="fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-40 select-none flex flex-col items-center animate-in fade-in slide-in-from-bottom-3 duration-300"
+        className="hidden md:flex fixed bottom-6 right-6 z-40 select-none flex-col items-center animate-in fade-in slide-in-from-bottom-3 duration-300"
       >
         {/* Mascot GIF - Click to open Company Chat */}
         <button

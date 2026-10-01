@@ -119,7 +119,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
           {/* Live Online Users Badge */}
           <button
             onClick={() => setShowOnlineModal(true)}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-white/80 hover:bg-white text-slate-700 rounded-xl text-[11px] font-semibold transition-all border border-slate-200/80 shadow-xs cursor-pointer backdrop-blur-md"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-white/80 hover:bg-white text-slate-700 rounded-xl text-[11px] font-semibold transition-all border border-slate-200/80 shadow-xs cursor-pointer backdrop-blur-md"
             title="Nhấn để xem danh sách nhân sự đang trực tuyến"
           >
             <span className="relative flex h-2 w-2">
@@ -137,7 +137,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
               setActiveTab('tasks');
               celebrate();
             }}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 text-white rounded-xl text-[11px] font-bold transition-all shadow-xs cursor-pointer active:scale-95 bg-gradient-to-r from-[#0875D9] to-[#39A9FF]"
+            className="flex items-center gap-1 px-2 sm:px-3 py-1 text-white rounded-xl text-[11px] font-bold transition-all shadow-xs cursor-pointer active:scale-95 bg-gradient-to-r from-[#0875D9] to-[#39A9FF]"
             title="Nhấn để xem danh sách công việc cần hoàn thành"
           >
             <CheckSquare className="w-3.5 h-3.5 text-white" />
@@ -149,10 +149,15 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
           <div className="relative">
             <button
               onClick={() => setShowRoleDropdown(!showRoleDropdown)}
-              className="flex items-center gap-1.5 px-2.5 py-1 bg-white/80 hover:bg-white text-slate-700 rounded-xl text-[11px] font-semibold transition-all border border-slate-200/80 shadow-xs backdrop-blur-md cursor-pointer"
-              title="Đổi tài khoản nhân sự để làm việc theo phân quyền"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 bg-white/80 hover:bg-white text-slate-700 rounded-xl text-[11px] font-semibold transition-all border border-slate-200/80 shadow-xs backdrop-blur-md cursor-pointer"
+              title="Thông tin tài khoản"
             >
-              <UserCheck className="w-3.5 h-3.5 text-[#0875D9]" />
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-4 h-4 rounded-full object-cover shrink-0 ring-1 ring-slate-200 sm:hidden"
+              />
+              <UserCheck className="hidden sm:inline w-3.5 h-3.5 text-[#0875D9]" />
               <span className="hidden sm:inline truncate max-w-[120px] font-semibold">{currentUser.name}</span>
               <span className="font-mono text-[10px] text-[#0875D9] font-bold">
                 ({currentUser.role})

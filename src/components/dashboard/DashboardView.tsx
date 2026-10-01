@@ -389,7 +389,7 @@ export const DashboardView: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#063B78] tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#063B78] tracking-tight flex items-center gap-2">
             <span>Xin chào, {currentUser.name}</span>
             <span className="inline-block animate-[waveHand_2s_infinite]">✨</span>
           </h2>
@@ -449,7 +449,7 @@ export const DashboardView: React.FC = () => {
            4 KPI STATISTIC CARDS (Glassmorphism Template)
            ============================================================ */}
       {isExec ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           <KPICard
             label="Doanh Thu Tháng"
             value={fmtVND(totalReceipts)}
@@ -500,7 +500,7 @@ export const DashboardView: React.FC = () => {
           />
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           <KPICard
             label="KPI Cá Nhân"
             value={myKpi + '%'}
@@ -554,9 +554,9 @@ export const DashboardView: React.FC = () => {
       {/* ============================================================
            MAIN ANALYTICS CHART & ACTIVITY FEED
            ============================================================ */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 sm:gap-5">
         {isExec && (
-          <div className="xl:col-span-2 glass-card rounded-2xl p-6 border border-white/80 shadow-xs">
+          <div className="xl:col-span-2 glass-card rounded-2xl p-4 sm:p-6 border border-white/80 shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <h3 className="font-bold text-[#063B78] text-base flex items-center gap-2">
@@ -581,7 +581,7 @@ export const DashboardView: React.FC = () => {
         )}
 
         {/* Activity Feed from Template */}
-        <div className={'glass-card rounded-2xl p-6 border border-white/80 shadow-xs flex flex-col' + (!isExec ? ' xl:col-span-3' : '')}>
+        <div className={'glass-card rounded-2xl p-4 sm:p-6 border border-white/80 shadow-xs flex flex-col' + (!isExec ? ' xl:col-span-3' : '')}>
           <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
             <h3 className="font-bold text-[#063B78] text-sm flex items-center gap-2">
               <Activity className="w-4 h-4 text-[#16C784]" />
@@ -681,9 +681,9 @@ export const DashboardView: React.FC = () => {
            SECONDARY GRID: CASH FLOW + DEPT PERFORMANCE + QUICK ACTIONS
            ============================================================ */}
       {isExec && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-5">
           {/* Cash Flow */}
-          <div className="glass-card rounded-2xl p-6 border border-white/80 shadow-xs">
+          <div className="glass-card rounded-2xl p-4 sm:p-6 border border-white/80 shadow-xs">
             <h3 className="font-bold text-[#063B78] text-sm mb-4 flex items-center gap-2">
               <Receipt className="w-4 h-4 text-[#16C784]" /> Dòng Tiền Thu - Chi Tháng Này
             </h3>
@@ -697,7 +697,7 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* Dept Performance */}
-          <div className="glass-card rounded-2xl p-6 border border-white/80 shadow-xs">
+          <div className="glass-card rounded-2xl p-4 sm:p-6 border border-white/80 shadow-xs">
             <h3 className="font-bold text-[#063B78] text-sm mb-4 flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-[#0875D9]" /> Hiệu Suất Từng Phòng Ban
             </h3>

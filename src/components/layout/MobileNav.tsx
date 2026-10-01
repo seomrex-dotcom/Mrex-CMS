@@ -71,68 +71,79 @@ export const MobileNav: React.FC<MobileNavProps> = ({
   const bottomTabs: { id: ActiveNavTab; label: string; icon: React.ElementType; badge?: number }[] = [
     { id: 'dashboard', label: 'Tổng Quan', icon: LayoutDashboard },
     {
-      id: 'attendance',
-      label: 'Chấm Công',
-      icon: CalendarCheck,
-      badge: !todayAttendance?.checkIn ? 1 : undefined
-    },
-    {
       id: 'tasks',
       label: 'Công Việc',
       icon: CheckSquare,
       badge: myPendingTasksCount > 0 ? myPendingTasksCount : undefined
     },
+    {
+      id: 'attendance',
+      label: 'Chấm Công',
+      icon: CalendarCheck,
+      badge: !todayAttendance?.checkIn ? 1 : undefined
+    },
     { id: 'chat', label: 'Tin Nhắn', icon: MessageSquare },
-    { id: 'performance', label: 'Đánh Giá', icon: TrendingUp },
   ];
 
-  const allNavItems = [
-    { id: 'dashboard' as ActiveNavTab, label: 'Tổng Quan Điều Hành', icon: LayoutDashboard, badge: undefined },
-    { id: 'attendance' as ActiveNavTab, label: 'Chấm Công & Quản Lý Ca', icon: CalendarCheck, badge: pendingLeavesCount > 0 ? pendingLeavesCount : undefined },
-    { id: 'tasks' as ActiveNavTab, label: 'Giao Việc & Dự Án', icon: CheckSquare, badge: myPendingTasksCount > 0 ? myPendingTasksCount : undefined },
-    { id: 'chat' as ActiveNavTab, label: 'Nhắn Tin Toàn Công Ty', icon: MessageSquare, badge: undefined, visible: true },
-    { id: 'finance' as ActiveNavTab, label: 'Sổ Quỹ Thu - Chi', icon: Receipt, badge: vouchers.length || undefined },
-    { id: 'docs' as ActiveNavTab, label: 'Văn Bản & Content (Docs)', icon: FileText, badge: pendingDocsCount > 0 ? pendingDocsCount : undefined },
-    { id: 'performance' as ActiveNavTab, label: 'Đánh Giá KPI / OKR', icon: TrendingUp, badge: undefined },
+  const navSections = [
     {
-      id: 'board' as ActiveNavTab,
-      label: 'Ban Quản Trị & Ngân Sách',
-      icon: Award,
-      badge: undefined,
-      visible: currentUser.role === 'CEO'
+      title: 'Quản Trị & Điều Hành',
+      items: [
+        { id: 'dashboard' as ActiveNavTab, label: 'Tổng Quan Điều Hành', icon: LayoutDashboard },
+        { id: 'reports' as ActiveNavTab, label: 'Báo Cáo Điều Hành', icon: BarChart3 },
+        {
+          id: 'board' as ActiveNavTab,
+          label: 'Ban Quản Trị & Ngân Sách',
+          icon: Award,
+          visible: currentUser.role === 'CEO'
+        },
+        {
+          id: 'workload' as ActiveNavTab,
+          label: 'Điều Phối Team & Nghiệm Thu',
+          icon: Briefcase,
+          visible: currentUser.role === 'MANAGER' || currentUser.role === 'CEO'
+        },
+      ].filter(i => i.visible !== false)
     },
     {
-      id: 'workload' as ActiveNavTab,
-      label: 'Điều Phối Team & Nghiệm Thu',
-      icon: Briefcase,
-      badge: undefined,
-      visible: currentUser.role === 'MANAGER' || currentUser.role === 'CEO'
+      title: 'Vận Hành & Tài Chính',
+      items: [
+        { id: 'tasks' as ActiveNavTab, label: 'Giao Việc & Dự Án', icon: CheckSquare, badge: myPendingTasksCount > 0 ? myPendingTasksCount : undefined },
+        { id: 'attendance' as ActiveNavTab, label: 'Chấm Công & Quản Lý Ca', icon: CalendarCheck, badge: pendingLeavesCount > 0 ? pendingLeavesCount : undefined },
+        { id: 'chat' as ActiveNavTab, label: 'Nhắn Tin Toàn Công Ty', icon: MessageSquare },
+        { id: 'finance' as ActiveNavTab, label: 'Sổ Quỹ Thu - Chi', icon: Receipt, badge: vouchers.length || undefined },
+        {
+          id: 'production' as ActiveNavTab,
+          label: 'Sản Xuất & Kho Vận',
+          icon: Boxes,
+          badge: warehouseItems.filter(i => i.status !== 'IN_STOCK').length || undefined,
+          visible: currentUser.role === 'CEO' || currentUser.role === 'MANAGER' || currentUser.departmentId === 'production' || (currentUser.roleTitle && (currentUser.roleTitle.toLowerCase().includes('kho') || currentUser.roleTitle.toLowerCase().includes('sản xuất')))
+        },
+      ].filter(i => i.visible !== false)
     },
     {
-      id: 'payroll' as ActiveNavTab,
-      label: 'Lương & Chốt Công Nhật',
-      icon: FileSpreadsheet,
-      badge: undefined,
-      visible: currentUser.role === 'HR' || currentUser.role === 'CEO'
-    },
-    {
-      id: 'production' as ActiveNavTab,
-      label: 'Sản Xuất & Kho Vận',
-      icon: Boxes,
-      badge: warehouseItems.filter(i => i.status !== 'IN_STOCK').length || undefined,
-      visible: currentUser.role === 'CEO' || currentUser.role === 'MANAGER' || currentUser.departmentId === 'production' || (currentUser.roleTitle && (currentUser.roleTitle.toLowerCase().includes('kho') || currentUser.roleTitle.toLowerCase().includes('sản xuất')))
-    },
-    { id: 'reports' as ActiveNavTab, label: 'Báo Cáo Điều Hành', icon: BarChart3, badge: undefined },
-    { id: 'employees' as ActiveNavTab, label: 'Sơ Đồ & Danh Bạ Nhân Sự', icon: Users, badge: undefined },
-    { id: 'announcements' as ActiveNavTab, label: 'Bảng Tin Nội Bộ', icon: Megaphone, badge: undefined },
-  ].filter(i => i.visible !== false);
+      title: 'Nhân Sự & Nội Dung',
+      items: [
+        { id: 'employees' as ActiveNavTab, label: 'Sơ Đồ & Danh Bạ Nhân Sự', icon: Users },
+        { id: 'performance' as ActiveNavTab, label: 'Đánh Giá KPI / OKR', icon: TrendingUp },
+        {
+          id: 'payroll' as ActiveNavTab,
+          label: 'Lương & Chốt Công Nhật',
+          icon: FileSpreadsheet,
+          visible: currentUser.role === 'HR' || currentUser.role === 'CEO'
+        },
+        { id: 'docs' as ActiveNavTab, label: 'Văn Bản & Content (Docs)', icon: FileText, badge: pendingDocsCount > 0 ? pendingDocsCount : undefined },
+        { id: 'announcements' as ActiveNavTab, label: 'Bảng Tin Nội Bộ', icon: Megaphone },
+      ].filter(i => i.visible !== false)
+    }
+  ];
 
   return (
     <>
       {/* 1. Fixed Bottom Navigation Bar on Mobile (< md) */}
       <nav
         aria-label="Điều hướng chính di động"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 h-16 flex items-center justify-around px-1 shadow-lg"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200/90 h-16 flex items-center justify-around px-1 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom,0px)]"
       >
         {bottomTabs.map(tab => {
           const Icon = tab.icon;
@@ -142,19 +153,25 @@ export const MobileNav: React.FC<MobileNavProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center justify-center flex-1 h-full min-h-[44px] min-w-[44px] transition-colors relative ${
+              className={`flex flex-col items-center justify-center flex-1 h-full min-h-[44px] min-w-[44px] transition-all relative active:scale-95 ${
                 isActive ? 'text-[#0875D9]' : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               <div className="relative">
-                <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.2]' : 'stroke-[1.8]'}`} />
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'stroke-[2.2] scale-110' : 'stroke-[1.8]'}`} />
                 {tab.badge !== undefined && (
-                  <span className="absolute -top-1 -right-1.5 w-2 h-2 rounded-full bg-[#0875D9] ring-2 ring-white" />
+                  <span className="absolute -top-1 -right-2 flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0875D9] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0875D9] ring-2 ring-white" />
+                  </span>
                 )}
               </div>
-              <span className={`text-[10px] tracking-tight mt-1 truncate max-w-[64px] ${isActive ? 'font-bold' : 'font-medium'}`}>
+              <span className={`text-[10.5px] tracking-tight mt-1 truncate max-w-[64px] ${isActive ? 'font-bold text-[#0875D9]' : 'font-medium text-slate-500'}`}>
                 {tab.label}
               </span>
+              {isActive && (
+                <span className="absolute top-1 w-8 h-0.5 rounded-full bg-[#0875D9]" />
+              )}
             </button>
           );
         })}
@@ -162,14 +179,16 @@ export const MobileNav: React.FC<MobileNavProps> = ({
         {/* Menu drawer trigger */}
         <button
           onClick={onOpenDrawer}
-          className={`flex flex-col items-center justify-center flex-1 h-full min-h-[44px] min-w-[44px] transition-colors relative ${
-            isDrawerOpen || activeTab === 'reports' || activeTab === 'employees' || activeTab === 'announcements'
+          className={`flex flex-col items-center justify-center flex-1 h-full min-h-[44px] min-w-[44px] transition-colors relative active:scale-95 ${
+            isDrawerOpen || !bottomTabs.some(t => t.id === activeTab)
               ? 'text-[#0875D9] font-bold'
               : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <Menu className="w-5 h-5 stroke-[1.8]" />
-          <span className="text-[10px] tracking-tight mt-1 font-medium">Menu</span>
+          <div className="relative">
+            <Menu className={`w-5 h-5 ${isDrawerOpen ? 'stroke-[2.2]' : 'stroke-[1.8]'}`} />
+          </div>
+          <span className={`text-[10px] tracking-tight mt-1 font-medium ${isDrawerOpen ? 'font-bold text-[#0875D9]' : ''}`}>Tất Cả</span>
         </button>
       </nav>
 
@@ -221,41 +240,45 @@ export const MobileNav: React.FC<MobileNavProps> = ({
                 </div>
               </div>
 
-              {/* Navigation items list */}
-              <div>
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 px-2">
-                  Tất Cả Phân Hệ
-                </div>
-                <nav className="space-y-1">
-                  {allNavItems.map(item => {
-                    const Icon = item.icon;
-                    const isActive = activeTab === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setActiveTab(item.id);
-                          onCloseDrawer();
-                        }}
-                        className={`w-full flex items-center justify-between px-3 py-2.5 text-xs font-medium rounded-lg transition-colors min-h-[44px] ${
-                          isActive
-                            ? 'bg-[#EAF5FF] text-[#0875D9] font-bold'
-                            : 'text-slate-700 hover:bg-slate-50'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <Icon className={`w-4 h-4 ${isActive ? 'text-[#0875D9]' : 'text-slate-400'}`} />
-                          <span>{item.label}</span>
-                        </div>
-                        {item.badge !== undefined && (
-                          <span className="font-mono text-[10px] px-1.5 py-0.5 text-[#0875D9] bg-[#EAF5FF] rounded">
-                            {item.badge}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </nav>
+              {/* Categorized Navigation Sections */}
+              <div className="space-y-4">
+                {navSections.map(sec => (
+                  <div key={sec.title}>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 px-2">
+                      {sec.title}
+                    </div>
+                    <nav className="space-y-0.5">
+                      {sec.items.map(item => {
+                        const Icon = item.icon;
+                        const isActive = activeTab === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => {
+                              setActiveTab(item.id);
+                              onCloseDrawer();
+                            }}
+                            className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all min-h-[40px] ${
+                              isActive
+                                ? 'bg-[#EAF5FF] text-[#0875D9] font-bold shadow-2xs'
+                                : 'text-slate-700 hover:bg-slate-50'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <Icon className={`w-4 h-4 ${isActive ? 'text-[#0875D9]' : 'text-slate-400'}`} />
+                              <span>{item.label}</span>
+                            </div>
+                            {item.badge !== undefined && (
+                              <span className="font-mono text-[10px] px-1.5 py-0.5 text-[#0875D9] bg-[#EAF5FF] rounded-md font-bold">
+                                {item.badge}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </nav>
+                  </div>
+                ))}
               </div>
 
             </div>
