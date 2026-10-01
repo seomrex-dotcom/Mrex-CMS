@@ -202,7 +202,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
                     </div>
 
                     <div className="max-h-56 overflow-y-auto space-y-0.5">
-                      {EMPLOYEES.map(emp => (
+                      {employees.map(emp => (
                         <button
                           key={emp.id}
                           onClick={() => {

@@ -323,7 +323,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                   </span>
                 </div>
                 <div className="py-1 max-h-72 overflow-y-auto">
-                  {EMPLOYEES.map(emp => (
+                  {employees.map(emp => (
                     <button
                       key={emp.id}
                       onClick={() => {

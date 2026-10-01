@@ -15,7 +15,7 @@ import {
   GitFork,
   LayoutGrid,
   Download,
-  Edit3,
+  Edit3, Trash2,
   DollarSign,
   Shield,
   Layers,
@@ -456,15 +456,31 @@ export const EmployeesView: React.FC = () => {
                     </button>
 
                     {canManageEmployees && (
-                      <button
-                        type="button"
-                        onClick={() => handleOpenEditModal(emp)}
-                        className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 min-h-[38px]"
-                        title="Sửa thông tin hồ sơ nhân sự"
-                      >
-                        <Edit3 className="w-3.5 h-3.5" />
-                        <span>Sửa</span>
-                      </button>
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEditModal(emp)}
+                          className="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 min-h-[38px] cursor-pointer"
+                          title="Sửa thông tin hồ sơ nhân sự"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                          <span>Sửa</span>
+                        </button>
+                        {emp.id !== 'emp-01' && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (window.confirm(`Bạn có chắc chắn muốn xóa vĩnh viễn nhân sự "${emp.name}" khỏi hệ thống?`)) {
+                                deleteEmployee(emp.id);
+                              }
+                            }}
+                            className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg text-xs transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center cursor-pointer border border-transparent hover:border-rose-200"
+                            title="Xóa nhân sự này"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

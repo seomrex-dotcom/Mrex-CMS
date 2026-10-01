@@ -220,16 +220,16 @@ try {
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [employees, setEmployees] = useState<Employee[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.EMPLOYEES);
-    if (saved) {
+    if (saved !== null) {
       try {
         const parsed: Employee[] = JSON.parse(saved);
-        const existingIds = new Set(parsed.map(e => e.id));
-        const missing = EMPLOYEES.filter(e => !existingIds.has(e.id));
-        return [...parsed, ...missing].map(e => ({
-          ...e,
-          password: e.password && e.password.startsWith('mrex_hash_') ? e.password : (e.password ? hashPassword(e.password) : DEFAULT_PASSWORD_HASH),
-          accountStatus: e.accountStatus || 'ACTIVE'
-        }));
+        if (Array.isArray(parsed)) {
+          return parsed.map(e => ({
+            ...e,
+            password: e.password && e.password.startsWith('mrex_hash_') ? e.password : (e.password ? hashPassword(e.password) : DEFAULT_PASSWORD_HASH),
+            accountStatus: e.accountStatus || 'ACTIVE'
+          }));
+        }
       } catch (err) {
         console.error('Error parsing saved employees', err);
       }
@@ -238,12 +238,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
   const [departments, setDepartments] = useState<Department[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.DEPARTMENTS);
-    if (saved) {
+    if (saved !== null) {
       try {
         const parsed: Department[] = JSON.parse(saved);
-        const existingIds = new Set(parsed.map(d => d.id));
-        const missing = DEPARTMENTS.filter(d => !existingIds.has(d.id));
-        return [...parsed, ...missing];
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
       } catch (err) {
         console.error('Error parsing saved departments', err);
       }
@@ -844,8 +844,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setEmployees(prev => {
       const next = prev.filter(e => e.id !== id);
       localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(next));
+
+      // If deleted user was active currentUser, fallback to CEO or first remaining employee
+      if (currentUser.id === id) {
+        const fallback = next.find(e => e.role === 'CEO') || next[0];
+        if (fallback) {
+          setCurrentUserState(fallback);
+          localStorage.setItem(STORAGE_KEYS.CURRENT_USER_ID, fallback.id);
+        }
+      }
       return next;
     });
+    celebrate();
   };
 
   const adjustEmployeeLeave = (employeeId: string, deltaDays: number) => {
