@@ -925,9 +925,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Announcements
   const [announcements, setAnnouncements] = useState<Announcement[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS);
-    return saved ? JSON.parse(saved) : INITIAL_ANNOUNCEMENTS;
-  });
+      const saved = localStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch (e) {}
+      }
+      return INITIAL_ANNOUNCEMENTS;
+    });
 
   // Board Budget Approvals
   const [budgetApprovals, setBudgetApprovals] = useState<BudgetApproval[]>(() => {

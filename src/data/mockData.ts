@@ -467,7 +467,38 @@ export const INITIAL_REVIEWS: PerformanceReview[] = [
   }
 ];
 
-export const INITIAL_ANNOUNCEMENTS: Announcement[] = [];
+export const INITIAL_ANNOUNCEMENTS: Announcement[] = [
+  {
+    id: 'ann-sample-1',
+    title: 'Chúc mừng ngày Phụ Nữ Việt Nam 20/10 & Khen thưởng nội bộ',
+    content: 'Ban Giám Đốc trân trọng gửi lời chúc mừng tốt đẹp nhất tới toàn thể nữ cán bộ nhân viên Mrex Agency. Chúc các chị em luôn tràn đầy năng lượng, hạnh phúc và thành công trên mọi chặng đường phát triển cùng công ty!',
+    category: 'RECOGNITION',
+    authorName: 'Trần Hoàng Nam',
+    authorRole: 'Tổng Giám Đốc (CEO)',
+    isPinned: true,
+    publishedAt: '2026-10-02 08:00'
+  },
+  {
+    id: 'ann-sample-2',
+    title: 'Thông báo quy chế làm việc nghỉ xen kẽ Thứ 7 & chuẩn 24 ngày công',
+    content: 'Kể từ tháng 10/2026, Mrex Agency chính thức áp dụng lịch làm việc nghỉ xen kẽ Thứ 7: Mỗi tháng nhân sự làm việc 2 ngày Thứ 7 và nghỉ 2 ngày Thứ 7 (nghỉ toàn bộ Chủ Nhật). Tổng số ngày công tiêu chuẩn hàng tháng là 24 ngày công.',
+    category: 'POLICY',
+    authorName: 'Trần Hoàng Nam',
+    authorRole: 'Tổng Giám Đốc (CEO)',
+    isPinned: false,
+    publishedAt: '2026-10-01 09:00'
+  },
+  {
+    id: 'ann-sample-3',
+    title: 'Ra mắt chiến dịch truyền thông ra mắt sản phẩm Q4/2026',
+    content: 'Toàn thể các bộ phận Social Media, IT & SEO, Sản Xuất Kho Vận phối hợp đẩy mạnh tiến độ các hạng mục chiến dịch Q4 đúng hạn định.',
+    category: 'EVENT',
+    authorName: 'Vũ Quốc Bảo',
+    authorRole: 'Trưởng Phòng Social Media',
+    isPinned: false,
+    publishedAt: '2026-10-01 14:30'
+  }
+];
 
 export const INITIAL_GOOGLE_DOCS: GoogleDocDeliverable[] = [];
 
