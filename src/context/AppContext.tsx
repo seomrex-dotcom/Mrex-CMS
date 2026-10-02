@@ -201,6 +201,7 @@ const STORAGE_KEYS = {
   BUDGETS: 'mrex_v7_budgets',
   PAYROLL: 'mrex_v7_payroll',
   PAYROLL_LOCKED: 'mrex_v7_payroll_locked',
+  ACTIVE_TAB: 'mrex_v7_active_tab',
 };
 
 // Automatic purge of all old demo storage keys to guarantee 100% empty business dataset
@@ -406,7 +407,71 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('mrex_auth', 'false');
   };
 
-  const [activeTab, setActiveTab] = useState<ActiveNavTab>('dashboard');
+  const VALID_TABS: ActiveNavTab[] = [
+    'dashboard',
+    'attendance',
+    'tasks',
+    'finance',
+    'payroll',
+    'docs',
+    'performance',
+    'reports',
+    'employees',
+    'board',
+    'workload',
+    'announcements',
+    'production',
+    'chat'
+  ];
+
+  const [activeTab, setActiveTabState] = useState<ActiveNavTab>(() => {
+    try {
+      // 1. Prioritize URL hash (e.g. #employees)
+      const hash = window.location.hash.replace(/^#/, '') as ActiveNavTab;
+      if (hash && VALID_TABS.includes(hash)) {
+        return hash;
+      }
+      // 2. Query param ?tab=employees
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') as ActiveNavTab;
+      if (tabParam && VALID_TABS.includes(tabParam)) {
+        return tabParam;
+      }
+      // 3. LocalStorage persistence
+      const savedTab = localStorage.getItem(STORAGE_KEYS.ACTIVE_TAB) as ActiveNavTab;
+      if (savedTab && VALID_TABS.includes(savedTab)) {
+        return savedTab;
+      }
+    } catch (e) {
+      // Ignore
+    }
+    return 'dashboard';
+  });
+
+  const setActiveTab = (tab: ActiveNavTab) => {
+    setActiveTabState(tab);
+    try {
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_TAB, tab);
+      if (window.location.hash !== `#${tab}`) {
+        window.history.replaceState(null, '', `#${tab}`);
+      }
+    } catch (e) {}
+  };
+
+  // Sync state if user navigates with browser Back/Forward buttons
+  useEffect(() => {
+    const handleHashChange = () => {
+      try {
+        const hash = window.location.hash.replace(/^#/, '') as ActiveNavTab;
+        if (hash && VALID_TABS.includes(hash) && hash !== activeTab) {
+          setActiveTabState(hash);
+          localStorage.setItem(STORAGE_KEYS.ACTIVE_TAB, hash);
+        }
+      } catch (e) {}
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [activeTab]);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const openProfileModal = () => setIsProfileModalOpen(true);
