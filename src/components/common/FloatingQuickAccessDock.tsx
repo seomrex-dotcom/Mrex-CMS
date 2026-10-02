@@ -109,16 +109,16 @@ export const FloatingQuickAccessDock: React.FC = () => {
   return (
     <>
       {/* ============================================================
-           LAYERED FROSTED BLUE GLASS FLOATING DOCK (Theo tone ảnh mẫu)
+           LIGHT TONE & SOFTENED BLUE LAYERED GLASS FLOATING DOCK
            ============================================================ */}
       <aside
-        aria-label="Thanh phím tắt liên kết nhanh CMS (Layered Frosted Blue Glass)"
-        className="fixed right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-40 select-none flex flex-col items-center gap-3.5 p-2 rounded-[22px] bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border border-white/70 dark:border-white/15 shadow-[0_12px_32px_rgba(37,99,235,0.18)] transition-all"
+        aria-label="Thanh phím tắt liên kết nhanh CMS (Nền Sáng & Xanh Nhạt)"
+        className="fixed right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-40 select-none flex flex-col items-center gap-3.5 p-2 rounded-[22px] bg-white/75 dark:bg-white/85 backdrop-blur-2xl border border-white/95 shadow-[0_10px_30px_rgba(37,99,235,0.12)] transition-all"
       >
         {/* Subtle Grip indicator */}
-        <div className="w-5 h-1 bg-sky-300/70 dark:bg-sky-500/50 rounded-full" />
+        <div className="w-5 h-1 bg-sky-200 rounded-full" />
 
-        {/* 3 Layered Frosted Blue Glass Floating Buttons */}
+        {/* 3 Layered Frosted Blue Glass Floating Buttons (Màu xanh dịu nhẹ, tươi sáng) */}
         {linksConfig.map((item) => {
           const Icon = item.icon;
           return (
@@ -129,43 +129,43 @@ export const FloatingQuickAccessDock: React.FC = () => {
                 aria-label={item.title}
                 className="relative w-12 h-12 sm:w-[52px] sm:h-[52px] cursor-pointer focus:outline-none transition-transform duration-300 hover:scale-105 active:scale-95"
               >
-                {/* 1. LAYER PHÍA SAU: Khối bo góc màu xanh dương Gradient rực rỡ */}
-                <div className="absolute inset-0 rounded-[16px] sm:rounded-[18px] bg-gradient-to-br from-[#40A5FF] via-[#2575FC] to-[#1A56DB] shadow-[0_6px_16px_rgba(26,86,219,0.38)] transform translate-x-1 -translate-y-1 transition-transform duration-300 group-hover/btn:translate-x-1.5 group-hover/btn:-translate-y-1.5" />
+                {/* 1. LAYER PHÍA SAU: Khối bo góc màu xanh dương nhạt dịu (Softened light blue) */}
+                <div className="absolute inset-0 rounded-[16px] sm:rounded-[18px] bg-gradient-to-br from-[#68BDFF] via-[#489FFF] to-[#3B86F7] shadow-[0_6px_16px_rgba(59,134,247,0.26)] transform translate-x-1 -translate-y-1 transition-transform duration-300 group-hover/btn:translate-x-1.5 group-hover/btn:-translate-y-1.5" />
 
-                {/* 2. LAYER PHÍA TRƯỚC: Mặt kính mờ Frosted Glass trong suốt sang trọng */}
-                <div className="absolute inset-0 rounded-[16px] sm:rounded-[18px] bg-gradient-to-b from-white/75 via-sky-100/45 to-sky-200/30 backdrop-blur-md border border-white/90 shadow-[0_8px_20px_rgba(14,165,233,0.22)] flex items-center justify-center transition-all duration-300 group-hover/btn:bg-white/85 group-hover/btn:border-white">
+                {/* 2. LAYER PHÍA TRƯỚC: Mặt kính mờ Frosted Glass nền sáng mượt mà */}
+                <div className="absolute inset-0 rounded-[16px] sm:rounded-[18px] bg-gradient-to-b from-white/90 via-sky-50/60 to-sky-100/40 backdrop-blur-md border border-white shadow-[0_8px_18px_rgba(56,189,248,0.18)] flex items-center justify-center transition-all duration-300 group-hover/btn:bg-white/95 group-hover/btn:shadow-[0_10px_22px_rgba(56,189,248,0.26)]">
                   {/* Subtle Top Glass Reflection Shine */}
-                  <div className="absolute inset-x-0 top-0 h-1/2 rounded-t-[16px] sm:rounded-t-[18px] bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
+                  <div className="absolute inset-x-0 top-0 h-1/2 rounded-t-[16px] sm:rounded-t-[18px] bg-gradient-to-b from-white/80 to-transparent pointer-events-none" />
 
                   {/* Icon nổi bật màu trắng 3D với bóng đổ mềm */}
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white relative z-10 transition-transform duration-300 group-hover/btn:rotate-6 drop-shadow-[0_2px_4px_rgba(15,76,192,0.55)] stroke-[2.2]" />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white relative z-10 transition-transform duration-300 group-hover/btn:rotate-6 drop-shadow-[0_1.5px_3px_rgba(30,64,175,0.42)] stroke-[2.2]" />
                 </div>
               </button>
 
-              {/* Flyout Preview Tooltip Card (Slide from right to left on hover) */}
-              <div className="absolute right-full mr-3.5 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-start px-3.5 py-2.5 bg-slate-900/90 backdrop-blur-xl text-white rounded-2xl shadow-2xl border border-sky-400/40 min-w-[240px] max-w-[280px] pointer-events-none opacity-0 translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 group-hover/btn:pointer-events-auto transition-all duration-200 z-50">
-                {/* Caret arrow pointing to the button */}
-                <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-slate-900 rotate-45 border-r border-t border-sky-400/40" />
+              {/* Flyout Preview Tooltip Card (NỀN SÁNG CAO CẤP - Bright Frosted Glass Card) */}
+              <div className="absolute right-full mr-3.5 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-start px-3.5 py-3 bg-white/95 dark:bg-white/95 backdrop-blur-2xl text-slate-800 rounded-2xl shadow-[0_16px_36px_rgba(37,99,235,0.16)] border border-sky-100 min-w-[245px] max-w-[285px] pointer-events-none opacity-0 translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 group-hover/btn:pointer-events-auto transition-all duration-200 z-50">
+                {/* Caret arrow pointing to the button (Nền trắng đồng bộ) */}
+                <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rotate-45 border-r border-t border-sky-100" />
 
-                <div className="flex items-center justify-between w-full gap-2 mb-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                <div className="flex items-center justify-between w-full gap-2 mb-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-50 text-[#0875D9] border border-sky-200/80">
                     {item.badge}
                   </span>
-                  <ExternalLink className="w-3.5 h-3.5 text-sky-400 group-hover/btn:text-white" />
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover/btn:text-[#0875D9] transition-colors" />
                 </div>
 
-                <h4 className="text-xs font-bold text-white tracking-tight flex items-center gap-1.5">
+                <h4 className="text-xs font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
                   <span>{item.title}</span>
                 </h4>
-                <p className="text-[11px] text-slate-300 mt-0.5 leading-snug">
+                <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
                   {item.subtitle}
                 </p>
 
-                <div className="mt-2 pt-2 border-t border-slate-800 w-full flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                  <span className="truncate max-w-[170px] text-sky-300 underline underline-offset-2">
+                <div className="mt-2.5 pt-2 border-t border-slate-100 w-full flex items-center justify-between text-[10px] font-mono">
+                  <span className="truncate max-w-[170px] text-[#0875D9] font-medium underline underline-offset-2">
                     {item.url.replace(/^https?:\/\//, '')}
                   </span>
-                  <span className="text-[9px] text-sky-400 font-sans">Bấm để mở ↗</span>
+                  <span className="text-[9px] text-sky-600 font-semibold font-sans">Bấm để mở ↗</span>
                 </div>
               </div>
             </div>
@@ -178,7 +178,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
             type="button"
             onClick={() => setIsEditing(true)}
             title="Ban Giám Đốc: Cấu hình liên kết hệ thống"
-            className="w-8 h-8 rounded-xl text-sky-600 dark:text-sky-300 hover:text-white hover:bg-gradient-to-br hover:from-sky-400 hover:to-blue-600 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md border border-white/80 dark:border-white/10 transition-all flex items-center justify-center cursor-pointer mt-0.5 shadow-sm hover:shadow-md"
+            className="w-8 h-8 rounded-xl text-sky-600 hover:text-[#0875D9] hover:bg-sky-50 bg-white/90 backdrop-blur-md border border-sky-100 transition-all flex items-center justify-center cursor-pointer mt-0.5 shadow-xs hover:shadow-sm"
           >
             <Settings className="w-4 h-4 animate-spin-slow" />
           </button>
@@ -189,18 +189,18 @@ export const FloatingQuickAccessDock: React.FC = () => {
            MODAL CẤU HÌNH LIÊN KẾT CMS FLOATING (DÀNH RIÊNG BAN GIÁM ĐỐC)
            ============================================================ */}
       {isEditing && isBoardOfDirectors && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-sky-50/70 dark:bg-slate-800/50">
+            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-sky-50/70">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-[#0875D9] text-white flex items-center justify-center shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#68BDFF] to-[#3B86F7] text-white flex items-center justify-center shadow-xs">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                     <span>Cấu Hình Liên Kết CMS Floating</span>
-                    <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Ban Giám Đốc</span>
+                    <span className="px-1.5 py-0.5 rounded bg-sky-100 text-[#0875D9] text-[9px] font-bold">Ban Giám Đốc</span>
                   </h3>
                   <p className="text-[11px] text-slate-500">
                     Chỉ cấp Ban Giám Đốc có quyền điều chỉnh 3 liên kết cạnh phải
@@ -210,7 +210,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg"
+                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -219,7 +219,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
             {/* Modal Form */}
             <form onSubmit={handleSave} className="p-5 space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                <label className="block font-bold text-slate-700 mb-1 flex items-center gap-1.5">
                   <Share2 className="w-3.5 h-3.5 text-sky-600" />
                   <span>1. Link Web CMS Quản Trị Fanpage</span>
                 </label>
@@ -229,12 +229,12 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   onChange={e => setTempUrls({ ...tempUrls, fanpage: e.target.value })}
                   placeholder="https://fanpage.mrex.vn"
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                <label className="block font-bold text-slate-700 mb-1 flex items-center gap-1.5">
                   <Target className="w-3.5 h-3.5 text-sky-600" />
                   <span>2. Link CMS Web Ads (Quảng Cáo)</span>
                 </label>
@@ -244,12 +244,12 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   onChange={e => setTempUrls({ ...tempUrls, ads: e.target.value })}
                   placeholder="https://ads.mrex.vn"
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                <label className="block font-bold text-slate-700 mb-1 flex items-center gap-1.5">
                   <Building2 className="w-3.5 h-3.5 text-sky-600" />
                   <span>3. Link Web CMS Quản Trị Doanh Nghiệp</span>
                 </label>
@@ -259,7 +259,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   onChange={e => setTempUrls({ ...tempUrls, enterprise: e.target.value })}
                   placeholder="https://cms.mrex.vn"
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
                 />
               </div>
 
@@ -270,11 +270,11 @@ export const FloatingQuickAccessDock: React.FC = () => {
                 </div>
               )}
 
-              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="px-3 py-2 rounded-xl text-slate-500 hover:text-slate-700 text-xs font-semibold flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="px-3 py-2 rounded-xl text-slate-500 hover:text-slate-700 text-xs font-semibold flex items-center gap-1.5 hover:bg-slate-100"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Mặc định</span>
@@ -283,13 +283,13 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    className="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 font-semibold text-xs"
+                    className="px-3 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold text-xs"
                   >
                     Hủy
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#40A5FF] to-[#1A56DB] hover:from-[#2575FC] hover:to-[#1545b5] text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20 cursor-pointer"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#68BDFF] to-[#3B86F7] hover:from-[#54A4FF] hover:to-[#2575FC] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-blue-500/20 cursor-pointer"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Lưu Cấu Hình (CEO)</span>
