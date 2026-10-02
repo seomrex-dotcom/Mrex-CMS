@@ -868,7 +868,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Leave & OT Requests
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequest[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.LEAVE_REQUESTS);
-    return saved ? JSON.parse(saved) : INITIAL_LEAVE_REQUESTS;
+    let list: LeaveRequest[] = INITIAL_LEAVE_REQUESTS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          list = parsed;
+        }
+      } catch {}
+    }
+    // Ensure today's leave samples (2026-10-02) exist for live notification widget
+    const todayStr = '2026-10-02';
+    const hasToday = list.some(r => r.startDate <= todayStr && r.endDate >= todayStr && r.status === 'APPROVED');
+    if (!hasToday) {
+      const todaySamples = INITIAL_LEAVE_REQUESTS.filter(r => r.startDate <= todayStr && r.endDate >= todayStr);
+      list = [...todaySamples, ...list];
+    }
+    return list;
   });
 
   // Tasks

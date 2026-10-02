@@ -237,6 +237,38 @@ export const INITIAL_ATTENDANCE: AttendanceRecord[] = [];
 
 export const INITIAL_LEAVE_REQUESTS: LeaveRequest[] = [
   {
+    id: 'leave-sample-today-1',
+    employeeId: 'emp-05',
+    employeeName: 'Phạm Thuỳ Linh',
+    type: 'ANNUAL',
+    startDate: '2026-10-02',
+    endDate: '2026-10-02',
+    totalDays: 1,
+    reason: 'Nghỉ giải quyết việc gia đình cá nhân',
+    status: 'APPROVED',
+    approverId: 'emp-01',
+    approverName: 'Trần Hoàng Nam',
+    approvalDate: '2026-10-01',
+    approvalNote: 'Đã duyệt kế hoạch bàn giao công việc nhóm đầy đủ',
+    createdAt: '2026-10-01 14:00:00'
+  },
+  {
+    id: 'leave-sample-today-2',
+    employeeId: 'emp-04',
+    employeeName: 'Đặng Minh Đức',
+    type: 'SICK',
+    startDate: '2026-10-02',
+    endDate: '2026-10-03',
+    totalDays: 2,
+    reason: 'Khám sức khỏe định kỳ & phục hồi thể trạng',
+    status: 'APPROVED',
+    approverId: 'emp-01',
+    approverName: 'Trần Hoàng Nam',
+    approvalDate: '2026-10-01',
+    approvalNote: 'Đã duyệt nghỉ dưỡng bệnh theo quy chế',
+    createdAt: '2026-10-01 16:30:00'
+  },
+  {
     id: 'leave-sample-1',
     employeeId: 'emp-01',
     employeeName: 'Trần Hoàng Nam',
