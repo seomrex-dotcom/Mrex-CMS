@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { TaskPriority, TaskStatus, Task, TaskAssignmentType } from '../../types';
 import {
@@ -33,6 +33,8 @@ export const TasksView: React.FC = () => {
     departments,
     employees,
     updateTaskStatus,
+    updateTask,
+    deleteTask,
     selectedTaskId,
     setSelectedTaskId,
     currentUser,
@@ -50,6 +52,31 @@ export const TasksView: React.FC = () => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
   const [newTaskType, setNewTaskType] = useState<TaskAssignmentType>('INDIVIDUAL');
   const [taskTypeFilter, setTaskTypeFilter] = useState<'ALL' | 'TEAM' | 'INDIVIDUAL'>('ALL');
+
+  // Auto-archive completed tasks: at midnight (or on mount if already past midnight), remove tasks
+  // that were completed more than 24h ago
+  useEffect(() => {
+    const archiveOldCompletedTasks = () => {
+      const now = Date.now();
+      const ARCHIVE_AFTER_MS = 24 * 60 * 60 * 1000; // 24 hours
+      tasks.forEach(t => {
+        if (t.status === 'COMPLETED' && t.completedAt) {
+          const completedMs = new Date(t.completedAt).getTime();
+          if (now - completedMs > ARCHIVE_AFTER_MS) {
+            // After 24h: delete from active list
+            deleteTask(t.id);
+          }
+        }
+      });
+    };
+
+    // Run on mount
+    archiveOldCompletedTasks();
+
+    // Run every minute to catch midnight boundary
+    const interval = setInterval(archiveOldCompletedTasks, 60000);
+    return () => clearInterval(interval);
+  }, [tasks]); // eslint-disable-line
 
   // Scope filter:
   // For Employee: 'MY_TASKS' (default & primary) or 'ALL_DEPT'

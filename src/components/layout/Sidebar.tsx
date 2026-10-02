@@ -20,7 +20,8 @@ import {
   Receipt,
   HelpCircle,
   Sparkles,
-  Shield
+  Shield,
+  BookMarked
 } from 'lucide-react';
 import { ActiveNavTab } from '../../types';
 import { BrandLogo } from '../common/BrandLogo';
@@ -35,7 +36,8 @@ export const Sidebar: React.FC = () => {
     googleDocs,
     vouchers,
     warehouseItems,
-    chatMessages,
+    unreadChatCount,
+    markChatAsRead,
     leaveRequests,
     brandConfig,
     logout,
@@ -69,13 +71,14 @@ export const Sidebar: React.FC = () => {
   const navItems: { id: ActiveNavTab; label: string; icon: React.ElementType; badge?: number }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'finance', label: 'Sổ Quỹ Thu - Chi', icon: Receipt, badge: vouchers.length },
-    { id: 'chat', label: 'Chat Toàn Công Ty', icon: MessageSquare, badge: chatMessages.length > 0 ? chatMessages.length : undefined },
+    { id: 'chat', label: 'Chat Toàn Công Ty', icon: MessageSquare, badge: unreadChatCount > 0 ? unreadChatCount : undefined },
     { id: 'attendance', label: 'Chấm Công & Ca', icon: CalendarCheck, badge: pendingLeavesCount > 0 ? pendingLeavesCount : undefined },
     { id: 'tasks', label: 'Giao Việc & Dự Án', icon: CheckSquare, badge: myPendingTasksCount > 0 ? myPendingTasksCount : undefined },
     { id: 'docs', label: 'Văn Bản & Docs', icon: FileText, badge: pendingDocsCount > 0 ? pendingDocsCount : undefined },
     { id: 'performance', label: 'Đánh Giá KPI / OKR', icon: TrendingUp },
     { id: 'employees', label: 'Team Structure', icon: Users },
     { id: 'reports', label: 'Reports', icon: BarChart3 },
+    { id: 'resources', label: 'Tài Liệu & Tư Liệu', icon: BookMarked },
   ];
 
   const lowStockCount = warehouseItems.filter(i => i.status !== 'IN_STOCK').length;
@@ -253,7 +256,10 @@ export const Sidebar: React.FC = () => {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      if (item.id === 'chat') markChatAsRead();
+                    }}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                       isActive ? themeClasses.active : themeClasses.inactive
                     }`}

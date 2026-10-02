@@ -23,6 +23,7 @@ import {
   Users,
   Megaphone,
   MessageSquare,
+  BookMarked,
   Menu,
   X,
   Palette,
@@ -55,6 +56,8 @@ export const MobileNav: React.FC<MobileNavProps> = ({
     vouchers,
     warehouseItems,
     brandConfig,
+    unreadChatCount,
+    markChatAsRead,
     celebrate,
     logout,
     bgTheme,
@@ -82,7 +85,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({
       icon: CalendarCheck,
       badge: !todayAttendance?.checkIn ? 1 : undefined
     },
-    { id: 'chat', label: 'Tin Nhắn', icon: MessageSquare },
+    { id: 'chat', label: 'Tin Nhắn', icon: MessageSquare, badge: unreadChatCount > 0 ? unreadChatCount : undefined },
   ];
 
   const navSections = [
@@ -152,7 +155,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                if (tab.id === 'chat') markChatAsRead();
+              }}
               className={`flex flex-col items-center justify-center flex-1 h-full min-h-[44px] min-w-[44px] transition-all relative active:scale-95 ${
                 isActive ? 'text-[#0875D9]' : 'text-slate-500 hover:text-slate-900'
               }`}

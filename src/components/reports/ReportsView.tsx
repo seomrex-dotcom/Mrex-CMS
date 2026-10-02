@@ -17,6 +17,7 @@ import { generateExecutiveReportAI } from '../../services/aiService';
 
 export const ReportsView: React.FC = () => {
   const {
+    currentUser,
     employees,
     departments,
     attendanceRecords,
@@ -26,7 +27,26 @@ export const ReportsView: React.FC = () => {
     celebrate
   } = useApp();
 
+  const isManagement = currentUser.role === 'CEO' || currentUser.role === 'MANAGER' || currentUser.role === 'HR';
+
   const [aiReportText, setAiReportText] = useState<string | null>(null);
+
+  // SECURITY: Reports only visible to CEO/MANAGER/HR
+  if (!isManagement) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center text-center p-10 gap-4">
+        <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center">
+          <Shield className="w-8 h-8 text-slate-400" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold text-slate-800">Quyền truy cập bị hạn chế</h2>
+          <p className="text-sm text-slate-500 mt-1 max-w-xs">
+            Báo cáo tổng thể chỉ dành cho Ban Giám Đốc, Quản Lý và phòng Nhân Sự.
+          </p>
+        </div>
+      </div>
+    );
+  }
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
 
   // Compute key metrics

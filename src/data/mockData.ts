@@ -187,7 +187,7 @@ export const EMPLOYEES: Employee[] = [
   },
   {
     id: 'emp-05',
-    birthDate: '1995-07-25',
+    birthDate: '1995-10-02',
     name: 'Phạm Thuỳ Linh',
     code: 'NV-053',
     email: 'linh.pham@mrex.vn',
@@ -530,3 +530,72 @@ export const INITIAL_INVENTORY_AUDITS: InventoryAuditTicket[] = [];
 export const INITIAL_WAREHOUSE_INVOICES: WarehouseInvoice[] = [];
 
 export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [];
+
+export const DEFAULT_RESOURCES: any[] = [
+  {
+    id: 'res-drive-all',
+    title: 'Google Drive Tổng Mrex Agency 2026',
+    url: 'https://drive.google.com/drive/folders/mrex-agency-2026',
+    description: 'Thư mục Drive trung tâm lưu trữ toàn bộ hợp đồng, tài liệu pháp lý, quy chế công ty và biên bản bàn giao.',
+    category: 'DRIVE',
+    accessLevel: 'ALL',
+    ownerId: 'emp-01',
+    ownerName: 'Trần Hoàng Nam (CEO)',
+    ownerRole: 'Ban Giám Đốc',
+    isPinned: true,
+    createdAt: '2026-10-01 08:00'
+  },
+  {
+    id: 'res-media-drive',
+    title: 'Thư Viện Media, Logo & Bộ Nhận Diện Thương Hiệu',
+    url: 'https://drive.google.com/drive/folders/mrex-brand-kit',
+    description: 'Kho tư liệu media, file vector logo AI/SVG, bộ font chữ chuẩn, mockup và banner truyền thông nội bộ.',
+    category: 'DRIVE',
+    accessLevel: 'ALL',
+    ownerId: 'emp-06',
+    ownerName: 'Vũ Thị Lan (Project Manager)',
+    ownerRole: 'Quản Lý',
+    isPinned: true,
+    createdAt: '2026-10-01 08:30'
+  },
+  {
+    id: 'res-tool-seo',
+    title: 'Hệ Thống Phân Tích Kỹ Thuật SEO Ahrefs & Search Console',
+    url: 'https://ahrefs.com/dashboard',
+    description: 'Công cụ tra cứu backlink, thứ hạng từ khóa dự án khách hàng và kiểm toán kỹ thuật SEO website.',
+    category: 'TOOL',
+    accessLevel: 'DEPARTMENT',
+    departmentId: 'dept-it',
+    ownerId: 'emp-02',
+    ownerName: 'Võ Văn Lực (Quản Lý IT & SEO)',
+    ownerRole: 'Quản Lý',
+    isPinned: false,
+    createdAt: '2026-10-01 09:00'
+  },
+  {
+    id: 'res-docs-hr',
+    title: 'Sổ Tay Nhân Viên & Cẩm Nang Hội Nhập Mrex',
+    url: 'https://docs.google.com/document/d/mrex-onboarding-guide',
+    description: 'Tài liệu hướng dẫn quy trình làm việc, chế độ đãi ngộ, văn hóa doanh nghiệp và quy định bảo mật.',
+    category: 'DOCS',
+    accessLevel: 'ALL',
+    ownerId: 'emp-03',
+    ownerName: 'Lê Phương Lan (HR Manager)',
+    ownerRole: 'Nhân Sự',
+    isPinned: false,
+    createdAt: '2026-10-01 09:15'
+  },
+  {
+    id: 'res-personal-sample',
+    title: 'Ghi Chú Công Cụ & Link Làm Việc Riêng (Cá Nhân)',
+    url: 'https://notion.so/my-workspace',
+    description: 'Link ghi chú cá nhân, bảng tính phụ trợ công việc hàng ngày (chỉ mình bạn nhìn thấy).',
+    category: 'LINK',
+    accessLevel: 'PERSONAL',
+    ownerId: 'emp-01',
+    ownerName: 'Trần Hoàng Nam',
+    ownerRole: 'CEO',
+    isPinned: false,
+    createdAt: '2026-10-01 10:00'
+  }
+];

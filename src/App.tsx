@@ -9,6 +9,7 @@ import { AttendanceView } from './components/attendance/AttendanceView';
 import { TasksView } from './components/tasks/TasksView';
 import { PerformanceView } from './components/performance/PerformanceView';
 import { ReportsView } from './components/reports/ReportsView';
+import { ResourcesView } from './components/resources/ResourcesView';
 import { EmployeesView } from './components/employees/EmployeesView';
 import { AnnouncementsView } from './components/announcements/AnnouncementsView';
 import { BoardView } from './components/board/BoardView';
@@ -118,6 +119,7 @@ const MainLayout: React.FC = () => {
             {activeTab === 'workload' && <WorkloadView />}
             {activeTab === 'payroll' && <PayrollView />}
             {activeTab === 'production' && <ProductionView />}
+            {activeTab === 'resources' && <ResourcesView />}
             {activeTab === 'chat' && <CompanyGroupChat />}
           </main>
         </div>

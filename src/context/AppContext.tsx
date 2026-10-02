@@ -39,9 +39,13 @@ import {
   WarehouseInvoice,
   WarehouseInvoiceType,
   WarehouseInvoiceStatus,
-  InvoiceItemDetail
+  InvoiceItemDetail,
+  ResourceLink,
+  ResourceCategory,
+  ResourceAccessLevel
 } from '../types';
 import {
+  DEFAULT_RESOURCES,
   DEPARTMENTS,
   EMPLOYEES,
   INITIAL_ATTENDANCE,
@@ -174,6 +178,16 @@ interface AppContextType {
   updateWarehouseInvoiceStatus: (id: string, status: WarehouseInvoiceStatus, paymentStatus?: 'PAID' | 'PARTIAL' | 'UNPAID') => void;
   deleteWarehouseInvoice: (id: string) => void;
 
+  // Resource Links (Tài liệu & Tư liệu)
+  resources: ResourceLink[];
+  addResource: (res: Omit<ResourceLink, 'id' | 'createdAt'>) => void;
+  updateResource: (id: string, updates: Partial<ResourceLink>) => void;
+  deleteResource: (id: string) => void;
+
+  // Chat Unread Tracking
+  unreadChatCount: number;
+  markChatAsRead: () => void;
+
   // Utilities
   bgTheme: BackgroundTheme;
   setBgTheme: (theme: BackgroundTheme) => void;
@@ -214,6 +228,8 @@ const STORAGE_KEYS = {
   PAYROLL: 'mrex_v7_payroll',
   PAYROLL_LOCKED: 'mrex_v7_payroll_locked',
   ACTIVE_TAB: 'mrex_v7_active_tab',
+  RESOURCES: 'mrex_v7_resources',
+  UNREAD_CHAT: 'mrex_v7_unread_chat',
   PRESENCE: 'mrex_v7_presence',
 };
 
@@ -805,7 +821,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     'workload',
     'announcements',
     'production',
-    'chat'
+    'chat',
+    'resources'
   ];
 
   const [activeTab, setActiveTabState] = useState<ActiveNavTab>(() => {
@@ -1179,6 +1196,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateTaskStatus = (id: string, status: TaskStatus) => {
+    const now = new Date().toISOString();
     setTasks(prev =>
       prev.map(t => {
         if (t.id === id) {
@@ -1189,6 +1207,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           return {
             ...t,
             status,
+            completedAt: isDone && !t.completedAt ? now : t.completedAt,
             progress: isDone ? 100 : t.progress === 100 ? 75 : t.progress,
           };
         }
@@ -1855,6 +1874,64 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(STORAGE_KEYS.INVENTORY_AUDITS, JSON.stringify(updated));
   };
 
+  // Resources (Tài liệu & Tư liệu)
+  const [resources, setResources] = useState<ResourceLink[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.RESOURCES);
+    if (saved) {
+      try { return JSON.parse(saved); } catch {}
+    }
+    return DEFAULT_RESOURCES;
+  });
+
+  const addResource = (resData: Omit<ResourceLink, 'id' | 'createdAt'>) => {
+    const now = new Date().toISOString().replace('T', ' ').slice(0, 16);
+    const newRes: ResourceLink = { ...resData, id: `res-${Date.now()}`, createdAt: now };
+    const updated = [newRes, ...resources];
+    setResources(updated);
+    localStorage.setItem(STORAGE_KEYS.RESOURCES, JSON.stringify(updated));
+    celebrate();
+  };
+
+  const updateResource = (id: string, updates: Partial<ResourceLink>) => {
+    const now = new Date().toISOString().replace('T', ' ').slice(0, 16);
+    const updated = resources.map(r => r.id === id ? { ...r, ...updates, updatedAt: now } : r);
+    setResources(updated);
+    localStorage.setItem(STORAGE_KEYS.RESOURCES, JSON.stringify(updated));
+  };
+
+  const deleteResource = (id: string) => {
+    const updated = resources.filter(r => r.id !== id);
+    setResources(updated);
+    localStorage.setItem(STORAGE_KEYS.RESOURCES, JSON.stringify(updated));
+  };
+
+  // UNREAD CHAT TRACKING
+  const getLastReadCount = () => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.UNREAD_CHAT + '_' + (typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.CURRENT_USER_ID) || 'guest' : 'guest'));
+      return saved ? parseInt(saved, 10) : 0;
+    } catch { return 0; }
+  };
+
+  const [lastReadChatCount, setLastReadChatCount] = useState<number>(getLastReadCount);
+
+  const unreadChatCount = Math.max(0, chatMessages.length - lastReadChatCount);
+
+  const markChatAsRead = () => {
+    setLastReadChatCount(chatMessages.length);
+    try {
+      localStorage.setItem(STORAGE_KEYS.UNREAD_CHAT + '_' + currentUser.id, String(chatMessages.length));
+    } catch {}
+  };
+
+  // Re-read lastReadChatCount when currentUser changes
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.UNREAD_CHAT + '_' + currentUser.id);
+      setLastReadChatCount(saved ? parseInt(saved, 10) : chatMessages.length);
+    } catch {}
+  }, [currentUser.id]);
+
   const createWarehouseInvoice = (invoiceData: Omit<WarehouseInvoice, 'id'>) => {
     const now = new Date().toISOString().replace('T', ' ').slice(0, 16);
     const today = now.slice(0, 10);
@@ -2059,6 +2136,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateWarehouseInvoiceStatus,
         deleteWarehouseInvoice,
 
+        resources,
+        addResource,
+        updateResource,
+        deleteResource,
+        unreadChatCount,
+        markChatAsRead,
         bgTheme,
         setBgTheme,
         resetToDefaultData,

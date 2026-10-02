@@ -69,8 +69,22 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
   const urgentCount = myUrgentTasks.length;
   const topUrgentTask = myUrgentTasks[0];
 
+  // Realtime Today's Birthdays calculation from employees
+  const today = new Date();
+  const curMo = String(today.getMonth() + 1).padStart(2, '0');
+  const curDa = String(today.getDate()).padStart(2, '0');
+  const todayDateStr = `${curMo}-${curDa}`;
+
+  const todayBirthdayAnnouncements = employees
+    .filter(e => e.birthDate && e.birthDate.endsWith(todayDateStr) && e.status !== 'INACTIVE')
+    .map(e => ({
+      id: `bday-${e.id}`,
+      title: `🎂 Chúc mừng sinh nhật ${e.name} (${e.roleTitle || e.role}) hôm nay! 🎉 Chúc bạn tuổi mới ngập tràn hạnh phúc và thành công rực rỡ! ✨`,
+      category: 'EVENT' as const
+    }));
+
   // Marquee announcement items
-  const marqueeItems = announcements.length > 0 ? announcements : [
+  const baseMarquee = announcements.length > 0 ? announcements : [
     {
       id: 'm-1',
       title: 'Chào mừng quý cán bộ nhân viên đến với hệ thống Quản trị & Điều hành Mrex Agency.',
@@ -82,6 +96,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
       category: 'EVENT'
     }
   ];
+  const marqueeItems = [...todayBirthdayAnnouncements, ...baseMarquee];
 
   return (
     <>
@@ -116,7 +131,14 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
                 {marqueeItems.map((item, idx) => (
                   <span
                     key={`a-${item.id}-${idx}`}
-                    onClick={() => setActiveTab('announcements')}
+                    onClick={() => {
+                      if (String(item.id).startsWith('bday-')) {
+                        setActiveTab('chat');
+                        celebrate();
+                      } else {
+                        setActiveTab('announcements');
+                      }
+                    }}
                     className="flex items-center gap-2 hover:text-[#0875D9] transition-colors"
                   >
                     <span className="text-[#16C784] font-bold">●</span>

@@ -41,10 +41,15 @@ export const CompanyGroupChat: React.FC<CompanyGroupChatProps> = ({
   defaultChannel = 'general',
   prefilledText = ''
 }) => {
-  const { currentUser, employees, departments, chatMessages, sendChatMessage, celebrate } = useApp();
+  const { currentUser, employees, departments, chatMessages, sendChatMessage, celebrate, markChatAsRead } = useApp();
   const [selectedChannel, setSelectedChannel] = useState<string>(defaultChannel);
   const [inputText, setInputText] = useState<string>(prefilledText);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Mark chat as read when component opens
+  useEffect(() => {
+    markChatAsRead();
+  }, []);
 
   // Sync prefilled text if provided (e.g. from birthday wish button)
   useEffect(() => {

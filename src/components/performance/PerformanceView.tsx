@@ -32,7 +32,12 @@ export const PerformanceView: React.FC = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [editingReview, setEditingReview] = useState<PerformanceReview | null>(null);
 
-  const filteredReviews = reviews.filter(r => r.period === selectedPeriod);
+  // ROLE RESTRICTION: Employees only see their own review
+  const filteredReviews = reviews.filter(r => {
+    if (r.period !== selectedPeriod) return false;
+    if (isCEO || isManager) return true;
+    return r.employeeId === currentUser.id;
+  });
 
   const getRatingBadge = (rating: string) => {
     switch (rating) {

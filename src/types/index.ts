@@ -202,6 +202,8 @@ export interface Task {
   tags: string[];
   googleDocsUrl?: string; // Liên kết Google Docs (https://docs.google.com/...)
   googleDocsTitle?: string;
+  completedAt?: string;     // Timestamp khi task được COMPLETED
+  archivedAt?: string;      // Timestamp khi task bị auto-archive
   createdAt: string;
 }
 
@@ -401,10 +403,35 @@ export type ActiveNavTab =
   | 'workload'   // Cấp Quản Lý: Cân bằng tải công việc phòng ban, nghiệm thu
   | 'announcements'
   | 'production'
-  | 'chat';
+  | 'chat'
+  | 'resources'; // Tài liệu & Tư liệu cá nhân / công ty
 
 
 
+
+
+// ==========================================
+// TÀI LIỆU & TƯ LIỆU (Resource Links)
+// ==========================================
+
+export type ResourceAccessLevel = 'PERSONAL' | 'DEPARTMENT' | 'MANAGEMENT' | 'ALL';
+export type ResourceCategory = 'TOOL' | 'DRIVE' | 'DOCS' | 'LINK' | 'OTHER';
+
+export interface ResourceLink {
+  id: string;
+  title: string;                   // Tên tài liệu / công cụ
+  url: string;                     // URL link
+  description?: string;            // Mô tả ngắn
+  category: ResourceCategory;      // Loại tài nguyên
+  accessLevel: ResourceAccessLevel;// Phạm vi: Cá nhân, Phòng ban, Quản lý, Toàn công ty
+  departmentId?: string;           // Nếu accessLevel = DEPARTMENT
+  ownerId: string;                 // Người tạo / sở hữu
+  ownerName: string;
+  ownerRole: string;
+  isPinned?: boolean;
+  createdAt: string;
+  updatedAt?: string;
+}
 
 // ==========================================
 // BỘ PHẬN SẢN XUẤT & QUẢN LÝ KHO HÀNG

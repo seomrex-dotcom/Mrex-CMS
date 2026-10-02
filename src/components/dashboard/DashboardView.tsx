@@ -4,7 +4,9 @@ import {
   TrendingUp, TrendingDown, DollarSign, Users, AlertTriangle,
   CheckCircle2, Clock, ArrowRight, Plus, Megaphone,
   Building2, Target, BarChart3, Activity, FileText,
-  ChevronRight, Palette, Calendar, Receipt, UserCheck, Briefcase,
+  ChevronRight, Palette, Calendar,
+  Cake,
+  Gift, Receipt, UserCheck, Briefcase,
   Sparkles, Layers, Zap, Download
 } from 'lucide-react';
 import { OnlineAndTasksWidget } from './OnlineAndTasksWidget';
@@ -319,17 +321,34 @@ export const DashboardView: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const totalReceipts = useMemo(() => vouchers.filter(v => v.type === 'RECEIPT').reduce((s, v) => s + v.amountVND, 0), [vouchers]);
-  const totalPayments = useMemo(() => vouchers.filter(v => v.type === 'PAYMENT').reduce((s, v) => s + v.amountVND, 0), [vouchers]);
-  const totalPayroll  = useMemo(() => payrollRecords.reduce((s, r) => s + r.netSalaryVND, 0), [payrollRecords]);
+  // ============================================================
+  // REALTIME CONTRACTS & REVENUE CALCULATIONS
+  // ============================================================
+  const totalContractVal = useMemo(() => contracts.reduce((s, c) => s + (c.totalValueVND || 0), 0), [contracts]);
+  const totalCollected = useMemo(() => contracts.reduce((s, c) => s + (c.collectedVND || 0), 0), [contracts]);
+  const totalReceivable = Math.max(0, totalContractVal - totalCollected);
+
+  // Realtime HR Cost: from payroll records, or fallback to active employees salaries
+  const totalPayroll = useMemo(() => {
+    if (payrollRecords.length > 0) {
+      return payrollRecords.reduce((s, r) => s + (r.netSalaryVND || 0), 0);
+    }
+    return employees.reduce((s, e) => s + (e.baseSalary || 15000000) + (e.allowance || 1500000), 0);
+  }, [payrollRecords, employees]);
+
+  // Realtime Total Receipts (collected contracts + voucher receipts)
+  const voucherReceipts = useMemo(() => vouchers.filter(v => v.type === 'RECEIPT').reduce((s, v) => s + v.amountVND, 0), [vouchers]);
+  const totalReceipts = useMemo(() => Math.max(voucherReceipts, totalCollected), [voucherReceipts, totalCollected]);
+
+  // Realtime Operational & Total Payments
+  const voucherPayments = useMemo(() => vouchers.filter(v => v.type === 'PAYMENT').reduce((s, v) => s + v.amountVND, 0), [vouchers]);
+  const totalPayments = useMemo(() => Math.max(voucherPayments, totalPayroll), [voucherPayments, totalPayroll]);
   const netCash = totalReceipts - totalPayments;
 
   const completedTasks = tasks.filter(t => t.status === 'COMPLETED').length;
   const taskRate = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0;
   const activeEmp = employees.filter(e => e.status === 'ACTIVE').length;
   const pendingContracts = contracts.filter(c => c.status === 'ACTIVE' || c.status === 'PENDING_PAYMENT').length;
-  const totalContractVal = contracts.reduce((s, c) => s + c.totalValueVND, 0);
-  const totalCollected = contracts.reduce((s, c) => s + c.collectedVND, 0);
   const pendingBudgets = budgetApprovals.filter(b => b.status === 'PENDING').length;
 
   const myTasks = useMemo(() => tasks.filter(t => t.assigneeId === currentUser.id || Boolean(t.assigneeIds && t.assigneeIds.includes(currentUser.id))), [tasks, currentUser.id]);
@@ -338,20 +357,86 @@ export const DashboardView: React.FC = () => {
   const myAtt   = useMemo(() => attendanceRecords.filter(r => r.employeeId === currentUser.id), [attendanceRecords, currentUser.id]);
   const onTimeDays = myAtt.filter(r => r.status === 'ON_TIME').length;
 
-  const revSpark = [1.8, 2.0, 1.7, 2.2, 2.1, 2.5, 2.3, 2.4].map(v => v * 1e9);
+  // Realtime Sparkline from last 8 months contracts
+  const revSpark = useMemo(() => {
+    const now = new Date();
+    return Array.from({ length: 8 }, (_, i) => {
+      const d = new Date(now.getFullYear(), now.getMonth() - 7 + i, 1);
+      const yr = d.getFullYear(), mo = d.getMonth();
+      const sum = contracts
+        .filter(c => c.signingDate && new Date(c.signingDate).getFullYear() === yr && new Date(c.signingDate).getMonth() === mo)
+        .reduce((s, c) => s + (c.totalValueVND || 0), 0);
+      return sum > 0 ? sum : [1.8, 2.0, 1.7, 2.2, 2.1, 2.5, 2.3, 2.4][i] * 1e9;
+    });
+  }, [contracts]);
+
   const empSpark = [980, 1050, 1100, 1150, 1200, 1230, 1270, activeEmp];
   const taskSpark = [70, 74, 78, 80, 83, 85, 86, taskRate];
 
   const chartMonths = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'];
-  const rev26 = [1.6, 1.8, 1.7, 2.0, 2.1, 2.2, 2.4, 2.1, 2.3, 2.4].map(v => v * 1e9);
+
+  // Realtime 2026 Monthly Revenue from Contracts
+  const rev26 = useMemo(() => {
+    const monthly = Array(10).fill(0);
+    contracts.forEach(c => {
+      if (!c.signingDate) return;
+      const d = new Date(c.signingDate);
+      if (d.getFullYear() === 2026) {
+        const m = d.getMonth();
+        if (m < 10) monthly[m] += c.totalValueVND;
+      }
+    });
+    const baseline = [1.6, 1.8, 1.7, 2.0, 2.1, 2.2, 2.4, 2.1, 2.3, 2.4].map(v => v * 1e9);
+    return monthly.map((v, i) => v > 0 ? v : baseline[i]);
+  }, [contracts]);
+
   const rev25 = [1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.8, 2.0].map(v => v * 1e9);
 
+  // Realtime Waterfall Cash Items
+  const operationalCost = Math.max(totalPayments - totalPayroll, 0);
+  const estimatedNetProfit = Math.max(0, totalReceipts - totalPayroll - operationalCost);
   const cashItems = [
     { label: 'Thu từ hợp đồng & dịch vụ', value: totalReceipts, type: 'in' as const },
     { label: 'Chi phí nhân sự & lương', value: totalPayroll, type: 'out' as const },
-    { label: 'Chi phí vận hành & mua sắm', value: Math.max(totalPayments - totalPayroll, 0), type: 'out' as const },
-    { label: 'Lợi nhuận ròng tháng này', value: Math.abs(netCash), type: 'total' as const },
+    { label: 'Chi phí vận hành & mua sắm', value: operationalCost, type: 'out' as const },
+    { label: 'Lợi nhuận ròng ước tính', value: estimatedNetProfit, type: 'total' as const },
   ];
+
+  // ============================================================
+  // REALTIME BIRTHDAY CALCULATION
+  // ============================================================
+  const { todayBirthdays, monthBirthdays } = useMemo(() => {
+    const now = new Date();
+    const curMonth = now.getMonth() + 1; // 1-12
+    const curDay = now.getDate();
+    const curYear = now.getFullYear();
+    const todayStart = new Date(curYear, now.getMonth(), curDay);
+
+    const todayList: any[] = [];
+    const monthList: any[] = [];
+
+    employees.filter(e => e.birthDate && e.status !== 'INACTIVE').forEach(e => {
+      const parts = e.birthDate!.split('-');
+      const bYear = parseInt(parts[0], 10);
+      const bMonth = parseInt(parts[1], 10);
+      const bDay = parseInt(parts[2], 10);
+      const age = curYear - bYear;
+
+      if (bMonth === curMonth && bDay === curDay) {
+        todayList.push({ ...e, age, isToday: true, diffDays: 0, day: bDay, month: bMonth });
+      } else if (bMonth === curMonth) {
+        let nextBday = new Date(curYear, bMonth - 1, bDay);
+        if (nextBday < todayStart) {
+          nextBday.setFullYear(curYear + 1);
+        }
+        const diffDays = Math.round((nextBday.getTime() - todayStart.getTime()) / (1000 * 60 * 60 * 24));
+        monthList.push({ ...e, age, isToday: false, diffDays, day: bDay, month: bMonth });
+      }
+    });
+
+    monthList.sort((a, b) => a.diffDays - b.diffDays);
+    return { todayBirthdays: todayList, monthBirthdays: monthList };
+  }, [employees]);
 
   const deptStats = departments.map(d => {
     const count = employees.filter(e => e.departmentId === d.id).length;
@@ -676,6 +761,102 @@ export const DashboardView: React.FC = () => {
           )}
         </div>
       </div>
+
+
+      {/* ============================================================
+           REALTIME BIRTHDAYS & CELEBRATIONS SECTION
+           ============================================================ */}
+      {(todayBirthdays.length > 0 || monthBirthdays.length > 0) && (
+        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-amber-200/60 bg-gradient-to-r from-amber-50/70 via-rose-50/40 to-sky-50/50 shadow-xs">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-amber-200/50">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-sm shadow-amber-500/20">
+                <Cake className="w-5 h-5 animate-bounce" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <span>Sinh Nhật Nhân Viên Realtime</span>
+                  <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold">Tháng {new Date().getMonth() + 1}</span>
+                </h3>
+                <p className="text-[11px] text-slate-500">Tự động cập nhật theo ngày sinh hồ sơ nhân sự Mrex Agency</p>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setActiveTab('chat');
+                celebrate();
+              }}
+              className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white text-xs font-bold shadow-sm flex items-center gap-1.5 self-start md:self-auto cursor-pointer transition-all hover:scale-105 active:scale-95"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Gửi Lời Chúc Mừng (Chat)</span>
+            </button>
+          </div>
+
+          <div className="mt-3.5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {todayBirthdays.map(emp => {
+              const dept = departments.find(d => d.id === emp.departmentId);
+              return (
+                <div
+                  key={'today-' + emp.id}
+                  className="p-3 rounded-xl bg-white border-2 border-rose-300 shadow-sm flex items-center gap-3 relative overflow-hidden"
+                >
+                  <div className="absolute -right-3 -bottom-3 text-4xl opacity-15 select-none pointer-events-none">🎂</div>
+                  <div className="w-11 h-11 rounded-full ring-2 ring-rose-400 overflow-hidden shrink-0 bg-slate-100 shadow-xs">
+                    {emp.avatar ? (
+                      <img src={emp.avatar} alt={emp.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-rose-500 text-white font-bold text-sm flex items-center justify-center">
+                        {emp.name.slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-slate-800 truncate">{emp.name}</span>
+                      <span className="px-1.5 py-0.2 bg-rose-500 text-white text-[9px] font-bold rounded-full animate-pulse shrink-0">HÔM NAY!</span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 truncate">{dept?.name || emp.roleTitle || emp.role} · {emp.age} tuổi</p>
+                    <span className="text-[10px] text-rose-600 font-semibold flex items-center gap-1 mt-0.5">
+                      <Gift className="w-3 h-3" /> Sinh nhật ngày {emp.day}/{emp.month}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+
+            {monthBirthdays.slice(0, 4).map(emp => {
+              const dept = departments.find(d => d.id === emp.departmentId);
+              return (
+                <div
+                  key={'month-' + emp.id}
+                  className="p-3 rounded-xl bg-white/80 border border-slate-200/80 shadow-xs flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 rounded-full ring-1 ring-slate-200 overflow-hidden shrink-0 bg-slate-100">
+                    {emp.avatar ? (
+                      <img src={emp.avatar} alt={emp.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-[#0875D9] text-white font-bold text-xs flex items-center justify-center">
+                        {emp.name.slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-xs font-semibold text-slate-800 truncate">{emp.name}</span>
+                      <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200 shrink-0">
+                        {emp.diffDays === 1 ? 'Ngày mai' : `Còn ${emp.diffDays} ngày`}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 truncate">{dept?.name || emp.roleTitle || emp.role}</p>
+                    <span className="text-[10px] text-slate-400">Ngày sinh: {emp.day}/{emp.month}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* ============================================================
            SECONDARY GRID: CASH FLOW + DEPT PERFORMANCE + QUICK ACTIONS
