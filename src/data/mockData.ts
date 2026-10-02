@@ -238,7 +238,7 @@ export const INITIAL_ATTENDANCE: AttendanceRecord[] = [];
 export const INITIAL_LEAVE_REQUESTS: LeaveRequest[] = [
   {
     id: 'leave-sample-1',
-    employeeId: 'emp-1',
+    employeeId: 'emp-01',
     employeeName: 'Trần Hoàng Nam',
     type: 'ANNUAL',
     startDate: '2026-10-15',
@@ -254,7 +254,7 @@ export const INITIAL_LEAVE_REQUESTS: LeaveRequest[] = [
   },
   {
     id: 'leave-sample-2',
-    employeeId: 'emp-1',
+    employeeId: 'emp-01',
     employeeName: 'Trần Hoàng Nam',
     type: 'OVERTIME',
     startDate: '2026-10-05',

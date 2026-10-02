@@ -162,7 +162,7 @@ export const AttendanceView: React.FC = () => {
   };
 
   const canApprove = currentUser.role === 'CEO' || currentUser.role === 'MANAGER' || currentUser.role === 'HR';
-  const myLeaveRequests = leaveRequests.filter(r => r.employeeId === currentUser.id);
+  const myLeaveRequests = leaveRequests.filter(r => r.employeeId === currentUser.id || r.employeeName === currentUser.name);
   const pendingCount = leaveRequests.filter(r => r.status === 'PENDING').length;
   const approvedCount = leaveRequests.filter(r => r.status === 'APPROVED').length;
   const rejectedCount = leaveRequests.filter(r => r.status === 'REJECTED').length;
