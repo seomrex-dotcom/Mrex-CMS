@@ -362,7 +362,7 @@ export const ReportsView: React.FC = () => {
           <div className="space-y-3 text-xs">
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="font-medium text-slate-700">Tại Văn Phòng Trụ Sở Keangnam 72</span>
+                <span className="font-medium text-slate-700">Tại Văn Phòng T17-31 Manhattan Glory, Vinhomes Grand Park, Q.9, TP.HCM</span>
                 <span className="font-mono font-bold text-indigo-700">80%</span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">

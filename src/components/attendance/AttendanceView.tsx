@@ -56,11 +56,11 @@ export const AttendanceView: React.FC = () => {
 
   // GPS Real-time Telemetry State
   const [gps, setGps] = useState<GpsState>({
-    latitude: 21.017345,
-    longitude: 105.783812,
+    latitude: 10.838685,
+    longitude: 106.842718,
     accuracy: 15,
     status: 'IDLE',
-    address: 'Trụ sở chính: Tầng 18, Keangnam Landmark 72, Nam Từ Liêm, Hà Nội',
+    address: 'Văn phòng: T17-31 Manhattan Glory, Vinhomes Grand Park, Q.9, TP.HCM',
     updatedAt: '--:--:--'
   });
   const [isLocating, setIsLocating] = useState(false);
@@ -138,7 +138,7 @@ export const AttendanceView: React.FC = () => {
 
     const gpsSummary = gps.status === 'SUCCESS'
       ? `${gps.latitude}° N, ${gps.longitude}° E (±${gps.accuracy}m)`
-      : `${gps.latitude}° N, ${gps.longitude}° E (Trụ sở Keangnam 72)`;
+      : `${gps.latitude}° N, ${gps.longitude}° E (T17-31 Manhattan Glory, Vinhomes Grand Park)`;
 
     if (confirmAction === 'CHECK_IN') {
       const result = checkIn(selectedLocation, punchNote, gpsSummary);
@@ -258,10 +258,10 @@ export const AttendanceView: React.FC = () => {
               >
                 <div className="flex items-center gap-2 font-semibold text-xs mb-1">
                   <Building className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>Tại Văn Phòng HQ</span>
+                  <span>Tại Văn Phòng</span>
                 </div>
                 <div className="text-[11px] text-slate-500 leading-tight">
-                  Tòa Keangnam 72 (GPS hợp lệ)
+                  T17-31 Manhattan Glory, Vinhomes Grand Park, Q.9, TP.HCM
                 </div>
               </button>
 
@@ -805,7 +805,7 @@ export const AttendanceView: React.FC = () => {
                 <span className="text-slate-500 font-medium">Hình thức làm việc:</span>
                 <span className="font-semibold text-slate-800">
                   {selectedLocation === 'OFFICE'
-                    ? '🏢 Tại Văn Phòng HQ'
+                    ? '🏢 Tại Văn Phòng (T17-31 Manhattan Glory, Vinhomes Grand Park, Q.9, TP.HCM)'
                     : selectedLocation === 'REMOTE'
                     ? '💻 Làm Việc Từ Xa (WFH)'
                     : '💼 Đi Công Tác / Ngoại Kiểm'}

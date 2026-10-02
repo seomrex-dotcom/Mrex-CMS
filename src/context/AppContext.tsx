@@ -690,7 +690,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       location: location,
       locationDetails:
         location === 'OFFICE'
-          ? (gpsLocation ? `Trụ sở HQ (${gpsLocation})` : 'Trụ sở Tầng 18, Keangnam Landmark 72 (GPS Verified)')
+          ? (gpsLocation ? `Văn phòng T17-31 Manhattan Glory (${gpsLocation})` : 'T17-31 Manhattan Glory, Vinhomes Grand Park, Q.9, TP.HCM (GPS Verified)')
           : location === 'REMOTE'
           ? (gpsLocation ? `Làm việc từ xa (${gpsLocation})` : 'Làm việc từ xa (WFH - Đã đăng ký)')
           : (gpsLocation ? `Công tác ngoại nghiệp (${gpsLocation})` : 'Công tác ngoại nghiệp / Gặp khách hàng'),
