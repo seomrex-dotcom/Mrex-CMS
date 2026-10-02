@@ -128,6 +128,8 @@ interface AppContextType {
   // Announcements
   announcements: Announcement[];
   addAnnouncement: (title: string, content: string, category: Announcement['category'], isPinned: boolean) => void;
+  updateAnnouncement: (id: string, updates: Partial<Announcement>) => void;
+  deleteAnnouncement: (id: string) => void;
 
   // Google Docs Deliverables & Management Review
   googleDocs: GoogleDocDeliverable[];
@@ -1266,6 +1268,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     celebrate();
   };
 
+    const updateAnnouncement = (id: string, updates: Partial<Announcement>) => {
+      setAnnouncements(prev =>
+        prev.map(ann =>
+          ann.id === id
+            ? {
+                ...ann,
+                ...updates,
+                updatedAt: new Date().toISOString().replace('T', ' ').slice(0, 16),
+                updatedBy: `${currentUser.name} (${currentUser.roleTitle})`
+              }
+            : ann
+        )
+      );
+    };
+
+    const deleteAnnouncement = (id: string) => {
+      setAnnouncements(prev => prev.filter(ann => ann.id !== id));
+    };
+
   // Board actions
   const approveBudget = (id: string) => {
     const now = new Date().toISOString().replace('T', ' ').slice(0, 16);
@@ -1982,6 +2003,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         saveReview,
         announcements,
         addAnnouncement,
+          updateAnnouncement,
+          deleteAnnouncement,
         budgetApprovals,
         approveBudget,
         rejectBudget,
