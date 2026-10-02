@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import {
   User,
+  Cake,
   UserCog,
   Mail,
   Lock,
@@ -44,6 +45,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
   const [phone, setPhone] = useState('');
+  const [birthDate, setBirthDate] = useState('');
 
   // UI state
   const [isSuccess, setIsSuccess] = useState(false);
@@ -54,6 +56,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
       setName(currentUser.name || '');
       setAvatar(currentUser.avatar || avatarCeo);
       setPhone(currentUser.phone || '');
+      setBirthDate(currentUser.birthDate || '');
       setIsSuccess(false);
       setErrorMessage(null);
     }
@@ -95,7 +98,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
     updateEmployee(currentUser.id, {
       name: name.trim(),
       avatar: avatar,
-      phone: phone.trim()
+      phone: phone.trim(),
+      birthDate: birthDate || undefined
     });
 
     setIsSuccess(true);
@@ -260,7 +264,26 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Ngày sinh (Sinh nhật) */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-800">
+                  Ngày sinh (Sinh nhật)
+                </label>
+                <div className="relative">
+                  <Cake className="w-4 h-4 text-rose-500 absolute left-3 top-3" />
+                  <input
+                    id="profile-birthdate"
+                    type="date"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-medium focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white transition-all min-h-[40px]"
+                  />
+                </div>
+                <span className="text-[10px] text-slate-400 block">
+                  Đồng bộ lời chúc mừng sinh nhật trên hệ thống.
+                </span>
+              </div>
               {/* Tên hiển thị (Display Name) */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-slate-800">

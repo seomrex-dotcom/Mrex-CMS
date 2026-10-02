@@ -64,6 +64,57 @@ export const CompanyGroupChat: React.FC<CompanyGroupChatProps> = ({
     (m: ChatMessage) => (m.channelId || 'general') === selectedChannel
   );
 
+  // REALTIME DYNAMIC BIRTHDAYS CALCULATION
+  const currentMonth = new Date().getMonth() + 1; // 1-12
+
+  const birthdayEmployees = useMemo(() => {
+    const today = new Date();
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const curYear = today.getFullYear();
+
+    return employees
+      .filter(e => e.birthDate && e.status !== 'INACTIVE')
+      .map(e => {
+        const parts = e.birthDate!.split('-');
+        const bMonth = parseInt(parts[1], 10);
+        const bDay = parseInt(parts[2], 10);
+
+        let nextBday = new Date(curYear, bMonth - 1, bDay);
+        if (nextBday < todayStart) {
+          nextBday.setFullYear(curYear + 1);
+        }
+        const diffDays = Math.round((nextBday.getTime() - todayStart.getTime()) / (1000 * 60 * 60 * 24));
+        const isToday = diffDays === 0;
+
+        let icon = '🎂';
+        if (e.role === 'CEO') icon = '👑';
+        else if (e.departmentId === 'production') icon = '📦';
+        else if (isToday) icon = '🎉';
+
+        const displayDate = `${String(bDay).padStart(2, '0')}/${String(bMonth).padStart(2, '0')}`;
+
+        return {
+          id: e.id,
+          name: e.name,
+          roleTitle: e.roleTitle,
+          avatar: e.avatar,
+          birthDate: e.birthDate,
+          bMonth,
+          bDay,
+          diffDays,
+          isToday,
+          icon,
+          displayDate
+        };
+      })
+      .sort((a, b) => a.diffDays - b.diffDays);
+  }, [employees]);
+
+  // Filter birthdays in current month first, or upcoming 4
+  const monthBirthdays = birthdayEmployees.filter(e => e.bMonth === currentMonth);
+  const displayBirthdays = monthBirthdays.length > 0 ? monthBirthdays : birthdayEmployees.slice(0, 4);
+
+
   const handleSend = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!inputText.trim()) return;
@@ -190,40 +241,47 @@ export const CompanyGroupChat: React.FC<CompanyGroupChatProps> = ({
             );
           })}
 
-          {/* Quick Birthday Celebration Card in Sidebar */}
-          <div className="hidden md:block mt-3 p-3 rounded-xl bg-gradient-to-br from-amber-50 to-rose-50 dark:from-slate-800 dark:to-slate-800/60 border border-amber-200/80 dark:border-amber-900/40 text-xs">
-            <div className="flex items-center gap-1.5 font-bold text-amber-900 dark:text-amber-300 mb-1">
-              <Cake className="w-3.5 h-3.5 text-rose-500" />
-              <span>Sắp Sinh Nhật Tháng 10</span>
+          {/* Quick Birthday Celebration Card in Sidebar - REALTIME SYNC */}
+          <div className="hidden md:block mt-3 p-3 rounded-xl bg-gradient-to-br from-amber-50 to-rose-50 dark:from-slate-800 dark:to-slate-800/60 border border-amber-200/80 dark:border-amber-900/40 text-xs shadow-2xs">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-1.5 font-bold text-amber-900 dark:text-amber-300">
+                <Cake className="w-3.5 h-3.5 text-rose-500" />
+                <span>Sắp Sinh Nhật Tháng {currentMonth}</span>
+              </div>
+              <span className="font-mono text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+                {displayBirthdays.length} nhân sự
+              </span>
             </div>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 mb-2">
               Bấm để gửi lời chúc nhanh vào kênh sinh nhật:
             </p>
             <div className="space-y-1">
-              <button
-                type="button"
-                onClick={() => handleQuickBirthdayWish('Nguyễn Văn Minh (08/10)')}
-                className="w-full text-left px-2 py-1 bg-white/90 dark:bg-slate-700 hover:bg-rose-50 rounded-lg text-[11px] font-medium text-slate-800 dark:text-slate-200 flex items-center justify-between transition-colors border border-amber-100 dark:border-slate-600"
-              >
-                <span>🎂 Nguyễn Văn Minh</span>
-                <span className="text-[10px] text-rose-600 font-bold">08/10</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickBirthdayWish('Trần Hoàng Nam (15/10)')}
-                className="w-full text-left px-2 py-1 bg-white/90 dark:bg-slate-700 hover:bg-rose-50 rounded-lg text-[11px] font-medium text-slate-800 dark:text-slate-200 flex items-center justify-between transition-colors border border-amber-100 dark:border-slate-600"
-              >
-                <span>👑 Trần Hoàng Nam</span>
-                <span className="text-[10px] text-amber-600 font-bold">15/10</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickBirthdayWish('Võ Văn Lực (22/10)')}
-                className="w-full text-left px-2 py-1 bg-white/90 dark:bg-slate-700 hover:bg-rose-50 rounded-lg text-[11px] font-medium text-slate-800 dark:text-slate-200 flex items-center justify-between transition-colors border border-amber-100 dark:border-slate-600"
-              >
-                <span>📦 Võ Văn Lực</span>
-                <span className="text-[10px] text-blue-600 font-bold">22/10</span>
-              </button>
+              {displayBirthdays.map(emp => (
+                <button
+                  key={emp.id}
+                  type="button"
+                  onClick={() => handleQuickBirthdayWish(`${emp.name} (${emp.displayDate})`)}
+                  className="w-full text-left px-2 py-1.5 bg-white/90 dark:bg-slate-700 hover:bg-rose-50 dark:hover:bg-slate-600 rounded-lg text-[11px] font-medium text-slate-800 dark:text-slate-200 flex items-center justify-between transition-colors border border-amber-100 dark:border-slate-600 cursor-pointer shadow-2xs group"
+                >
+                  <span className="truncate flex items-center gap-1.5 min-w-0">
+                    <span className="shrink-0">{emp.icon}</span>
+                    <span className="truncate font-semibold group-hover:text-rose-600 transition-colors">{emp.name}</span>
+                  </span>
+                  <span className={`text-[10px] font-bold font-mono ml-1.5 shrink-0 px-1 py-0.2 rounded ${
+                    emp.isToday
+                      ? 'bg-rose-500 text-white font-black animate-pulse'
+                      : 'text-rose-600 dark:text-rose-400 bg-rose-50/80 dark:bg-slate-800'
+                  }`}>
+                    {emp.displayDate}
+                  </span>
+                </button>
+              ))}
+
+              {displayBirthdays.length === 0 && (
+                <div className="text-center py-2 text-slate-400 text-[11px]">
+                  Không có sinh nhật nào sắp tới
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -78,6 +78,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
   const [baseSalaryVND, setBaseSalaryVND] = useState<number>(22000000);
   const [baseSalaryGrade, setBaseSalaryGrade] = useState('Bậc 3 (Specialist)');
   const [joinDate, setJoinDate] = useState('2026-09-30');
+  const [birthDate, setBirthDate] = useState('1995-10-15');
   const [annualLeaveRemaining, setAnnualLeaveRemaining] = useState<number>(12);
   const [status, setStatus] = useState<'ACTIVE' | 'ON_LEAVE' | 'PROBATION'>('ACTIVE');
   const [avatar, setAvatar] = useState<string>(avatarDev);
@@ -111,6 +112,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
       setBaseSalaryVND(employeeToEdit.baseSalaryVND);
       setBaseSalaryGrade(employeeToEdit.baseSalaryGrade);
       setJoinDate(employeeToEdit.joinDate);
+        setBirthDate(employeeToEdit.birthDate || '1995-10-15');
       setAnnualLeaveRemaining(employeeToEdit.annualLeaveRemaining);
       setStatus(employeeToEdit.status);
       setAvatar(employeeToEdit.avatar);
@@ -133,6 +135,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
       setBaseSalaryVND(22000000);
       setBaseSalaryGrade('Bậc 3 (Specialist)');
       setJoinDate(new Date().toISOString().split('T')[0]);
+        setBirthDate('1995-10-15');
       setAnnualLeaveRemaining(12);
       setStatus('ACTIVE');
       setAvatar(avatarDev);
@@ -190,6 +193,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
       baseSalaryVND: Number(baseSalaryVND) || 15000000,
       baseSalaryGrade,
       joinDate,
+      birthDate: birthDate || undefined,
       annualLeaveRemaining: Number(annualLeaveRemaining) || 12,
       status,
       avatar,
@@ -723,7 +727,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
               </div>
 
               {/* Row 6: Join Date, Leave balance, Status */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
                     Ngày gia nhập
@@ -735,6 +739,17 @@ export const EmployeeFormModal: React.FC<Props> = ({
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   />
                 </div>
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1">
+                      Ngày sinh (Sinh nhật)
+                    </label>
+                    <input
+                      type="date"
+                      value={birthDate}
+                      onChange={(e) => setBirthDate(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
+                    />
+                  </div>
 
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
