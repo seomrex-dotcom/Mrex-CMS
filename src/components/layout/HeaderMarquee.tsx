@@ -31,14 +31,16 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
     setActiveTab,
     openProfileModal,
     logout,
-    celebrate
+    celebrate,
+    onlineCount,
+    activeCount,
+    idleCount
   } = useApp();
 
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [showOnlineModal, setShowOnlineModal] = useState(false);
 
   const totalEmployeesCount = employees.length > 0 ? employees.length : 8;
-  const onlineCount = Math.min(6, totalEmployeesCount);
   const pendingTasksCount = tasks.filter(t => t.status !== 'COMPLETED').length;
 
   // Marquee announcement items
@@ -123,12 +125,15 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
             title="Nhấn để xem danh sách nhân sự đang trực tuyến"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#16C784] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#16C784]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <Users className="w-3 h-3 text-[#0875D9]" />
-            <span className="hidden sm:inline font-mono font-bold text-slate-900">{onlineCount}</span>
+            <Users className="w-3.5 h-3.5 text-[#0875D9]" />
+            <span className="font-mono font-bold text-slate-900">{onlineCount}</span>
             <span className="hidden md:inline text-slate-500">Online</span>
+            <span className="text-[10px] text-slate-400 font-mono hidden lg:inline">
+              (🟢 {activeCount} · 🟡 {idleCount})
+            </span>
           </button>
 
           {/* Pending Tasks Count Badge */}

@@ -1,4 +1,15 @@
-﻿export type UserRole = 'CEO' | 'MANAGER' | 'HR' | 'EMPLOYEE';
+﻿
+export type PresenceStatus = 'ACTIVE' | 'IDLE' | 'OFFLINE';
+
+export interface EmployeePresence {
+  employeeId: string;
+  status: PresenceStatus; // 'ACTIVE': Đang thao tác | 'IDLE': Treo tab | 'OFFLINE': Vắng mặt
+  lastActive: number;
+  currentActivity: string;
+  device: 'WEB' | 'MOBILE';
+}
+
+export type UserRole = 'CEO' | 'MANAGER' | 'HR' | 'EMPLOYEE';
 
 export type DepartmentId = string; // Supports both built-in (exec,tech,product,hr,sales) and dynamic IDs
 

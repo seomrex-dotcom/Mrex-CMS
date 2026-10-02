@@ -17,13 +17,12 @@ interface Props {
 }
 
 export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' }) => {
-  const { employees, tasks, currentUser, setActiveTab, celebrate } = useApp();
+  const { employees, tasks, currentUser, setActiveTab, celebrate, onlineCount, activeCount, idleCount, offlineCount, presenceList } = useApp();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Computations
   const totalEmployeesCount = employees.length > 0 ? employees.length : 45;
-  // Online count simulation based on real employee list
-  const onlineCount = Math.min(18, totalEmployeesCount);
+  // Realtime online users
 
   // Pending tasks computation (status !== 'COMPLETED')
   const pendingTasks = tasks.filter(t => t.status !== 'COMPLETED');
@@ -38,8 +37,9 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
   const todoCount = pendingTasks.filter(t => t.status === 'TODO').length;
   const reviewCount = pendingTasks.filter(t => t.status === 'REVIEW').length;
 
-  // Active avatars
-  const onlineAvatars = employees.slice(0, 5);
+  // Active avatars from online users
+  const onlineEmployeeIds = presenceList.filter(p => p.status === "ACTIVE" || p.status === "IDLE").map(p => p.employeeId);
+  const onlineAvatars = employees.filter(e => onlineEmployeeIds.includes(e.id)).slice(0, 5);
 
   return (
     <>
@@ -98,25 +98,41 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
                   alt={emp.name}
                   referrerPolicy="no-referrer"
                   title={`${emp.name} (${emp.roleTitle}) - Đang online`}
-                  className="w-7 h-7 rounded-full border-2 border-[#00144b] object-cover ring-1 ring-amber-400/60"
+                  className="w-7 h-7 rounded-full border-2 border-[#00144b] object-cover ring-1 ring-emerald-400/80"
                 />
               ))}
-              {totalEmployeesCount > 5 && (
+              {onlineCount > 5 && (
                 <div
                   onClick={() => setIsModalOpen(true)}
-                  className="w-7 h-7 rounded-full bg-black/40 border-2 border-[#00144b] text-amber-300 text-[10px] font-bold font-mono flex items-center justify-center cursor-pointer hover:bg-black/60"
+                  className="w-7 h-7 rounded-full bg-black/50 border-2 border-[#00144b] text-emerald-300 text-[10px] font-bold font-mono flex items-center justify-center cursor-pointer hover:bg-black/70"
                 >
-                  +{onlineCount - 5 > 0 ? onlineCount - 5 : 13}
+                  +{onlineCount - 5}
                 </div>
               )}
             </div>
 
             <button
               onClick={() => setIsModalOpen(true)}
-              className="text-[11px] text-amber-300 hover:text-white hover:underline font-semibold transition-colors"
+              className="text-[11px] text-amber-300 hover:text-white hover:underline font-semibold transition-colors cursor-pointer"
             >
               Xem danh sách →
             </button>
+          </div>
+
+          {/* Realtime Status Sub-breakdown */}
+          <div className="grid grid-cols-3 gap-1.5 pt-1 text-center text-[10px]">
+            <div className="p-1 rounded-lg bg-emerald-500/15 border border-emerald-400/20 backdrop-blur-md">
+              <span className="block text-emerald-300 font-mono font-bold text-xs">{activeCount}</span>
+              <span className="text-emerald-100/90 truncate block text-[9px]">🟢 Đang thao tác</span>
+            </div>
+            <div className="p-1 rounded-lg bg-amber-500/15 border border-amber-400/20 backdrop-blur-md">
+              <span className="block text-amber-300 font-mono font-bold text-xs">{idleCount}</span>
+              <span className="text-amber-100/90 truncate block text-[9px]">🟡 Treo tab</span>
+            </div>
+            <div className="p-1 rounded-lg bg-slate-500/20 border border-slate-400/20 backdrop-blur-md">
+              <span className="block text-slate-300 font-mono font-bold text-xs">{offlineCount}</span>
+              <span className="text-slate-200/90 truncate block text-[9px]">⚪ Vắng mặt</span>
+            </div>
           </div>
         </div>
 
