@@ -13,13 +13,13 @@ export default defineConfig(() => {
     },
     build: {
       sourcemap: false, // Không sinh source map, ngăn xem mã nguồn trên F12
-      minify: 'esbuild',
+      minify: 'esbuild' as const,
       cssMinify: true,
       reportCompressedSize: false,
     },
     esbuild: {
-      drop: ['console', 'debugger'], // Xóa sạch console.log và debugger trong production
-      legalComments: 'none',
+      drop: ['console', 'debugger'] as ('console' | 'debugger')[],
+      legalComments: 'none' as const,
     },
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',

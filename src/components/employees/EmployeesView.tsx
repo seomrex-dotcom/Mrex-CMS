@@ -39,6 +39,7 @@ export const EmployeesView: React.FC = () => {
     tasks,
     currentUser,
     setCurrentUser,
+    deleteEmployee,
     celebrate
   } = useApp();
 

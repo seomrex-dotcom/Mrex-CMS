@@ -256,11 +256,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return authState !== null ? authState === 'true' : true;
   });
 
-  // Active current user - defaults to CEO or saved ID
+  // Active current user - defaults to CEO or saved ID from actual active employees
   const [currentUser, setCurrentUserState] = useState<Employee>(() => {
     const savedId = localStorage.getItem(STORAGE_KEYS.CURRENT_USER_ID);
-    const found = EMPLOYEES.find(e => e.id === savedId);
-    return found || EMPLOYEES[0];
+    const savedEmployees = localStorage.getItem(STORAGE_KEYS.EMPLOYEES);
+    let activeEmployees = EMPLOYEES;
+    if (savedEmployees !== null) {
+      try {
+        const parsed = JSON.parse(savedEmployees);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          activeEmployees = parsed;
+        }
+      } catch {}
+    }
+    const found = activeEmployees.find(e => e.id === savedId);
+    return found || activeEmployees.find(e => e.role === 'CEO') || activeEmployees[0];
   });
 
   // Cài đặt giao diện & thương hiệu của Ban Giám Đốc (áp dụng đồng bộ cho toàn bộ các cấp)
@@ -841,8 +851,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const deleteEmployee = (id: string) => {
+    let nextEmployees: Employee[] = [];
     setEmployees(prev => {
-      const next = prev.filter(e => e.id !== id);
+      const deletedEmp = prev.find(e => e.id === id);
+      const fallbackManagerId = deletedEmp?.managerId || prev.find(e => e.role === 'CEO')?.id;
+      // Reassign subordinates to fallback manager so they do not disappear from Org Chart
+      const next = prev
+        .filter(e => e.id !== id)
+        .map(e => (e.managerId === id ? { ...e, managerId: fallbackManagerId } : e));
+      nextEmployees = next;
       localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(next));
 
       // If deleted user was active currentUser, fallback to CEO or first remaining employee
@@ -855,6 +872,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
       return next;
     });
+
+    // Reassign department manager if deleted user was leading a department
+    setDepartments(prev => {
+      const hasManaged = prev.some(d => d.managerId === id);
+      if (!hasManaged) return prev;
+      const updated = prev.map(d => (d.managerId === id ? { ...d, managerId: '' } : d));
+      localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(updated));
+      return updated;
+    });
+
+    // Reassign tasks where assignee or reporter was the deleted employee
+    setTasks(prev => {
+      const hasTask = prev.some(t => t.assigneeId === id || t.reporterId === id);
+      if (!hasTask) return prev;
+      const ceoId = nextEmployees.find(e => e.role === 'CEO')?.id || nextEmployees[0]?.id || 'emp-01';
+      const updated = prev.map(t => ({
+        ...t,
+        assigneeId: t.assigneeId === id ? ceoId : t.assigneeId,
+        reporterId: t.reporterId === id ? ceoId : t.reporterId,
+      }));
+      localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(updated));
+      return updated;
+    });
+
     celebrate();
   };
 

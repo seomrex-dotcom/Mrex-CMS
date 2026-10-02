@@ -55,6 +55,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
   const {
     currentUser,
     setCurrentUser,
+    employees,
     activeTab,
     setActiveTab,
     todayAttendance,

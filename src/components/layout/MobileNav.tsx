@@ -268,9 +268,9 @@ export const MobileNav: React.FC<MobileNavProps> = ({
                               <Icon className={`w-4 h-4 ${isActive ? 'text-[#0875D9]' : 'text-slate-400'}`} />
                               <span>{item.label}</span>
                             </div>
-                            {item.badge !== undefined && (
+                            {'badge' in item && (item as any).badge !== undefined && (
                               <span className="font-mono text-[10px] px-1.5 py-0.5 text-[#0875D9] bg-[#EAF5FF] rounded-md font-bold">
-                                {item.badge}
+                                {(item as any).badge}
                               </span>
                             )}
                           </button>
