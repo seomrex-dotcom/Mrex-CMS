@@ -20,6 +20,7 @@ import { FinanceView } from './components/finance/FinanceView';
 import { ProductionView } from './components/production/ProductionView';
 import { UserProfileModal } from './components/common/UserProfileModal';
 import { SupportWidget } from './components/common/SupportWidget';
+import { FloatingQuickAccessDock } from './components/common/FloatingQuickAccessDock';
 import { CompanyGroupChat } from './components/chat/CompanyGroupChat';
 
 const MainLayout: React.FC = () => {
@@ -130,6 +131,7 @@ const MainLayout: React.FC = () => {
 
       {/* 24/7 Support Hotline & Mascot Widget */}
       <SupportWidget />
+      <FloatingQuickAccessDock />
 
       <MobileNav
         isDrawerOpen={isMobileDrawerOpen}
