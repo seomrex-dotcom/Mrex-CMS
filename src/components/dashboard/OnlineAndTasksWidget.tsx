@@ -22,7 +22,6 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
 
   // Computations
   const totalEmployeesCount = employees.length > 0 ? employees.length : 45;
-  // Realtime online users
 
   // Pending tasks computation (status !== 'COMPLETED')
   const pendingTasks = tasks.filter(t => t.status !== 'COMPLETED');
@@ -44,52 +43,71 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
   return (
     <>
       <div
-        className="relative text-white rounded-2xl p-5 shadow-2xl border border-white/15 overflow-hidden flex flex-col justify-between backdrop-blur-2xl"
-        style={{ background: 'linear-gradient(272deg, #00144b 0%, #003189 100%)' }}
+        className="relative overflow-hidden rounded-3xl p-5 border border-sky-200/70 shadow-lg shadow-sky-500/5 backdrop-blur-xl flex flex-col justify-between text-slate-800 transition-all hover:shadow-xl hover:-translate-y-0.5 group"
+        style={{
+          background: 'linear-gradient(145deg, rgba(240, 249, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 50%, rgba(244, 248, 255, 0.9) 100%)'
+        }}
       >
-        {/* Top Brand & Title */}
-        <div className="flex items-center justify-between pb-3 border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
-            </span>
-            <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight">
-              Trực Tuyến & Việc Cần Làm
-            </h4>
+        {/* Ambient Glow */}
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-400/15 rounded-full blur-2xl pointer-events-none" />
+
+        {/* Top Brand & Title with 3D Glass Icon */}
+        <div className="flex items-center justify-between pb-3 border-b border-sky-100/80">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="relative w-10 h-10 shrink-0 rounded-xl overflow-hidden shadow-[0_6px_16px_rgba(8,117,217,0.18)] border border-white/90 group-hover:scale-105 transition-transform">
+              <img
+                src="/tasks_glass_3d.jpg"
+                alt="Tasks 3D Glass Icon"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight truncate">
+                  Trực Tuyến & Việc Cần Làm
+                </h4>
+              </div>
+              <span className="text-[10px] text-slate-400 block truncate">
+                Cập nhật tức thời realtime
+              </span>
+            </div>
           </div>
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-blue-100 text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer border border-white/15 backdrop-blur-md"
+            className="px-2.5 py-1 rounded-xl bg-[#0875D9]/10 hover:bg-[#0875D9]/20 text-[#0875D9] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer border border-[#0875D9]/25 shrink-0"
             title="Xem danh sách chi tiết nhân sự online"
           >
-            <span className="font-bold text-white">{onlineCount} Online</span>
-            <ExternalLink className="w-3 h-3 text-amber-400" />
+            <span>{onlineCount} Online</span>
+            <ExternalLink className="w-3 h-3 text-[#0875D9]" />
           </button>
         </div>
 
         {/* SECTION 1: Số lượng User đang Online */}
-        <div className="my-3 space-y-2">
+        <div className="my-2.5 space-y-1.5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-blue-300" />
-              <span className="text-xs font-semibold text-blue-100">
+            <div className="flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5 text-[#0875D9]" />
+              <span className="text-xs font-bold text-slate-700">
                 Nhân Sự Đang Trực Tuyến
               </span>
             </div>
             <div className="text-right">
-              <span className="text-xl sm:text-2xl font-mono font-extrabold text-white">
+              <span className="text-xl font-mono font-extrabold text-[#0875D9]">
                 {onlineCount}
               </span>
-              <span className="text-xs font-semibold text-blue-200 font-sans ml-1">
+              <span className="text-xs font-semibold text-slate-400 font-sans ml-1">
                 / {totalEmployeesCount}
               </span>
             </div>
           </div>
 
           {/* Avatars Stack & Quick Label */}
-          <div className="flex items-center justify-between pt-1">
+          <div className="flex items-center justify-between pt-0.5">
             <div className="flex items-center -space-x-2">
               {onlineAvatars.map(emp => (
                 <img
@@ -98,13 +116,13 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
                   alt={emp.name}
                   referrerPolicy="no-referrer"
                   title={`${emp.name} (${emp.roleTitle}) - Đang online`}
-                  className="w-7 h-7 rounded-full border-2 border-[#00144b] object-cover ring-1 ring-emerald-400/80"
+                  className="w-7 h-7 rounded-full border-2 border-white object-cover ring-1 ring-[#0875D9]/40 shadow-xs"
                 />
               ))}
               {onlineCount > 5 && (
                 <div
                   onClick={() => setIsModalOpen(true)}
-                  className="w-7 h-7 rounded-full bg-black/50 border-2 border-[#00144b] text-emerald-300 text-[10px] font-bold font-mono flex items-center justify-center cursor-pointer hover:bg-black/70"
+                  className="w-7 h-7 rounded-full bg-blue-100 border-2 border-white text-[#0875D9] text-[10px] font-bold font-mono flex items-center justify-center cursor-pointer hover:bg-blue-200 shadow-xs"
                 >
                   +{onlineCount - 5}
                 </div>
@@ -113,7 +131,7 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
 
             <button
               onClick={() => setIsModalOpen(true)}
-              className="text-[11px] text-amber-300 hover:text-white hover:underline font-semibold transition-colors cursor-pointer"
+              className="text-[11px] text-[#0875D9] hover:underline font-bold transition-colors cursor-pointer"
             >
               Xem danh sách →
             </button>
@@ -121,37 +139,37 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
 
           {/* Realtime Status Sub-breakdown */}
           <div className="grid grid-cols-3 gap-1.5 pt-1 text-center text-[10px]">
-            <div className="p-1 rounded-lg bg-emerald-500/15 border border-emerald-400/20 backdrop-blur-md">
-              <span className="block text-emerald-300 font-mono font-bold text-xs">{activeCount}</span>
-              <span className="text-emerald-100/90 truncate block text-[9px]">🟢 Đang thao tác</span>
+            <div className="p-1 rounded-xl bg-emerald-50 border border-emerald-200/80">
+              <span className="block text-emerald-700 font-mono font-bold text-xs">{activeCount}</span>
+              <span className="text-emerald-800/80 truncate block text-[9px] font-medium">🟢 Thao tác</span>
             </div>
-            <div className="p-1 rounded-lg bg-amber-500/15 border border-amber-400/20 backdrop-blur-md">
-              <span className="block text-amber-300 font-mono font-bold text-xs">{idleCount}</span>
-              <span className="text-amber-100/90 truncate block text-[9px]">🟡 Treo tab</span>
+            <div className="p-1 rounded-xl bg-amber-50 border border-amber-200/80">
+              <span className="block text-amber-700 font-mono font-bold text-xs">{idleCount}</span>
+              <span className="text-amber-800/80 truncate block text-[9px] font-medium">🟡 Treo tab</span>
             </div>
-            <div className="p-1 rounded-lg bg-slate-500/20 border border-slate-400/20 backdrop-blur-md">
-              <span className="block text-slate-300 font-mono font-bold text-xs">{offlineCount}</span>
-              <span className="text-slate-200/90 truncate block text-[9px]">⚪ Vắng mặt</span>
+            <div className="p-1 rounded-xl bg-slate-100 border border-slate-200/80">
+              <span className="block text-slate-600 font-mono font-bold text-xs">{offlineCount}</span>
+              <span className="text-slate-600 truncate block text-[9px] font-medium">⚪ Vắng</span>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/10 my-1" />
+        <div className="border-t border-slate-100 my-1" />
 
         {/* SECTION 2: Số lượng Công việc cần hoàn thành */}
-        <div className="my-2 space-y-2">
+        <div className="my-2 space-y-1.5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CheckSquare className="w-4 h-4 text-amber-400" />
-              <span className="text-xs font-semibold text-blue-100">
+            <div className="flex items-center gap-1.5">
+              <CheckSquare className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-xs font-bold text-slate-700">
                 {variant === 'employee' ? 'Công Việc Của Bạn Cần Làm' : 'Công Việc Cần Hoàn Thành'}
               </span>
             </div>
             <div className="text-right">
-              <span className="text-xl sm:text-2xl font-mono font-extrabold text-amber-400">
+              <span className="text-xl font-mono font-extrabold text-amber-600">
                 {variant === 'employee' ? myPendingCount : totalPendingCount}
               </span>
-              <span className="text-xs font-semibold text-amber-200/90 font-sans ml-1">
+              <span className="text-xs font-semibold text-slate-400 font-sans ml-1">
                 nhiệm vụ
               </span>
             </div>
@@ -159,17 +177,17 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
 
           {/* Task Status Breakdown Pills */}
           <div className="grid grid-cols-3 gap-1.5 pt-0.5 text-center text-[10px]">
-            <div className="p-1.5 rounded-lg bg-white/10 border border-white/10 backdrop-blur-md">
-              <span className="block text-amber-300 font-mono font-bold text-xs">{inProgressCount}</span>
-              <span className="text-blue-100/80 truncate block">Đang làm</span>
+            <div className="p-1 rounded-xl bg-amber-50 border border-amber-200">
+              <span className="block text-amber-700 font-mono font-bold text-xs">{inProgressCount}</span>
+              <span className="text-amber-800/80 truncate block text-[9px] font-medium">Đang làm</span>
             </div>
-            <div className="p-1.5 rounded-lg bg-white/10 border border-white/10 backdrop-blur-md">
-              <span className="block text-amber-400 font-mono font-bold text-xs">{todoCount}</span>
-              <span className="text-blue-100/80 truncate block">Chờ làm</span>
+            <div className="p-1 rounded-xl bg-blue-50 border border-blue-200">
+              <span className="block text-[#0875D9] font-mono font-bold text-xs">{todoCount}</span>
+              <span className="text-blue-800/80 truncate block text-[9px] font-medium">Chờ làm</span>
             </div>
-            <div className="p-1.5 rounded-lg bg-white/10 border border-white/10 backdrop-blur-md">
-              <span className="block text-purple-300 font-mono font-bold text-xs">{reviewCount}</span>
-              <span className="text-blue-100/80 truncate block">Chờ duyệt</span>
+            <div className="p-1 rounded-xl bg-purple-50 border border-purple-200">
+              <span className="block text-purple-700 font-mono font-bold text-xs">{reviewCount}</span>
+              <span className="text-purple-800/80 truncate block text-[9px] font-medium">Chờ duyệt</span>
             </div>
           </div>
         </div>
@@ -180,7 +198,7 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
             setActiveTab('tasks');
             celebrate();
           }}
-          className="w-full mt-2 py-2 px-3 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-orange-500/20 transition-all active:scale-98 cursor-pointer border border-white/20 hover:brightness-105"
+          className="w-full mt-2 py-2 px-3 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-orange-500/20 transition-all active:scale-98 cursor-pointer border border-white/20 hover:brightness-105"
           style={{ background: 'linear-gradient(25deg, #ee6a23 0%, #f9a533 100%)' }}
         >
           <span>Xem & Xử Lý Công Việc</span>

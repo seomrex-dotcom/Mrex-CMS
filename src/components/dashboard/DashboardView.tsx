@@ -790,66 +790,152 @@ export const DashboardView: React.FC = () => {
         </div>
       )}
 
-      {/* Non-exec View (Personal KPI) */}
+      {/* Non-exec View (Personal KPI & Attendance & Online/Tasks) - 3D Glass Cards */}
       {!isExec && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* CARD 1: XẾP LOẠI HIỆU SUẤT / KPI - Pinterest 3D Glass */}
           <div
-            className="rounded-2xl p-5 text-white flex items-center gap-4 shadow-md"
-            style={{ background: 'linear-gradient(135deg, #063B78 0%, #0875D9 100%)' }}
+            className="relative overflow-hidden rounded-3xl p-5 border border-blue-200/70 shadow-lg shadow-blue-500/5 backdrop-blur-xl flex flex-col justify-between transition-all hover:shadow-xl hover:-translate-y-0.5 group"
+            style={{
+              background: 'linear-gradient(145deg, rgba(238, 246, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 50%, rgba(240, 246, 255, 0.9) 100%)'
+            }}
           >
-            <div className="relative w-16 h-16 shrink-0">
-              <svg viewBox="0 0 44 44" className="w-16 h-16 -rotate-90">
-                <circle cx="22" cy="22" r="18" className="stroke-blue-950" strokeWidth="4" fill="none" />
-                <circle
-                  cx="22"
-                  cy="22"
-                  r="18"
-                  stroke="#39A9FF"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeDasharray="113"
-                  strokeDashoffset={113 - (myKpi / 100) * 113}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center font-mono font-extrabold text-xs">
-                {myKpi >= 90 ? 'A+' : myKpi >= 80 ? 'A' : myKpi >= 70 ? 'B' : 'C'}
-              </span>
-            </div>
+            {/* Ambient Glow */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-400/15 rounded-full blur-2xl pointer-events-none" />
+
             <div>
-              <h4 className="text-sm font-bold">Xếp Loại Hiệu Suất</h4>
-              <p className="text-[11px] text-blue-200 mt-0.5">KPI: {myKpi}%</p>
+              {/* Header Badge */}
+              <div className="flex items-center justify-between pb-3 border-b border-blue-100/80">
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#0875D9]" />
+                  <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                    Hiệu Suất Cá Nhân
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0875D9]/12 text-[#0875D9] border border-[#0875D9]/25">
+                  Hạng {myKpi >= 90 ? 'A+' : myKpi >= 80 ? 'A' : myKpi >= 70 ? 'B' : 'C'}
+                </span>
+              </div>
+
+              {/* Main Content with 3D Glass Icon */}
+              <div className="my-4 flex items-center gap-4">
+                <div className="relative w-16 h-16 shrink-0 rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(8,117,217,0.22)] border border-white/90 group-hover:scale-105 transition-transform">
+                  <img
+                    src="/kpi_glass_3d.jpg"
+                    alt="KPI 3D Glass Icon"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-2xl font-black font-mono text-slate-900">
+                      {myKpi}%
+                    </span>
+                    <span className="text-xs font-semibold text-slate-500">
+                      chỉ số KPI
+                    </span>
+                  </div>
+                  <h4 className="text-xs font-bold text-[#063B78] truncate mt-0.5">
+                    Xếp Loại Hiệu Suất
+                  </h4>
+                  <div className="w-full bg-blue-100/70 h-2 rounded-full mt-2 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min(100, myKpi)}%`,
+                        background: 'linear-gradient(90deg, #0875D9 0%, #39A9FF 100%)'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <button
+              onClick={() => {
+                setActiveTab('performance');
+                celebrate();
+              }}
+              className="w-full py-2 px-3 bg-blue-50/80 hover:bg-blue-100/80 border border-blue-200/80 text-[#0875D9] font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer hover:shadow-xs"
+            >
+              <span>Xem Bảng Đánh Giá KPI</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
-          <div className="glass-card rounded-2xl p-5 border border-white/80 shadow-xs flex items-center gap-4">
-            <div className="relative w-16 h-16 shrink-0">
-              <svg viewBox="0 0 44 44" className="w-16 h-16 -rotate-90">
-                <circle cx="22" cy="22" r="18" className="stroke-slate-100" strokeWidth="4" fill="none" />
-                <circle
-                  cx="22"
-                  cy="22"
-                  r="18"
-                  stroke="#16C784"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeDasharray="113"
-                  strokeDashoffset={113 - (onTimeDays / 22) * 113}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center font-mono font-bold text-xs text-slate-800">
-                {onTimeDays}d
-              </span>
-            </div>
+          {/* CARD 2: CHUYÊN CẦN / NGÀY ĐÚNG GIỜ - Pinterest 3D Glass */}
+          <div
+            className="relative overflow-hidden rounded-3xl p-5 border border-emerald-200/70 shadow-lg shadow-emerald-500/5 backdrop-blur-xl flex flex-col justify-between transition-all hover:shadow-xl hover:-translate-y-0.5 group"
+            style={{
+              background: 'linear-gradient(145deg, rgba(236, 253, 245, 0.95) 0%, rgba(255, 255, 255, 0.98) 50%, rgba(240, 253, 244, 0.9) 100%)'
+            }}
+          >
+            {/* Ambient Glow */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-400/15 rounded-full blur-2xl pointer-events-none" />
+
             <div>
-              <h4 className="text-sm font-bold text-[#063B78]">{onTimeDays} Ngày Đúng Giờ</h4>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                {Math.round((onTimeDays / 22) * 100)}% — {onTimeDays >= 20 ? 'Đạt tiêu chuẩn khen thưởng' : 'Chưa đạt'}
-              </p>
+              {/* Header Badge */}
+              <div className="flex items-center justify-between pb-3 border-b border-emerald-100/80">
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                    Chuyên Cần & Đúng Giờ
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  Chuẩn 22 ngày
+                </span>
+              </div>
+
+              {/* Main Content with 3D Glass Icon */}
+              <div className="my-4 flex items-center gap-4">
+                <div className="relative w-16 h-16 shrink-0 rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(16,185,129,0.22)] border border-white/90 group-hover:scale-105 transition-transform">
+                  <img
+                    src="/attendance_glass_3d.jpg"
+                    alt="Attendance 3D Glass Icon"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-2xl font-black font-mono text-slate-900">
+                      {onTimeDays}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-500">
+                      / 22 ngày đúng giờ
+                    </span>
+                  </div>
+                  <h4 className="text-xs font-bold text-emerald-800 truncate mt-0.5">
+                    {Math.round((onTimeDays / 22) * 100)}% — {onTimeDays >= 20 ? 'Đạt chuẩn khen thưởng' : 'Cần duy trì đều đặn'}
+                  </h4>
+                  <div className="w-full bg-emerald-100/80 h-2 rounded-full mt-2 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min(100, Math.round((onTimeDays / 22) * 100))}%`,
+                        background: 'linear-gradient(90deg, #10B981 0%, #34D399 100%)'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <button
+              onClick={() => {
+                setActiveTab('attendance');
+                celebrate();
+              }}
+              className="w-full py-2 px-3 bg-emerald-50/80 hover:bg-emerald-100/80 border border-emerald-200/80 text-emerald-700 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer hover:shadow-xs"
+            >
+              <span>Xem Lịch Sử Chấm Công & GPS</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
+          {/* CARD 3: TRỰC TUYẾN & VIỆC CẦN LÀM - Synchronized OnlineAndTasksWidget */}
           <OnlineAndTasksWidget variant="employee" />
         </div>
       )}
