@@ -4,7 +4,7 @@ import { ActiveNavTab, BackgroundTheme } from '../../types';
 
 const BG_THEMES: { id: BackgroundTheme; label: string; preview: string }[] = [
   { id: 'modern_grid', label: 'Lưới Hiện Đại', preview: 'bg-slate-100 border-slate-300' },
-  { id: 'soft_mesh', label: 'Gradient Mềm Mại', preview: 'bg-gradient-to-tr from-indigo-100 via-sky-50 to-purple-100 border-indigo-300' },
+  { id: 'soft_mesh', label: 'Gradient Mềm Mại', preview: 'bg-gradient-to-tr from-indigo-100 via-sky-50 to-purple-100 border-[#0875D9]/40' },
   { id: 'pure_white', label: 'Trắng Tinh Khiết', preview: 'bg-white border-slate-300' },
   { id: 'dark_executive', label: 'Xám Kỹ Thuật', preview: 'bg-slate-800 border-slate-700' },
 ];

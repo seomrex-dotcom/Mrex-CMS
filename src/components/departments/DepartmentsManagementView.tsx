@@ -10,7 +10,7 @@ import { DepartmentFormModal } from './DepartmentFormModal';
 
 const LEVEL_LABELS: Record<number, { label: string; color: string; bg: string }> = {
   1: { label: 'Ban Giám Đốc', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200' },
-  2: { label: 'Phòng / Khối', color: 'text-indigo-700', bg: 'bg-indigo-50 border-indigo-200' },
+  2: { label: 'Phòng / Khối', color: 'text-[#0B4FA8]', bg: 'bg-[#EAF5FF] border-[#0875D9]/25' },
   3: { label: 'Tổ / Nhóm', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200' },
 };
 
@@ -168,7 +168,7 @@ export const DepartmentsManagementView: React.FC = () => {
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <button
                     onClick={() => handleEdit(dept)}
-                    className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                    className="p-2 text-slate-400 hover:text-[#0875D9] hover:bg-[#EAF5FF] rounded-lg transition-all"
                     title="Chỉnh sửa"
                   >
                     <Edit2 className="w-4 h-4" />
@@ -252,7 +252,7 @@ export const DepartmentsManagementView: React.FC = () => {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <Layers className="w-5 h-5 text-indigo-500" />
+            <Layers className="w-5 h-5 text-[#0875D9]" />
             Quản Lý Cơ Cấu Tổ Chức
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">Thêm, sửa, xoá phòng ban & cấu trúc phân cấp</p>
@@ -260,7 +260,7 @@ export const DepartmentsManagementView: React.FC = () => {
         {canManage && (
           <button
             onClick={handleAdd}
-            className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl shadow-sm transition-all flex items-center gap-2 min-h-[40px]"
+            className="px-4 py-2.5 bg-[#0875D9] hover:bg-[#065eb0] text-white text-sm font-bold rounded-xl shadow-sm transition-all flex items-center gap-2 min-h-[40px]"
           >
             <Plus className="w-4 h-4" />
             Thêm Phòng Ban
@@ -271,7 +271,7 @@ export const DepartmentsManagementView: React.FC = () => {
       {/* Stats Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Tổng phòng ban', value: departments.length, color: 'text-indigo-600', icon: Building2 },
+          { label: 'Tổng phòng ban', value: departments.length, color: 'text-[#0875D9]', icon: Building2 },
           { label: 'Đang hoạt động', value: totalActive, color: 'text-emerald-600', icon: CheckCircle2 },
           { label: 'Tổng nhân viên', value: totalEmployees, color: 'text-sky-600', icon: Users },
           { label: 'Đơn vị cấp con', value: departments.filter(d => !!d.parentId).length, color: 'text-violet-600', icon: GitBranch },
@@ -298,8 +298,8 @@ export const DepartmentsManagementView: React.FC = () => {
           </span>
         </div>
       ) : (
-        <div className="p-2.5 bg-indigo-50 border border-indigo-200 rounded-xl text-xs flex items-center gap-2 text-indigo-800">
-          <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+        <div className="p-2.5 bg-[#EAF5FF] border border-[#0875D9]/25 rounded-xl text-xs flex items-center gap-2 text-[#063B78]">
+          <Info className="w-3.5 h-3.5 text-[#0875D9] shrink-0" />
           <span>
             Quyền <strong>{currentUser.role === 'CEO' ? 'Ban Quản Trị' : 'Quản Lý'}</strong>:
             Bạn có thể thêm mới, chỉnh sửa và xoá cơ cấu phòng ban. Phòng ban có nhân viên sẽ không thể xoá trực tiếp.

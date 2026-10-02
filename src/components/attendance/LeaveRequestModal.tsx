@@ -81,7 +81,7 @@ export const LeaveRequestModal: React.FC<Props> = ({ isOpen, onClose }) => {
             </div>
             <div className="text-right">
               <div className="text-slate-500">Phép năm còn lại</div>
-              <div className="font-mono font-bold text-indigo-600 text-sm">{currentUser.annualLeaveRemaining} ngày</div>
+              <div className="font-mono font-bold text-[#0875D9] text-sm">{currentUser.annualLeaveRemaining} ngày</div>
             </div>
           </div>
 
@@ -91,7 +91,7 @@ export const LeaveRequestModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <select
               value={type}
               onChange={(e) => setType(e.target.value as LeaveType)}
-              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
             >
               <option value="ANNUAL">{getTypeName('ANNUAL')}</option>
               <option value="OVERTIME">{getTypeName('OVERTIME')}</option>
@@ -109,7 +109,7 @@ export const LeaveRequestModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 required
               />
             </div>
@@ -119,7 +119,7 @@ export const LeaveRequestModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 required
               />
             </div>
@@ -132,7 +132,7 @@ export const LeaveRequestModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 max="30"
                 value={totalDays}
                 onChange={(e) => setTotalDays(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 required
               />
             </div>
@@ -148,7 +148,7 @@ export const LeaveRequestModal: React.FC<Props> = ({ isOpen, onClose }) => {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder="VD: Nghỉ việc riêng gia đình; đã bàn giao đầu mối xử lý task gấp cho bạn Linh cùng phòng..."
-              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               required
             />
           </div>
@@ -163,7 +163,7 @@ export const LeaveRequestModal: React.FC<Props> = ({ isOpen, onClose }) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm transition-colors"
+              className="px-4 py-2 bg-[#0875D9] hover:bg-[#065eb0] text-white font-medium rounded-lg shadow-sm transition-colors"
             >
               Gửi Đơn Phê Duyệt
             </button>

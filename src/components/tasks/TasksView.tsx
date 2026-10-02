@@ -252,7 +252,7 @@ export const TasksView: React.FC = () => {
                   setNewTaskType('TEAM');
                   setShowNewTaskModal(true);
                 }}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs hover:shadow-md transition-all min-h-[40px] cursor-pointer"
+                className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-[#0875D9] hover:bg-[#065eb0] rounded-xl shadow-xs hover:shadow-md transition-all min-h-[40px] cursor-pointer"
                 title="Giao việc cho cả Phòng ban / Đội nhóm cùng phối hợp"
               >
                 <Users className="w-4 h-4" />
@@ -617,8 +617,8 @@ export const TasksView: React.FC = () => {
 
                         {/* Assignment Type Badge */}
                         {task.assignmentType === 'TEAM' ? (
-                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-50 border border-indigo-200/80 text-indigo-700 rounded-md font-semibold text-[10px] w-fit">
-                            <Users className="w-3 h-3 text-indigo-600 shrink-0" />
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#EAF5FF] border border-[#0875D9]/25/80 text-[#0B4FA8] rounded-md font-semibold text-[10px] w-fit">
+                            <Users className="w-3 h-3 text-[#0875D9] shrink-0" />
                             <span>Việc Team: {task.teamName || dept?.name || 'Team'}</span>
                           </div>
                         ) : (

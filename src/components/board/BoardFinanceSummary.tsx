@@ -189,7 +189,7 @@ export const BoardFinanceSummary: React.FC = () => {
             <span className="font-semibold text-slate-500">Dòng Tiền Ròng (Thu - Chi)</span>
             <div
               className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                isSurplus ? 'bg-indigo-50 text-indigo-600' : 'bg-rose-50 text-rose-600'
+                isSurplus ? 'bg-[#EAF5FF] text-[#0875D9]' : 'bg-rose-50 text-rose-600'
               }`}
             >
               <TrendingUp className="w-4 h-4" />
@@ -197,7 +197,7 @@ export const BoardFinanceSummary: React.FC = () => {
           </div>
           <div
             className={`text-lg sm:text-xl font-bold font-mono tabular-nums ${
-              isSurplus ? 'text-indigo-700' : 'text-rose-600'
+              isSurplus ? 'text-[#0B4FA8]' : 'text-rose-600'
             }`}
           >
             {isSurplus ? `+${formatVND(netCashFlow)}` : formatVND(netCashFlow)}
@@ -250,7 +250,7 @@ export const BoardFinanceSummary: React.FC = () => {
             <button
               onClick={() => setSelectedType('ALL')}
               className={`px-3 py-1 rounded-lg font-semibold transition-all ${
-                selectedType === 'ALL' ? 'bg-white text-indigo-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                selectedType === 'ALL' ? 'bg-white text-[#0875D9] shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Tất cả ({filteredVouchers.length})
@@ -281,7 +281,7 @@ export const BoardFinanceSummary: React.FC = () => {
               placeholder="Tìm mã chứng từ, người nộp/nhận, lý do..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
             />
           </div>
         </div>
@@ -472,7 +472,7 @@ export const BoardFinanceSummary: React.FC = () => {
                     <td className="py-3 px-3 text-center">
                       <button
                         onClick={() => setPrintingVoucher(v)}
-                        className="p-1.5 text-indigo-600 hover:text-white hover:bg-indigo-600 rounded-lg transition-colors border border-indigo-200 shadow-2xs"
+                        className="p-1.5 text-[#0875D9] hover:text-white hover:bg-[#0875D9] rounded-lg transition-colors border border-[#0875D9]/25 shadow-2xs"
                         title="Xem và in phiếu thu / chi chuẩn kế toán"
                       >
                         <Printer className="w-3.5 h-3.5" />

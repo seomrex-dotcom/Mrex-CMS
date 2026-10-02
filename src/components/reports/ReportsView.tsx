@@ -153,7 +153,7 @@ export const ReportsView: React.FC = () => {
           <button
             onClick={handleGenerateAIReport}
             disabled={isGeneratingAI}
-            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-xs transition-colors min-h-[44px]"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0875D9] hover:bg-[#065eb0] rounded-lg shadow-xs transition-colors min-h-[44px]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>{isGeneratingAI ? 'AI đang tổng hợp...' : 'AI Tổng Hợp Điều Hành'}</span>
@@ -163,10 +163,10 @@ export const ReportsView: React.FC = () => {
 
       {/* AI Generated Briefing Modal / Card if active */}
       {aiReportText && (
-        <div className="bg-indigo-50/70 border border-indigo-200 rounded-xl p-6 space-y-4 text-xs animate-in fade-in duration-200">
-          <div className="flex items-center justify-between pb-2 border-b border-indigo-200">
+        <div className="bg-blue-50/70 border border-[#0875D9]/25 rounded-xl p-6 space-y-4 text-xs animate-in fade-in duration-200">
+          <div className="flex items-center justify-between pb-2 border-b border-[#0875D9]/25">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-700" />
+              <Sparkles className="w-4 h-4 text-[#0B4FA8]" />
               <h3 className="font-bold text-indigo-950 text-sm">
                 Bản Tóm Tắt Điều Hành Do AI Tổng Hợp (Executive Brief)
               </h3>
@@ -191,7 +191,7 @@ export const ReportsView: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-2">
           <div className="flex items-center justify-between text-slate-500 text-xs">
             <span>Tỷ lệ chuyên cần</span>
-            <Clock className="w-4 h-4 text-indigo-600" />
+            <Clock className="w-4 h-4 text-[#0875D9]" />
           </div>
           <div className="text-2xl font-mono font-bold text-slate-900 tabular-nums">
             {onTimeRate}%
@@ -219,7 +219,7 @@ export const ReportsView: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-2">
           <div className="flex items-center justify-between text-slate-500 text-xs">
             <span>Điểm KPI trung bình</span>
-            <TrendingUp className="w-4 h-4 text-indigo-600" />
+            <TrendingUp className="w-4 h-4 text-[#0875D9]" />
           </div>
           <div className="text-2xl font-mono font-bold text-slate-900 tabular-nums">
             {avgKpi.toFixed(2)}
@@ -323,10 +323,10 @@ export const ReportsView: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="font-medium text-slate-700">Loại A (Tốt - 40-50%)</span>
-                <span className="font-mono font-bold text-indigo-700">1 nhân sự (33%)</span>
+                <span className="font-mono font-bold text-[#0B4FA8]">1 nhân sự (33%)</span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                <div className="bg-indigo-600 h-full rounded-full" style={{ width: '33%' }} />
+                <div className="bg-[#0875D9] h-full rounded-full" style={{ width: '33%' }} />
               </div>
             </div>
 
@@ -363,10 +363,10 @@ export const ReportsView: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="font-medium text-slate-700">Tại Văn Phòng T17-31 Manhattan Glory, Vinhomes Grand Park, Q.9, TP.HCM</span>
-                <span className="font-mono font-bold text-indigo-700">80%</span>
+                <span className="font-mono font-bold text-[#0B4FA8]">80%</span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                <div className="bg-indigo-600 h-full rounded-full" style={{ width: '80%' }} />
+                <div className="bg-[#0875D9] h-full rounded-full" style={{ width: '80%' }} />
               </div>
             </div>
 

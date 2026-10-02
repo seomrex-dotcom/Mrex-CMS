@@ -98,9 +98,9 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
     } else if (emp.role === 'MANAGER') {
       roleBadge = {
         label: 'Cấp Quản Lý (Lead)',
-        color: 'bg-indigo-100 text-indigo-900 border-indigo-200 font-bold',
+        color: 'bg-blue-100 text-[#00144b] border-[#0875D9]/25 font-bold',
         icon: '🛡️',
-        cardBorder: 'border-indigo-300'
+        cardBorder: 'border-[#0875D9]/40'
       };
     } else if (emp.role === 'HR') {
       roleBadge = {
@@ -117,7 +117,7 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
         <div
           className={`relative bg-white rounded-2xl shadow-sm border transition-all duration-200 p-4 w-72 sm:w-80 group hover:shadow-md ${
             roleBadge.cardBorder
-          } ${isCurrentUser ? 'ring-2 ring-indigo-600 bg-indigo-50/20' : ''}`}
+          } ${isCurrentUser ? 'ring-2 ring-[#0875D9] bg-[#EAF5FF]/20' : ''}`}
         >
           {/* Top role header & code */}
           <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
@@ -141,7 +141,7 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
                 className="w-12 h-12 rounded-xl object-cover border border-slate-200 shadow-xs"
               />
               {isCurrentUser && (
-                <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-indigo-600 text-white rounded-full flex items-center justify-center text-[9px] font-bold ring-2 ring-white">
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#0875D9] text-white rounded-full flex items-center justify-center text-[9px] font-bold ring-2 ring-white">
                   ✓
                 </span>
               )}
@@ -151,7 +151,7 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
               <div className="flex items-center gap-1.5">
                 <h4 className="font-bold text-xs sm:text-sm text-slate-900 truncate">{emp.name}</h4>
               </div>
-              <div className="text-[11px] font-medium text-indigo-700 truncate mt-0.5">
+              <div className="text-[11px] font-medium text-[#0B4FA8] truncate mt-0.5">
                 {emp.roleTitle}
               </div>
               <div className="text-[10px] text-slate-500 truncate font-sans">
@@ -166,7 +166,7 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
               <Briefcase className="w-3 h-3 text-slate-400" />
               <span>{activeTasks} việc đang làm</span>
             </div>
-            <div className="text-right text-indigo-600 font-semibold">
+            <div className="text-right text-[#0875D9] font-semibold">
               {hasSubordinates ? `${subordinates.length} trực thuộc` : 'Thành viên'}
             </div>
           </div>
@@ -186,10 +186,10 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
 
                 <button
                   onClick={() => onAddSubordinate(emp.id, emp.departmentId)}
-                  className="py-1.5 px-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-[11px] font-semibold transition-colors flex items-center justify-center gap-1"
+                  className="py-1.5 px-2 bg-[#EAF5FF] hover:bg-blue-100 text-[#0B4FA8] rounded-lg text-[11px] font-semibold transition-colors flex items-center justify-center gap-1"
                   title="Thêm nhân sự cấp dưới báo cáo cho người này"
                 >
-                  <UserPlus className="w-3 h-3 text-indigo-600" />
+                  <UserPlus className="w-3 h-3 text-[#0875D9]" />
                   <span className="hidden sm:inline">Thêm cấp dưới</span>
                 </button>
               </>
@@ -221,11 +221,11 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
           {hasSubordinates && (
             <button
               onClick={() => toggleCollapse(emp.id)}
-              className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 w-7 h-7 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-full shadow-xs flex items-center justify-center text-xs transition-all z-10"
+              className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 w-7 h-7 bg-white border border-slate-300 hover:border-[#0875D9] hover:bg-[#EAF5FF] text-slate-600 hover:text-[#0875D9] rounded-full shadow-xs flex items-center justify-center text-xs transition-all z-10"
               title={isCollapsed ? 'Mở rộng cấp dưới' : 'Thu gọn cấp dưới'}
             >
               {isCollapsed ? (
-                <span className="font-bold text-[11px] text-indigo-600">+{subordinates.length}</span>
+                <span className="font-bold text-[11px] text-[#0875D9]">+{subordinates.length}</span>
               ) : (
                 <ChevronDown className="w-4 h-4" />
               )}
@@ -297,7 +297,7 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
           </div>
           <div>
             <span>Quản lý & Trưởng khối: </span>
-            <span className="font-bold text-indigo-600">{managersCount}</span>
+            <span className="font-bold text-[#0875D9]">{managersCount}</span>
           </div>
           <div>
             <span>Tỷ lệ span-of-control: </span>
@@ -335,8 +335,8 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
           </div>
         </div>
       ) : (
-        <div className="p-2.5 bg-indigo-50/80 border border-indigo-200 text-indigo-950 rounded-xl text-xs flex items-center gap-2 shadow-xs">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+        <div className="p-2.5 bg-blue-50/80 border border-[#0875D9]/25 text-indigo-950 rounded-xl text-xs flex items-center gap-2 shadow-xs">
+          <Sparkles className="w-3.5 h-3.5 text-[#0875D9] shrink-0" />
           <span>
             <strong>Quyền Quản Trị Sơ Đồ Cây ({currentUser.role === 'CEO' ? 'Ban Quản Trị' : 'Cấp Quản Lý'}):</strong> Bạn có toàn quyền bấm <strong>"Sửa"</strong> để cập nhật hồ sơ hoặc <strong>"Thêm cấp dưới"</strong> trực tiếp trên từng nhánh chỉ huy.
           </span>
@@ -360,7 +360,7 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
           <span className="flex items-center gap-1 font-medium text-amber-800">
             <span>👑</span> Ban Quản Trị / CEO
           </span>
-          <span className="flex items-center gap-1 font-medium text-indigo-800">
+          <span className="flex items-center gap-1 font-medium text-[#063B78]">
             <span>🛡️</span> Cấp Quản Lý / PM / Trưởng Phòng
           </span>
           <span className="flex items-center gap-1 font-medium text-emerald-800">

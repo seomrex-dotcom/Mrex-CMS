@@ -29,7 +29,7 @@ const BG_THEMES: { id: BackgroundTheme; label: string; desc: string; preview: st
     id: 'soft_mesh',
     label: 'Gradient Mềm Mại',
     desc: 'Hào quang Indigo & Sky êm dịu, tinh tế',
-    preview: 'bg-gradient-to-tr from-indigo-100 via-sky-50 to-purple-100 border-indigo-300'
+    preview: 'bg-gradient-to-tr from-indigo-100 via-sky-50 to-purple-100 border-[#0875D9]/40'
   },
   {
     id: 'pure_white',
@@ -177,7 +177,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
             >
               <Bell className="w-4 h-4" />
               {pendingApprovalsCount > 0 && (
-                <span className="absolute top-2 right-2 w-2 h-2 bg-indigo-600 rounded-full" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-[#0875D9] rounded-full" />
               )}
             </button>
 
@@ -187,7 +187,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                   <span className="font-semibold text-slate-900">Thông báo ({pendingApprovalsCount})</span>
                   <button
                     onClick={() => { setShowNotifications(false); setActiveTab('attendance'); }}
-                    className="text-indigo-600 hover:underline"
+                    className="text-[#0875D9] hover:underline"
                   >
                     Xem đơn từ
                   </button>
@@ -222,7 +222,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                 }}
               className={`p-2 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
                 showThemePicker
-                  ? 'bg-indigo-50 text-indigo-600'
+                  ? 'bg-[#EAF5FF] text-[#0875D9]'
                   : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
               }`}
               title="Đổi màu nền & giao diện"
@@ -238,7 +238,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                     <div className="text-xs font-semibold text-slate-900">Chọn Kiểu Nền Toàn Doanh Nghiệp (Ban Giám Đốc)</div>
                     <div className="text-[11px] text-slate-500">Áp dụng đồng bộ ngay lập tức cho tất cả nhân sự & cấp bậc</div>
                   </div>
-                  <span className="text-[10px] font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded font-semibold uppercase">
+                  <span className="text-[10px] font-mono text-[#0875D9] bg-[#EAF5FF] px-2 py-0.5 rounded font-semibold uppercase">
                     Inter 100%
                   </span>
                 </div>
@@ -254,20 +254,20 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                         }}
                         className={`w-full text-left p-2.5 rounded-lg flex items-center gap-3 transition-colors ${
                           isSelected
-                            ? 'bg-indigo-50/80 border border-indigo-200 text-indigo-950'
+                            ? 'bg-blue-50/80 border border-[#0875D9]/25 text-indigo-950'
                             : 'hover:bg-slate-50 border border-transparent text-slate-700'
                         }`}
                       >
                         <div
                           className={`w-8 h-8 rounded-md border flex items-center justify-center shrink-0 shadow-xs ${theme.preview}`}
                         >
-                          {isSelected && <Check className="w-4 h-4 text-indigo-600" />}
+                          {isSelected && <Check className="w-4 h-4 text-[#0875D9]" />}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold">{theme.label}</span>
                             {isSelected && (
-                              <span className="text-[10px] text-indigo-600 font-medium">Đang dùng</span>
+                              <span className="text-[10px] text-[#0875D9] font-medium">Đang dùng</span>
                             )}
                           </div>
                           <p className="text-[11px] text-slate-500 truncate">{theme.desc}</p>
@@ -319,7 +319,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                   <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
                     Chuyển tài khoản nhân sự
                   </span>
-                  <span className="text-[10px] font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded font-semibold">
+                  <span className="text-[10px] font-mono text-[#0875D9] bg-[#EAF5FF] px-2 py-0.5 rounded font-semibold">
                     {currentUser.role}
                   </span>
                 </div>
@@ -332,7 +332,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                         setShowUserDropdown(false);
                       }}
                       className={`w-full text-left px-3.5 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors ${
-                        emp.id === currentUser.id ? 'bg-indigo-50/70' : ''
+                        emp.id === currentUser.id ? 'bg-blue-50/70' : ''
                       }`}
                     >
                       <img
@@ -346,7 +346,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                           <span className="text-xs font-semibold text-slate-800 truncate">{emp.name}</span>
                           <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded font-semibold ${
                             emp.role === 'CEO' ? 'bg-amber-100 text-amber-800' :
-                            emp.role === 'MANAGER' ? 'bg-indigo-100 text-indigo-800' :
+                            emp.role === 'MANAGER' ? 'bg-blue-100 text-[#063B78]' :
                             emp.role === 'HR' ? 'bg-emerald-100 text-emerald-800' :
                             'bg-slate-100 text-slate-700'
                           }`}>
@@ -358,7 +358,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
                         <span className="text-[11px] text-slate-500 truncate block">{emp.roleTitle}</span>
                       </div>
                       {emp.id === currentUser.id && (
-                        <UserCheck className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <UserCheck className="w-4 h-4 text-[#0875D9] shrink-0" />
                       )}
                     </button>
                   ))}

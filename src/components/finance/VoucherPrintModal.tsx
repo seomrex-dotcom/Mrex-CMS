@@ -101,7 +101,7 @@ export const VoucherPrintModal: React.FC<Props> = ({ voucher, isOpen, onClose })
             <div>
               <h3 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-2">
                 <span>Xem & Xuất {voucherTitle}</span>
-                <span className="font-mono text-[11px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                <span className="font-mono text-[11px] text-[#0B4FA8] bg-[#EAF5FF] px-2 py-0.5 rounded border border-[#0875D9]/25">
                   {voucher.code}
                 </span>
               </h3>
@@ -120,7 +120,7 @@ export const VoucherPrintModal: React.FC<Props> = ({ voucher, isOpen, onClose })
 
             <button
               onClick={handlePrint}
-              className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
+              className="px-3.5 py-1.5 bg-[#0875D9] hover:bg-[#065eb0] text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
               title="In trực tiếp ra giấy hoặc lưu thành file PDF"
             >
               <Printer className="w-3.5 h-3.5" />
@@ -182,7 +182,7 @@ export const VoucherPrintModal: React.FC<Props> = ({ voucher, isOpen, onClose })
                 Ngày {day} tháng {month} năm {year}
               </div>
               <div className="text-xs font-mono font-semibold text-slate-700">
-                Số: <span className="text-indigo-700 font-bold">{voucher.code}</span>
+                Số: <span className="text-[#0B4FA8] font-bold">{voucher.code}</span>
               </div>
             </div>
 
@@ -232,7 +232,7 @@ export const VoucherPrintModal: React.FC<Props> = ({ voucher, isOpen, onClose })
               {/* Amount Highlight */}
               <div className="flex items-baseline pt-1">
                 <span className="font-bold text-slate-900 w-44 shrink-0">Số tiền thanh toán:</span>
-                <span className="flex-1 text-base font-extrabold text-indigo-900 font-mono border-b border-slate-300 pb-0.5">
+                <span className="flex-1 text-base font-extrabold text-[#00144b] font-mono border-b border-slate-300 pb-0.5">
                   {formattedAmount}
                 </span>
               </div>

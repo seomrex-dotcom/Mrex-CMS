@@ -190,7 +190,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                     ? `Chỉnh Sửa ${type === 'RECEIPT' ? 'Phiếu Thu' : 'Phiếu Chi'}`
                     : `Lập ${type === 'RECEIPT' ? 'Phiếu Thu Tiền' : 'Phiếu Chi Tiền'} Mới`}
                 </h2>
-                <span className="font-mono text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
+                <span className="font-mono text-xs font-semibold text-[#0B4FA8] bg-[#EAF5FF] border border-[#0875D9]/25 px-2 py-0.5 rounded">
                   {code}
                 </span>
               </div>
@@ -269,7 +269,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                 type="text"
                 value={code}
                 onChange={e => setCode(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 required
               />
             </div>
@@ -280,14 +280,14 @@ export const VoucherFormModal: React.FC<Props> = ({
                 type="date"
                 value={date}
                 onChange={e => setDate(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 required
               />
             </div>
           </div>
 
           {/* Amount & Vietnamese Words Preview */}
-          <div className="p-3.5 bg-indigo-50/50 border border-indigo-100 rounded-xl space-y-2">
+          <div className="p-3.5 bg-[#EAF5FF]/50 border border-indigo-100 rounded-xl space-y-2">
             <div>
               <label className="block font-bold text-slate-900 mb-1">
                 Số tiền thanh toán (VNĐ) <span className="text-rose-500">*</span>
@@ -299,7 +299,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                   step="10000"
                   value={amountVND}
                   onChange={e => setAmountVND(Number(e.target.value) || 0)}
-                  className="w-full pl-3 pr-14 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold font-mono text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-3 pr-14 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold font-mono text-[#00144b] focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                   required
                 />
                 <span className="absolute right-3 top-2.5 font-bold text-xs text-slate-400 font-mono">
@@ -308,8 +308,8 @@ export const VoucherFormModal: React.FC<Props> = ({
               </div>
             </div>
 
-            <div className="flex items-start gap-1.5 text-[11px] text-indigo-900 bg-white p-2 rounded-lg border border-indigo-100">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-1.5 text-[11px] text-[#00144b] bg-white p-2 rounded-lg border border-indigo-100">
+              <Sparkles className="w-3.5 h-3.5 text-[#0875D9] shrink-0 mt-0.5" />
               <div className="leading-tight">
                 <span className="font-semibold text-slate-500">Bằng chữ: </span>
                 <span className="font-bold text-indigo-950 italic">{amountInWords}</span>
@@ -327,7 +327,7 @@ export const VoucherFormModal: React.FC<Props> = ({
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder={type === 'RECEIPT' ? 'Ví dụ: Thu tiền hợp đồng triển khai phần mềm...' : 'Ví dụ: Chi trả lương nhân viên tháng 09...'}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               required
             />
           </div>
@@ -339,7 +339,7 @@ export const VoucherFormModal: React.FC<Props> = ({
               <select
                 value={category}
                 onChange={e => setCategory(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               >
                 {categoriesList.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
@@ -352,7 +352,7 @@ export const VoucherFormModal: React.FC<Props> = ({
               <select
                 value={paymentMethod}
                 onChange={e => setPaymentMethod(e.target.value as PaymentMethod)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               >
                 <option value="BANK_TRANSFER">Chuyển khoản Ngân hàng (Ủy nhiệm chi)</option>
                 <option value="CASH">Tiền mặt tại quỹ</option>
@@ -363,7 +363,7 @@ export const VoucherFormModal: React.FC<Props> = ({
           {/* Payer or Payee Info */}
           <div className="p-3 border border-slate-200 rounded-xl space-y-3 bg-slate-50/50">
             <div className="font-semibold text-slate-800 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-indigo-600" />
+              <User className="w-3.5 h-3.5 text-[#0875D9]" />
               <span>{type === 'RECEIPT' ? 'Thông tin Người nộp tiền' : 'Thông tin Người nhận tiền'}</span>
             </div>
 
@@ -375,7 +375,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                   value={payerOrPayee}
                   onChange={e => setPayerOrPayee(e.target.value)}
                   placeholder="Họ tên cá nhân hoặc tên Doanh nghiệp"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                   required
                 />
               </div>
@@ -387,7 +387,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                   value={payerOrPayeePhone}
                   onChange={e => setPayerOrPayeePhone(e.target.value)}
                   placeholder="0912 xxx xxx"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 />
               </div>
             </div>
@@ -399,7 +399,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                 value={payerOrPayeeAddress}
                 onChange={e => setPayerOrPayeeAddress(e.target.value)}
                 placeholder="Địa chỉ trụ sở hoặc tên phòng ban nội bộ"
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               />
             </div>
           </div>
@@ -413,7 +413,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                 value={referenceDoc}
                 onChange={e => setReferenceDoc(e.target.value)}
                 placeholder="HĐ số..., Hóa đơn GTGT..., Tờ trình..."
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               />
             </div>
 
@@ -423,7 +423,7 @@ export const VoucherFormModal: React.FC<Props> = ({
                 type="text"
                 value={approverName}
                 onChange={e => setApproverName(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               />
             </div>
           </div>
@@ -436,7 +436,7 @@ export const VoucherFormModal: React.FC<Props> = ({
               value={notes}
               onChange={e => setNotes(e.target.value)}
               placeholder="Thông tin tài khoản ngân hàng, mốc nghiệm thu, điều khoản thanh toán..."
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
             />
           </div>
 

@@ -319,7 +319,7 @@ export const ProductionView: React.FC = () => {
         <div className="p-5 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-md transition-all">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-semibold">Danh Mục Mặt Hàng</span>
-            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-600">
+            <div className="p-2 rounded-xl bg-[#0875D9]/10 text-[#0875D9]">
               <Package className="w-4 h-4" />
             </div>
           </div>

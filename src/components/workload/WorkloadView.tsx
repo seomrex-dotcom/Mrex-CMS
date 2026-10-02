@@ -77,7 +77,7 @@ export const WorkloadView: React.FC = () => {
             <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
               Điều Phối Tải Công Việc & Nghiệm Thu Phòng Ban
             </h1>
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">
+            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#EAF5FF] text-[#0B4FA8] font-semibold border border-[#0875D9]/25">
               Cấp Quản Lý / PM
             </span>
           </div>
@@ -101,7 +101,7 @@ export const WorkloadView: React.FC = () => {
           {isManagement ? (
             <button
               onClick={() => setShowNewTaskModal(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-xs transition-colors min-h-[44px] cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0875D9] hover:bg-[#065eb0] rounded-lg shadow-xs transition-colors min-h-[44px] cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Giao Việc Cho Team</span>
@@ -125,7 +125,7 @@ export const WorkloadView: React.FC = () => {
 
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-1">
           <div className="text-xs text-slate-500">Đầu việc đang thực thi</div>
-          <div className="text-2xl font-mono font-bold text-indigo-600">{activeTasks.length} task</div>
+          <div className="text-2xl font-mono font-bold text-[#0875D9]">{activeTasks.length} task</div>
           <div className="text-[11px] text-slate-400">Đang chạy trong sprint</div>
         </div>
 
@@ -171,7 +171,7 @@ export const WorkloadView: React.FC = () => {
                     <div className="flex items-center gap-2 text-xs">
                       <span className="font-semibold text-slate-900">{t.title}</span>
                       <span className="text-slate-400">·</span>
-                      <span className="font-mono text-indigo-700">{t.progress}%</span>
+                      <span className="font-mono text-[#0B4FA8]">{t.progress}%</span>
                     </div>
                     <div className="text-[11px] text-slate-500 flex items-center gap-2">
                       <img src={assignee?.avatar} alt="" className="w-4 h-4 rounded-full object-cover" />

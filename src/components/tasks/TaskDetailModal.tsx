@@ -161,15 +161,15 @@ export const TaskDetailModal: React.FC<Props> = ({ taskId, onClose }) => {
           <div className="lg:col-span-2 p-6 space-y-6 max-h-[72vh] overflow-y-auto">
             {/* Assignment Type Banner */}
             {task.assignmentType === 'TEAM' ? (
-              <div className="p-3 bg-gradient-to-r from-indigo-50 via-blue-50/50 to-white border border-indigo-200/90 rounded-xl flex items-center justify-between text-xs">
+              <div className="p-3 bg-gradient-to-r from-indigo-50 via-blue-50/50 to-white border border-[#0875D9]/25/90 rounded-xl flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 text-[#0B4FA8] flex items-center justify-center font-bold">
                     <Users className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="font-bold text-indigo-950 flex items-center gap-2">
                       <span>Nhiệm Vụ Phối Hợp Team: {task.teamName || department?.name}</span>
-                      <span className="px-2 py-0.5 bg-indigo-600 text-white rounded text-[10px] font-bold">Việc Team</span>
+                      <span className="px-2 py-0.5 bg-[#0875D9] text-white rounded text-[10px] font-bold">Việc Team</span>
                     </div>
                     <div className="text-[11px] text-slate-600 mt-0.5 flex flex-wrap items-center gap-2">
                       <span>Đầu mối chính: <strong>{assignee?.name}</strong></span>
@@ -653,7 +653,7 @@ export const TaskDetailModal: React.FC<Props> = ({ taskId, onClose }) => {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">Hạn chót (Deadline):</span>
-                <span className="font-mono font-bold text-indigo-700">{task.dueDate}</span>
+                <span className="font-mono font-bold text-[#0B4FA8]">{task.dueDate}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">Kế hoạch / Thực tế:</span>

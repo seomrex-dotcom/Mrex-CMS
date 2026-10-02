@@ -276,8 +276,8 @@ export const DepartmentFormModal: React.FC<Props> = ({ isOpen, onClose, editingD
           </div>
 
           {/* Permission note */}
-          <div className="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-[11px] text-indigo-700 flex items-start gap-2">
-            <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0 text-indigo-500" />
+          <div className="p-3 bg-[#EAF5FF] border border-[#0875D9]/25 rounded-xl text-[11px] text-[#0B4FA8] flex items-start gap-2">
+            <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#0875D9]" />
             <span>
               Đang thao tác với quyền <strong>{currentUser.roleTitle}</strong>.
               Mọi thay đổi được ghi nhận thời gian và người chỉnh sửa.
@@ -295,7 +295,7 @@ export const DepartmentFormModal: React.FC<Props> = ({ isOpen, onClose, editingD
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-all flex items-center gap-2 min-h-[40px]"
+              className="px-5 py-2.5 text-sm font-bold text-white bg-[#0875D9] hover:bg-[#065eb0] rounded-xl shadow-sm transition-all flex items-center gap-2 min-h-[40px]"
             >
               <Save className="w-4 h-4" />
               {isEditing ? 'Lưu Thay Đổi' : 'Tạo Phòng Ban'}

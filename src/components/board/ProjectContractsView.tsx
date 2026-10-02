@@ -240,11 +240,11 @@ export const ProjectContractsView: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-500">Tổng Doanh Thu Hợp Đồng Ký Kết</span>
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#EAF5FF] text-[#0875D9] flex items-center justify-center">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-lg sm:text-xl font-bold font-mono text-indigo-700 tabular-nums mt-2">
+          <div className="text-lg sm:text-xl font-bold font-mono text-[#0B4FA8] tabular-nums mt-2">
             {formatVND(totalContractRevenue)}
           </div>
           <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1 font-mono">
@@ -313,7 +313,7 @@ export const ProjectContractsView: React.FC = () => {
               placeholder="Tìm mã HĐ, tên dự án, khách hàng..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
             />
           </div>
 
@@ -322,7 +322,7 @@ export const ProjectContractsView: React.FC = () => {
             <button
               onClick={() => setStatusFilter('ALL')}
               className={`px-3 py-1 rounded-lg font-semibold transition-all ${
-                statusFilter === 'ALL' ? 'bg-white text-indigo-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                statusFilter === 'ALL' ? 'bg-white text-[#0875D9] shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Tất cả ({contracts.length})
@@ -346,7 +346,7 @@ export const ProjectContractsView: React.FC = () => {
             <button
               onClick={() => setStatusFilter('COMPLETED')}
               className={`px-3 py-1 rounded-lg font-semibold transition-all ${
-                statusFilter === 'COMPLETED' ? 'bg-white text-indigo-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                statusFilter === 'COMPLETED' ? 'bg-white text-[#0875D9] shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Đã hoàn tất
@@ -357,7 +357,7 @@ export const ProjectContractsView: React.FC = () => {
         {/* Add Contract Button */}
         <button
           onClick={() => handleOpenAddModal()}
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-xs transition-colors flex items-center gap-1.5"
+          className="px-4 py-2 bg-[#0875D9] hover:bg-[#065eb0] text-white rounded-xl font-bold shadow-xs transition-colors flex items-center gap-1.5"
         >
           <Plus className="w-4 h-4" />
           <span>Thêm Hợp Đồng Dự Án Mới</span>
@@ -381,7 +381,7 @@ export const ProjectContractsView: React.FC = () => {
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                 <div className="space-y-1">
                   <div className="flex flex-wrap items-center gap-2 text-xs">
-                    <span className="font-mono px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold border border-indigo-200">
+                    <span className="font-mono px-2 py-0.5 rounded bg-[#EAF5FF] text-[#0B4FA8] font-bold border border-[#0875D9]/25">
                       {contract.contractCode}
                     </span>
                     <span className="text-slate-300">·</span>
@@ -408,7 +408,7 @@ export const ProjectContractsView: React.FC = () => {
                         ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                         : contract.status === 'PENDING_PAYMENT'
                         ? 'bg-amber-50 text-amber-700 border-amber-200'
-                        : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                        : 'bg-[#EAF5FF] text-[#0B4FA8] border-[#0875D9]/25'
                     }`}
                   >
                     {contract.status === 'COMPLETED'
@@ -421,7 +421,7 @@ export const ProjectContractsView: React.FC = () => {
                   {/* Edit / Delete for Management */}
                   <button
                     onClick={() => handleOpenAddModal(contract)}
-                    className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-[#0875D9] hover:bg-[#EAF5FF] rounded-lg transition-colors"
                     title="Chỉnh sửa hợp đồng"
                   >
                     <Edit className="w-4 h-4" />
@@ -479,14 +479,14 @@ export const ProjectContractsView: React.FC = () => {
                 {/* Contract Attached File (5 cols) */}
                 <div className="md:col-span-5 md:border-l md:border-slate-200 md:pl-4 space-y-2">
                   <div className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                    <FileCheck className="w-3.5 h-3.5 text-indigo-600" />
+                    <FileCheck className="w-3.5 h-3.5 text-[#0875D9]" />
                     <span>Tệp Hợp Đồng Đính Kèm</span>
                   </div>
 
                   {contract.fileName ? (
                     <div className="flex items-center justify-between gap-2 p-2 bg-white border border-slate-200 rounded-lg">
                       <div className="flex items-center gap-2 min-w-0">
-                        <FileText className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <FileText className="w-4 h-4 text-[#0875D9] shrink-0" />
                         <div className="min-w-0">
                           <div className="font-semibold text-slate-800 truncate text-[11px]">
                             {contract.fileName}
@@ -508,7 +508,7 @@ export const ProjectContractsView: React.FC = () => {
                             alert(`Mở xem tệp hợp đồng số hóa: ${contract.fileName}`);
                           }
                         }}
-                        className="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded text-[11px] flex items-center gap-1 shrink-0 transition-colors"
+                        className="px-2.5 py-1 bg-[#EAF5FF] hover:bg-blue-100 text-[#0B4FA8] font-semibold rounded text-[11px] flex items-center gap-1 shrink-0 transition-colors"
                       >
                         <Download className="w-3 h-3" />
                         <span>Tải file</span>
@@ -526,7 +526,7 @@ export const ProjectContractsView: React.FC = () => {
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-600" />
+                    <Calendar className="w-3.5 h-3.5 text-[#0875D9]" />
                     <span>Lịch Nhắc Thanh Toán & Tiến Độ Nghiệm Thu ({contract.milestones.length} đợt)</span>
                   </span>
                   <span className="text-[11px] text-slate-400 font-mono">
@@ -651,7 +651,7 @@ export const ProjectContractsView: React.FC = () => {
             {/* Modal Header */}
             <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center text-indigo-400">
+                <div className="w-8 h-8 rounded-xl bg-[#0875D9]/20 border border-indigo-400/40 flex items-center justify-center text-indigo-400">
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
@@ -684,7 +684,7 @@ export const ProjectContractsView: React.FC = () => {
                     value={contractCode}
                     onChange={(e) => setContractCode(e.target.value)}
                     placeholder="e.g. HĐ-2026/VINSMART-ERP"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                 </div>
 
@@ -696,7 +696,7 @@ export const ProjectContractsView: React.FC = () => {
                     value={projectName}
                     onChange={(e) => setProjectName(e.target.value)}
                     placeholder="Ví dụ: Triển khai Hệ sinh thái ERP OmniCorp Giai đoạn 2"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                 </div>
               </div>
@@ -711,7 +711,7 @@ export const ProjectContractsView: React.FC = () => {
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
                     placeholder="Tên công ty hoặc tổ chức đối tác"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                 </div>
 
@@ -722,7 +722,7 @@ export const ProjectContractsView: React.FC = () => {
                     value={clientContact}
                     onChange={(e) => setClientContact(e.target.value)}
                     placeholder="0912 345 678 (Mr. Tuấn - Giám đốc CNTT)"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                 </div>
               </div>
@@ -736,7 +736,7 @@ export const ProjectContractsView: React.FC = () => {
                     required
                     value={signingDate}
                     onChange={(e) => setSigningDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                 </div>
 
@@ -746,7 +746,7 @@ export const ProjectContractsView: React.FC = () => {
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                 </div>
 
@@ -756,7 +756,7 @@ export const ProjectContractsView: React.FC = () => {
                     type="date"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                 </div>
               </div>
@@ -794,7 +794,7 @@ export const ProjectContractsView: React.FC = () => {
                         }
                       ]);
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold text-indigo-700 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold text-[#0B4FA8] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   />
                   <span className="text-[11px] text-slate-400 font-mono mt-0.5 block">
                     {formatVND(totalValueVND)}
@@ -806,7 +806,7 @@ export const ProjectContractsView: React.FC = () => {
                   <select
                     value={departmentId}
                     onChange={(e) => setDepartmentId(e.target.value as DepartmentId)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
                   >
                     {departments.map(d => (
                       <option key={d.id} value={d.id}>
@@ -820,13 +820,13 @@ export const ProjectContractsView: React.FC = () => {
               {/* Row 5: UPLOAD FILE HỢP ĐỒNG (PDF / SCAN / DOCX) */}
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5">
                 <label className="block font-bold text-slate-800 flex items-center gap-1.5">
-                  <Upload className="w-3.5 h-3.5 text-indigo-600" />
+                  <Upload className="w-3.5 h-3.5 text-[#0875D9]" />
                   <span>Upload Tệp Hợp Đồng Đã Ký (PDF, Scan, DOCX)</span>
                 </label>
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <FileText className="w-5 h-5 text-indigo-600 shrink-0" />
+                    <FileText className="w-5 h-5 text-[#0875D9] shrink-0" />
                     <div className="min-w-0">
                       <span className="font-semibold text-slate-800 truncate block">
                         {fileName || 'Chưa tải lên tệp hợp đồng'}
@@ -837,7 +837,7 @@ export const ProjectContractsView: React.FC = () => {
                     </div>
                   </div>
 
-                  <label className="px-3.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded-lg cursor-pointer transition-colors shrink-0 flex items-center gap-1.5">
+                  <label className="px-3.5 py-1.5 bg-[#EAF5FF] hover:bg-blue-100 text-[#0B4FA8] font-bold rounded-lg cursor-pointer transition-colors shrink-0 flex items-center gap-1.5">
                     <Upload className="w-3.5 h-3.5" />
                     <span>Chọn tệp hợp đồng</span>
                     <input
@@ -854,7 +854,7 @@ export const ProjectContractsView: React.FC = () => {
               <div className="space-y-3 pt-2 border-t border-slate-200">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-600" />
+                    <Calendar className="w-3.5 h-3.5 text-[#0875D9]" />
                     <span>Thiết Lập Lịch Nhắc Thanh Toán ({modalMilestones.length} đợt)</span>
                   </span>
 
@@ -873,7 +873,7 @@ export const ProjectContractsView: React.FC = () => {
                         }
                       ]);
                     }}
-                    className="text-[11px] text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1"
+                    className="text-[11px] text-[#0875D9] hover:text-[#063B78] font-bold flex items-center gap-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Thêm đợt thanh toán</span>
@@ -975,7 +975,7 @@ export const ProjectContractsView: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-xs transition-colors flex items-center gap-1.5"
+                  className="px-5 py-2 bg-[#0875D9] hover:bg-[#065eb0] text-white rounded-xl font-bold shadow-xs transition-colors flex items-center gap-1.5"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <span>{contractToEdit ? 'Cập Nhật Hợp Đồng' : 'Lưu Hợp Đồng & Kích Hoạt Lịch Nhắc'}</span>

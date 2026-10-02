@@ -419,7 +419,7 @@ export const RoleTestingView: React.FC = () => {
             <thead>
               <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
                 <th className="py-3 px-3 font-bold text-slate-600 dark:text-slate-300">Chức Năng Hệ Thống</th>
-                <th className="py-3 px-3 font-bold text-indigo-600">Ban Giám Đốc</th>
+                <th className="py-3 px-3 font-bold text-[#0875D9]">Ban Giám Đốc</th>
                 <th className="py-3 px-3 font-bold text-sky-600">Sản Xuất & Kho</th>
                 <th className="py-3 px-3 font-bold text-emerald-600">Nhân Sự & HC</th>
                 <th className="py-3 px-3 font-bold text-blue-600">IT & SEO</th>

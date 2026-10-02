@@ -121,7 +121,7 @@ export const PayrollView: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-xs transition-colors min-h-[44px]"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0875D9] hover:bg-[#065eb0] rounded-lg shadow-xs transition-colors min-h-[44px]"
           >
             <UserPlus className="w-4 h-4" />
             <span>Tiếp Nhận Nhân Sự</span>
@@ -173,7 +173,7 @@ export const PayrollView: React.FC = () => {
 
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-1">
           <div className="text-xs text-slate-500">Tổng số giờ OT ghi nhận</div>
-          <div className="text-xl font-bold font-mono text-indigo-600 tabular-nums">
+          <div className="text-xl font-bold font-mono text-[#0875D9] tabular-nums">
             {totalOtHours} giờ
           </div>
           <div className="text-[11px] text-slate-400">Tính theo hệ số 150% - 200%</div>
@@ -193,7 +193,7 @@ export const PayrollView: React.FC = () => {
         <button
           onClick={() => setSelectedSubTab('payroll')}
           className={`px-3 py-2 rounded-lg font-semibold transition-colors min-h-[40px] ${
-            selectedSubTab === 'payroll' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+            selectedSubTab === 'payroll' ? 'bg-[#0875D9] text-white' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
           Bảng Chi Tiết Công & Lương Tháng ({payrollRecords.length})
@@ -202,7 +202,7 @@ export const PayrollView: React.FC = () => {
         <button
           onClick={() => setSelectedSubTab('leave_ledger')}
           className={`px-3 py-2 rounded-lg font-semibold transition-colors min-h-[40px] ${
-            selectedSubTab === 'leave_ledger' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+            selectedSubTab === 'leave_ledger' ? 'bg-[#0875D9] text-white' : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
           Sổ Quản Lý Quỹ Phép Năm ({employees.length})
@@ -243,9 +243,9 @@ export const PayrollView: React.FC = () => {
                     <td className="py-3 px-3 font-mono text-right font-semibold text-slate-900">{rec.actualWorkedDays}</td>
                     <td className="py-3 px-3 font-mono text-right text-emerald-700 font-medium">+{rec.paidLeaveDays}</td>
                     <td className="py-3 px-3 font-mono text-right text-amber-700">{rec.lateTimes}</td>
-                    <td className="py-3 px-3 font-mono text-right text-indigo-700 font-semibold">{rec.otHours}h</td>
+                    <td className="py-3 px-3 font-mono text-right text-[#0B4FA8] font-semibold">{rec.otHours}h</td>
                     <td className="py-3 px-3 font-mono text-right text-slate-700">{formatVND(rec.baseSalaryVND)}</td>
-                    <td className="py-3 px-3 font-mono text-right text-indigo-700 font-medium">+{formatVND(rec.otSalaryVND)}</td>
+                    <td className="py-3 px-3 font-mono text-right text-[#0B4FA8] font-medium">+{formatVND(rec.otSalaryVND)}</td>
                     <td className="py-3 px-3 font-mono text-right font-bold text-emerald-700">{formatVND(rec.netSalaryVND)}</td>
                   </tr>
                 ))}
@@ -284,7 +284,7 @@ export const PayrollView: React.FC = () => {
                     <td className="py-3 px-3 font-semibold text-slate-900">{emp.name}</td>
                     <td className="py-3 px-3 text-slate-600">{emp.roleTitle}</td>
                     <td className="py-3 px-3 font-mono text-slate-500">{emp.joinDate}</td>
-                    <td className="py-3 px-3 font-mono text-right font-bold text-indigo-700 text-sm">
+                    <td className="py-3 px-3 font-mono text-right font-bold text-[#0B4FA8] text-sm">
                       {emp.annualLeaveRemaining} ngày
                     </td>
                     <td className="py-3 px-3 text-right">
@@ -430,7 +430,7 @@ export const PayrollView: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm"
+                  className="px-4 py-2 bg-[#0875D9] hover:bg-[#065eb0] text-white font-medium rounded-lg shadow-sm"
                 >
                   Lưu & Tiếp Nhận
                 </button>

@@ -487,7 +487,7 @@ export const BoardBrandSettings: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                <ImageIcon className="w-4 h-4 text-indigo-600" />
+                <ImageIcon className="w-4 h-4 text-[#0875D9]" />
                 <span>1. Biểu Tượng & Logo Doanh Nghiệp</span>
               </div>
               <span className="text-[11px] text-slate-500 font-mono">
@@ -502,7 +502,7 @@ export const BoardBrandSettings: React.FC = () => {
                 onClick={() => setFormData(prev => ({ ...prev, logoType: 'preset_symbol' }))}
                 className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                   formData.logoType === 'preset_symbol'
-                    ? 'bg-white text-indigo-600 shadow-xs'
+                    ? 'bg-white text-[#0875D9] shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -515,7 +515,7 @@ export const BoardBrandSettings: React.FC = () => {
                 onClick={() => setFormData(prev => ({ ...prev, logoType: 'custom_image' }))}
                 className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                   formData.logoType === 'custom_image'
-                    ? 'bg-white text-indigo-600 shadow-xs'
+                    ? 'bg-white text-[#0875D9] shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -540,7 +540,7 @@ export const BoardBrandSettings: React.FC = () => {
                         onClick={() => setFormData(prev => ({ ...prev, logoSymbolId: sym.id }))}
                         className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex items-start gap-3 ${
                           isSelected
-                            ? 'bg-indigo-50/60 border-indigo-600 ring-2 ring-indigo-500/20 shadow-xs'
+                            ? 'bg-blue-50/60 border-[#0875D9] ring-2 ring-[#0875D9]/20 shadow-xs'
                             : 'bg-slate-50/60 border-slate-200 hover:bg-slate-100/60 hover:border-slate-300'
                         }`}
                       >
@@ -559,10 +559,10 @@ export const BoardBrandSettings: React.FC = () => {
                               {sym.name}
                             </span>
                             {isSelected && (
-                              <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0" />
+                              <CheckCircle2 className="w-4 h-4 text-[#0875D9] shrink-0" />
                             )}
                           </div>
-                          <span className="inline-block text-[10px] font-semibold text-indigo-600 mt-0.5">
+                          <span className="inline-block text-[10px] font-semibold text-[#0875D9] mt-0.5">
                             {sym.subtitle}
                           </span>
                           <p className="text-[11px] text-slate-500 line-clamp-2 mt-1 leading-snug">
@@ -603,7 +603,7 @@ export const BoardBrandSettings: React.FC = () => {
                     </div>
                   ) : (
                     <div className="space-y-2 py-2">
-                      <div className="w-12 h-12 mx-auto rounded-full bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
+                      <div className="w-12 h-12 mx-auto rounded-full bg-[#EAF5FF] border border-[#0875D9]/25 flex items-center justify-center text-[#0875D9]">
                         <Upload className="w-6 h-6" />
                       </div>
                       <div>
@@ -614,7 +614,7 @@ export const BoardBrandSettings: React.FC = () => {
                           Hỗ trợ định dạng PNG (khuyên dùng nền trong suốt), SVG, JPG (Tối đa 2MB)
                         </p>
                       </div>
-                      <label className="inline-block mt-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg cursor-pointer shadow-xs transition-colors">
+                      <label className="inline-block mt-2 px-4 py-2 bg-[#0875D9] hover:bg-[#065eb0] text-white text-xs font-bold rounded-lg cursor-pointer shadow-xs transition-colors">
                         Chọn tệp từ máy tính
                         <input
                           type="file"
@@ -643,7 +643,7 @@ export const BoardBrandSettings: React.FC = () => {
                         logoUrl: e.target.value.trim() ? e.target.value : undefined
                       }))
                     }
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#0875D9] font-mono"
                   />
                 </div>
               </div>
@@ -654,7 +654,7 @@ export const BoardBrandSettings: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                <Sliders className="w-4 h-4 text-indigo-600" />
+                <Sliders className="w-4 h-4 text-[#0875D9]" />
                 <span>2. Tên Doanh Nghiệp, Slogan & Mô Tả</span>
               </div>
             </div>
@@ -669,7 +669,7 @@ export const BoardBrandSettings: React.FC = () => {
                   value={formData.companyName}
                   onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
                   placeholder="Ví dụ: AeuxGlobal, OmniCorp ERP, VinGroup..."
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 />
                 <p className="text-[11px] text-slate-500 mt-1">
                   Tên này sẽ hiển thị trang trọng trên Sidebar, thanh Marquee, tiêu đề trang và biểu mẫu kế toán.
@@ -685,7 +685,7 @@ export const BoardBrandSettings: React.FC = () => {
                   value={formData.tagline}
                   onChange={(e) => setFormData(prev => ({ ...prev, tagline: e.target.value }))}
                   placeholder="Ví dụ: OmniCorp Platform, Enterprise Operating System..."
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 />
               </div>
 
@@ -698,7 +698,7 @@ export const BoardBrandSettings: React.FC = () => {
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Mô tả chức năng cốt lõi hoặc thông điệp sứ mệnh của doanh nghiệp..."
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 leading-relaxed"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0875D9] leading-relaxed"
                 />
                 <p className="text-[11px] text-slate-500 mt-0.5">
                   Được hiển thị tại màn hình đăng nhập công vụ và phần giới thiệu chính thức.
@@ -713,7 +713,7 @@ export const BoardBrandSettings: React.FC = () => {
                   value={formData.companyAddress || ''}
                   onChange={(e) => setFormData(prev => ({ ...prev, companyAddress: e.target.value }))}
                   placeholder="VD: T17-31 Khu Manhattan Glory, Vinhomes Grand Park, Quận 9"
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
                 />
                 <p className="text-[11px] text-slate-500 mt-0.5">
                   Hiển thị trên thanh bên sidebar và trang đăng nhập.
@@ -730,10 +730,10 @@ export const BoardBrandSettings: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                <Type className="w-4 h-4 text-indigo-600" />
+                <Type className="w-4 h-4 text-[#0875D9]" />
                 <span>3. Phông Chữ Toàn Doanh Nghiệp</span>
               </div>
-              <span className="text-[11px] text-indigo-600 font-mono font-bold">
+              <span className="text-[11px] text-[#0875D9] font-mono font-bold">
                 {formData.fontFamily}
               </span>
             </div>
@@ -747,7 +747,7 @@ export const BoardBrandSettings: React.FC = () => {
                     onClick={() => setFormData(prev => ({ ...prev, fontFamily: font.id }))}
                     className={`p-3 rounded-xl border cursor-pointer transition-all text-left ${
                       isSelected
-                        ? 'bg-indigo-50/70 border-indigo-600 ring-2 ring-indigo-500/20 shadow-xs'
+                        ? 'bg-blue-50/70 border-[#0875D9] ring-2 ring-[#0875D9]/20 shadow-xs'
                         : 'bg-slate-50/70 border-slate-200 hover:bg-slate-100/70 hover:border-slate-300'
                     }`}
                   >
@@ -765,7 +765,7 @@ export const BoardBrandSettings: React.FC = () => {
                           </span>
                         )}
                       </div>
-                      {isSelected && <Check className="w-4 h-4 text-indigo-600 shrink-0" />}
+                      {isSelected && <Check className="w-4 h-4 text-[#0875D9] shrink-0" />}
                     </div>
 
                     <p className="text-[11px] text-slate-500 mt-0.5">{font.desc}</p>
@@ -785,7 +785,7 @@ export const BoardBrandSettings: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                <Palette className="w-4 h-4 text-indigo-600" />
+                <Palette className="w-4 h-4 text-[#0875D9]" />
                 <span>4. Màu Sắc Nhận Diện Thương Hiệu</span>
               </div>
               <div
@@ -869,7 +869,7 @@ export const BoardBrandSettings: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                <Layout className="w-4 h-4 text-indigo-600" />
+                <Layout className="w-4 h-4 text-[#0875D9]" />
                 <span>5. Giao Diện Sidebar & Canvas</span>
               </div>
             </div>
@@ -924,7 +924,7 @@ export const BoardBrandSettings: React.FC = () => {
               <select
                 value={formData.backgroundTheme}
                 onChange={(e) => setFormData(prev => ({ ...prev, backgroundTheme: e.target.value as BackgroundTheme }))}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0875D9]"
               >
                 {BG_THEMES.map(bg => (
                   <option key={bg.id} value={bg.id}>

@@ -224,13 +224,13 @@ export const FinanceView: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-xs">
+            <div className="w-8 h-8 rounded-lg bg-[#0875D9] flex items-center justify-center text-white shadow-xs">
               <Receipt className="w-4 h-4" />
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
               Sổ Quỹ Thu - Chi & Quản Lý Dòng Tiền
             </h1>
-            <span className="font-mono text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
+            <span className="font-mono text-xs font-semibold text-[#0B4FA8] bg-[#EAF5FF] border border-[#0875D9]/25 px-2 py-0.5 rounded">
               Thông tư 200/133 BTC
             </span>
           </div>
@@ -278,13 +278,13 @@ export const FinanceView: React.FC = () => {
       <div className="p-3 sm:p-4 bg-white border border-slate-200 rounded-2xl shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <span className="font-semibold text-slate-700 flex items-center gap-1.5">
-            <Calendar className="w-4 h-4 text-indigo-600" />
+            <Calendar className="w-4 h-4 text-[#0875D9]" />
             <span>Kỳ tổng kết tháng:</span>
           </span>
           <select
             value={selectedMonth}
             onChange={e => setSelectedMonth(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
           >
             {availableMonths.map(m => (
               <option key={m} value={m}>
@@ -373,7 +373,7 @@ export const FinanceView: React.FC = () => {
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
                     monthlySummary.netCashFlow >= 0
-                      ? 'bg-indigo-50 text-indigo-600'
+                      ? 'bg-[#EAF5FF] text-[#0875D9]'
                       : 'bg-amber-50 text-amber-600'
                   }`}
                 >
@@ -383,7 +383,7 @@ export const FinanceView: React.FC = () => {
               <div className="pt-3">
                 <div
                   className={`text-xl sm:text-2xl font-extrabold font-mono tracking-tight ${
-                    monthlySummary.netCashFlow >= 0 ? 'text-indigo-600' : 'text-amber-600'
+                    monthlySummary.netCashFlow >= 0 ? 'text-[#0875D9]' : 'text-amber-600'
                   }`}
                 >
                   {monthlySummary.netCashFlow >= 0 ? '+' : ''}
@@ -417,7 +417,7 @@ export const FinanceView: React.FC = () => {
               <div className="pt-3 space-y-1.5 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 flex items-center gap-1">
-                    <CreditCard className="w-3.5 h-3.5 text-indigo-500" />
+                    <CreditCard className="w-3.5 h-3.5 text-[#0875D9]" />
                     <span>Chuyển khoản:</span>
                   </span>
                   <span className="font-mono font-bold text-slate-900">
@@ -591,7 +591,7 @@ export const FinanceView: React.FC = () => {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Tìm mã phiếu, lý do, đối tác..."
-                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
               />
             </div>
 
@@ -678,7 +678,7 @@ export const FinanceView: React.FC = () => {
                     <td className="py-3 px-3 font-mono font-bold">
                       <button
                         onClick={() => handleOpenPrint(voucher)}
-                        className="text-indigo-600 hover:text-indigo-800 hover:underline flex items-center gap-1"
+                        className="text-[#0875D9] hover:text-[#063B78] hover:underline flex items-center gap-1"
                         title="Xem & in phiếu chuẩn"
                       >
                         <FileText className="w-3.5 h-3.5" />
@@ -732,7 +732,7 @@ export const FinanceView: React.FC = () => {
                       <span className="inline-flex items-center gap-1 text-[11px] text-slate-600 font-medium">
                         {voucher.paymentMethod === 'BANK_TRANSFER' ? (
                           <>
-                            <CreditCard className="w-3.5 h-3.5 text-indigo-500" />
+                            <CreditCard className="w-3.5 h-3.5 text-[#0875D9]" />
                             <span>Chuyển khoản</span>
                           </>
                         ) : (
@@ -757,7 +757,7 @@ export const FinanceView: React.FC = () => {
                       <div className="flex items-center justify-center gap-1">
                         <button
                           onClick={() => handleOpenPrint(voucher)}
-                          className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                          className="p-1.5 text-slate-500 hover:text-[#0875D9] hover:bg-[#EAF5FF] rounded-lg transition-colors"
                           title="In phiếu hoặc xuất PDF chuẩn Bộ Tài Chính"
                         >
                           <Printer className="w-3.5 h-3.5" />

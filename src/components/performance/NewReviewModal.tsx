@@ -200,7 +200,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-blue-50/70 via-indigo-50/40 to-white">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold">
+            <div className="w-8 h-8 rounded-xl bg-[#0875D9] text-white flex items-center justify-center font-bold">
               <Award className="w-4 h-4" />
             </div>
             <div>
@@ -223,11 +223,11 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
         {/* Scope and Permissions Info Banner */}
         <div className={`px-6 py-3 border-b text-xs flex items-center justify-between gap-3 ${
           isCEO
-            ? 'bg-indigo-50/80 border-indigo-100 text-indigo-950'
+            ? 'bg-blue-50/80 border-indigo-100 text-indigo-950'
             : 'bg-emerald-50/80 border-emerald-100 text-emerald-950'
         }`}>
           <div className="flex items-center gap-2">
-            <Shield className={`w-4 h-4 shrink-0 ${isCEO ? 'text-indigo-600' : 'text-emerald-600'}`} />
+            <Shield className={`w-4 h-4 shrink-0 ${isCEO ? 'text-[#0875D9]' : 'text-emerald-600'}`} />
             <div>
               <span className="font-bold">
                 {isCEO ? 'Quyền Hạn Ban Giám Đốc (CEO)' : `Quyền Hạn Trưởng Bộ Phận: ${managedDept?.name}`}
@@ -241,7 +241,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
           </div>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 border ${
             isCEO
-              ? 'bg-indigo-100 text-indigo-800 border-indigo-200'
+              ? 'bg-blue-100 text-[#063B78] border-[#0875D9]/25'
               : 'bg-emerald-100 text-emerald-800 border-emerald-200'
           }`}>
             {isCEO ? 'Đánh giá toàn bộ' : 'Phạm vi bộ phận'}
@@ -268,7 +268,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                   value={employeeId}
                   onChange={(e) => setEmployeeId(e.target.value)}
                   disabled={!!existingReview}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium min-h-[40px]"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9] font-medium min-h-[40px]"
                 >
                   {isCEO ? (
                     departments.map(dept => {
@@ -300,7 +300,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
               <select
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium min-h-[40px]"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9] font-medium min-h-[40px]"
               >
                 <option value="Q3/2026">Quý 3/2026 (01/07 - 30/09/2026)</option>
                 <option value="Q4/2026">Quý 4/2026 (01/10 - 31/12/2026)</option>
@@ -316,12 +316,12 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                 <img
                   src={targetEmployee.avatar}
                   alt=""
-                  className="w-9 h-9 rounded-full object-cover ring-2 ring-indigo-500/20"
+                  className="w-9 h-9 rounded-full object-cover ring-2 ring-[#0875D9]/20"
                 />
                 <div>
                   <div className="font-bold text-slate-900">{targetEmployee.name}</div>
                   <div className="text-[11px] text-slate-500">
-                    {targetEmployee.roleTitle} · <span className="text-indigo-600 font-semibold">{targetDept?.name}</span>
+                    {targetEmployee.roleTitle} · <span className="text-[#0875D9] font-semibold">{targetDept?.name}</span>
                   </div>
                 </div>
               </div>
@@ -337,7 +337,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
               <label className="font-semibold text-slate-800">Bảng tiêu chuẩn năng lực & Điểm số (Thang 1.0 - 5.0)</label>
               <div className="flex items-center gap-3 text-xs">
                 <span className="text-slate-500">Điểm tự chấm: <strong className="text-slate-800 font-mono">{selfTotal}/5.0</strong></span>
-                <span className="text-indigo-700 font-bold bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                <span className="text-[#0B4FA8] font-bold bg-[#EAF5FF] px-2 py-0.5 rounded border border-[#0875D9]/25">
                   Điểm Quản lý: <span className="font-mono">{managerTotal}/5.0 ({getRating(managerTotal)})</span>
                 </span>
               </div>
@@ -350,7 +350,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                     <th className="py-2.5 px-3">Tiêu chí đánh giá KPI</th>
                     <th className="py-2.5 px-3 w-20 text-center">Tỷ trọng</th>
                     <th className="py-2.5 px-3 w-28 text-center">Tự đánh giá</th>
-                    <th className="py-2.5 px-3 w-28 text-center bg-indigo-50/50 text-indigo-900 font-bold">Điểm Quản lý</th>
+                    <th className="py-2.5 px-3 w-28 text-center bg-[#EAF5FF]/50 text-[#00144b] font-bold">Điểm Quản lý</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -376,7 +376,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                           <option value="2">2.0 (Yếu)</option>
                         </select>
                       </td>
-                      <td className="py-2 px-3 text-center bg-indigo-50/30">
+                      <td className="py-2 px-3 text-center bg-[#EAF5FF]/30">
                         <select
                           value={c.managerScore}
                           onChange={(e) => {
@@ -384,7 +384,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                             updated[idx].managerScore = Number(e.target.value);
                             setCriteria(updated);
                           }}
-                          className="w-full px-2 py-1 bg-white border border-indigo-300 rounded text-center font-mono font-bold text-indigo-700 text-xs focus:ring-1 focus:ring-indigo-500"
+                          className="w-full px-2 py-1 bg-white border border-[#0875D9]/40 rounded text-center font-mono font-bold text-[#0B4FA8] text-xs focus:ring-1 focus:ring-[#0875D9]"
                         >
                           <option value="5">5.0 (Xuất sắc)</option>
                           <option value="4.5">4.5</option>
@@ -402,9 +402,9 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
           </div>
 
           {/* AI Feedback Assistant Button */}
-          <div className="flex items-center justify-between p-3 bg-gradient-to-r from-indigo-50/60 to-purple-50/60 border border-indigo-200/80 rounded-xl">
+          <div className="flex items-center justify-between p-3 bg-gradient-to-r from-indigo-50/60 to-purple-50/60 border border-[#0875D9]/25/80 rounded-xl">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <Sparkles className="w-4 h-4 text-[#0875D9]" />
               <div>
                 <span className="font-bold text-slate-800 block text-xs">Trợ Lý AI Đề Xuất Nhận Xét & IDP</span>
                 <span className="text-[11px] text-slate-500">Tự động gợi ý điểm mạnh, điểm cần cải thiện và kế hoạch phát triển năng lực</span>
@@ -414,7 +414,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
               type="button"
               onClick={handleAiAssist}
               disabled={isGeneratingAI}
-              className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer shrink-0"
+              className="px-3 py-1.5 bg-[#0875D9] hover:bg-[#065eb0] text-white rounded-lg font-semibold flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer shrink-0"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>{isGeneratingAI ? 'Đang tạo...' : 'AI Phân Tích'}</span>
@@ -430,7 +430,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                 value={strengths}
                 onChange={(e) => setStrengths(e.target.value)}
                 placeholder="Nêu rõ các thành tích nổi bật, sáng kiến và kỹ năng xuất sắc của nhân viên..."
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#0875D9]"
               />
             </div>
 
@@ -441,7 +441,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                 value={improvements}
                 onChange={(e) => setImprovements(e.target.value)}
                 placeholder="Các kỹ năng cần bồi dưỡng thêm hoặc quy trình cần cải thiện..."
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#0875D9]"
               />
             </div>
 
@@ -452,7 +452,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                 value={managerFeedback}
                 onChange={(e) => setManagerFeedback(e.target.value)}
                 placeholder="Nhận xét tổng quát từ Quản lý / Ban Giám Đốc..."
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#0875D9]"
               />
             </div>
 
@@ -463,7 +463,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
                 value={developmentPlan}
                 onChange={(e) => setDevelopmentPlan(e.target.value)}
                 placeholder="Các khóa học, dự án thử thách hoặc chứng chỉ mục tiêu trong kỳ tới..."
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#0875D9]"
               />
             </div>
           </div>
@@ -479,7 +479,7 @@ export const NewReviewModal: React.FC<Props> = ({ isOpen, onClose, existingRevie
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-1.5"
+              className="px-5 py-2.5 bg-[#0875D9] hover:bg-[#065eb0] text-white font-semibold rounded-lg shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-1.5"
             >
               <Award className="w-4 h-4" />
               <span>{existingReview ? 'Lưu Cập Nhật Đánh Giá' : 'Hoàn Tất Đánh Giá KPI'}</span>

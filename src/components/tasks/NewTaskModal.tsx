@@ -226,7 +226,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
               onClick={() => setAssignmentType('INDIVIDUAL')}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                 assignmentType === 'INDIVIDUAL'
-                  ? 'bg-white text-indigo-700 shadow-xs border border-slate-200/80'
+                  ? 'bg-white text-[#0B4FA8] shadow-xs border border-slate-200/80'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -245,7 +245,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
               }}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                 assignmentType === 'TEAM'
-                  ? 'bg-white text-indigo-700 shadow-xs border border-slate-200/80'
+                  ? 'bg-white text-[#0B4FA8] shadow-xs border border-slate-200/80'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -318,13 +318,13 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
 
           {/* Section: TEAM Assignment Specific Inputs */}
           {assignmentType === 'TEAM' ? (
-            <div className="p-3.5 bg-indigo-50/50 border border-indigo-200/80 rounded-xl space-y-3">
+            <div className="p-3.5 bg-[#EAF5FF]/50 border border-[#0875D9]/25/80 rounded-xl space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 font-bold text-indigo-950">
-                  <Users className="w-4 h-4 text-indigo-600" />
+                  <Users className="w-4 h-4 text-[#0875D9]" />
                   <span>Cấu hình Đội Nhóm Thực Hiện</span>
                 </div>
-                <span className="text-[10.5px] text-indigo-600 font-semibold bg-white px-2 py-0.5 rounded-full border border-indigo-100">
+                <span className="text-[10.5px] text-[#0875D9] font-semibold bg-white px-2 py-0.5 rounded-full border border-indigo-100">
                   {selectedTeamMembers.length} thành viên được chọn
                 </span>
               </div>
@@ -335,7 +335,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
                   <select
                     value={departmentId}
                     onChange={(e) => setDepartmentId(e.target.value as DepartmentId)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-h-[40px] font-medium"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px] font-medium"
                   >
                     {departments.map(d => (
                       <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
@@ -350,7 +350,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
                   <select
                     value={teamLeadId}
                     onChange={(e) => setTeamLeadId(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-h-[40px] font-medium"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px] font-medium"
                   >
                     {employees.map(emp => (
                       <option key={emp.id} value={emp.id}>
@@ -370,7 +370,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
                   <button
                     type="button"
                     onClick={handleSelectAllDeptMembers}
-                    className="text-[10.5px] text-indigo-600 hover:text-indigo-800 font-semibold cursor-pointer underline"
+                    className="text-[10.5px] text-[#0875D9] hover:text-[#063B78] font-semibold cursor-pointer underline"
                   >
                     Chọn tất cả thành viên trong phòng
                   </button>
@@ -386,7 +386,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
                         key={emp.id}
                         className={`flex items-center gap-2 p-1.5 rounded-md cursor-pointer transition-colors border ${
                           isSelected
-                            ? 'bg-indigo-50/70 border-indigo-200 text-indigo-950'
+                            ? 'bg-blue-50/70 border-[#0875D9]/25 text-indigo-950'
                             : 'bg-white border-transparent hover:bg-slate-50 text-slate-700'
                         }`}
                       >
@@ -394,7 +394,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
                           type="checkbox"
                           checked={isSelected}
                           onChange={() => toggleTeamMember(emp.id)}
-                          className="rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                          className="rounded text-[#0875D9] focus:ring-[#0875D9] cursor-pointer"
                         />
                         <img
                           src={emp.avatar}
@@ -403,7 +403,7 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = '
                         />
                         <div className="min-w-0 flex-1">
                           <span className="font-medium truncate block text-[11px] leading-tight">
-                            {emp.name} {isLead && <strong className="text-indigo-600 font-bold">(Lead)</strong>}
+                            {emp.name} {isLead && <strong className="text-[#0875D9] font-bold">(Lead)</strong>}
                           </span>
                           <span className="text-[9.5px] text-slate-400 block truncate">
                             {emp.roleTitle}

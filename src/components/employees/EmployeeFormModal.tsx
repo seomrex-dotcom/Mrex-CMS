@@ -341,7 +341,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
             {/* Header */}
             <div className="px-5 sm:px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#0875D9] flex items-center justify-center text-white font-bold shadow-xs">
                   <User className="w-4 h-4" />
                 </div>
                 <div>
@@ -349,7 +349,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                     <h2 className="text-sm sm:text-base font-bold text-slate-900">
                       {isEditing ? 'Chỉnh Sửa Hồ Sơ & Tài Khoản Nhân Sự' : 'Tiếp Nhận Nhân Sự & Cấp Tài Khoản Mới'}
                     </h2>
-                    <span className="font-mono text-[10px] text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded font-semibold border border-indigo-200">
+                    <span className="font-mono text-[10px] text-[#0B4FA8] bg-blue-100/70 px-2 py-0.5 rounded font-semibold border border-[#0875D9]/25">
                       Quyền: {currentUser.role === 'CEO' ? 'Ban Quản Trị' : 'Quản Lý'}
                     </span>
                   </div>
@@ -380,7 +380,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                     src={avatar}
                     alt="Selected avatar"
                     referrerPolicy="no-referrer"
-                    className="w-14 h-14 rounded-xl object-cover border-2 border-indigo-600 shadow-xs shrink-0"
+                    className="w-14 h-14 rounded-xl object-cover border-2 border-[#0875D9] shadow-xs shrink-0"
                   />
                   <div className="flex-1 min-w-[200px] space-y-1.5">
                     <div className="flex items-center gap-2">
@@ -391,7 +391,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                           onClick={() => setAvatar(p.url)}
                           className={`px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all ${
                             avatar === p.url
-                              ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-bold'
+                              ? 'border-[#0875D9] bg-[#EAF5FF] text-[#0B4FA8] font-bold'
                               : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
                           }`}
                         >
@@ -434,7 +434,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                       }
                     }}
                     id="emp-form-name" placeholder="VD: Nguyễn Hoàng Anh"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                     required
                   />
                 </div>
@@ -448,7 +448,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     id="emp-form-code" placeholder="VD: NV-088"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                     required
                   />
                 </div>
@@ -467,7 +467,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       id="emp-form-email" placeholder="ten.ho@omnicorp.vn"
-                      className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                      className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                       required
                     />
                   </div>
@@ -484,7 +484,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       id="emp-form-phone" placeholder="0912 xxx xxx"
-                      className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                      className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                     />
                   </div>
                 </div>
@@ -620,7 +620,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value as UserRole)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   >
                     <option value="EMPLOYEE">💻 Cấp Nhân Viên (Staff)</option>
                     <option value="MANAGER">🛡️ Cấp Quản Lý (PM / Team Lead)</option>
@@ -638,7 +638,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                     value={roleTitle}
                     onChange={(e) => setRoleTitle(e.target.value)}
                     placeholder="VD: Kỹ Sư Phần Mềm Cao Cấp"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                     required
                   />
                 </div>
@@ -653,7 +653,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                   <select
                     value={departmentId}
                     onChange={(e) => setDepartmentId(e.target.value as DepartmentId)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   >
                     {departments.map(d => (
                       <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
@@ -668,7 +668,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                   <select
                     value={managerId}
                     onChange={(e) => setManagerId(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   >
                     <option value="">Không có (Báo cáo trực tiếp HĐQT / CEO)</option>
                     {potentialManagers.map(m => (
@@ -694,7 +694,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                       value={baseSalaryVND}
                       onChange={(e) => setBaseSalaryVND(Number(e.target.value))}
                       placeholder="22000000"
-                      className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                      className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                     />
                   </div>
                   <span className="text-[10px] text-slate-400 font-mono mt-0.5 block">
@@ -709,7 +709,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                   <select
                     value={baseSalaryGrade}
                     onChange={(e) => setBaseSalaryGrade(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   >
                     <option value="Bậc 1 (Fresher / Intern)">Bậc 1 (Fresher / Intern)</option>
                     <option value="Bậc 2 (Junior)">Bậc 2 (Junior)</option>
@@ -732,7 +732,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                     type="date"
                     value={joinDate}
                     onChange={(e) => setJoinDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   />
                 </div>
 
@@ -746,7 +746,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                     max="30"
                     value={annualLeaveRemaining}
                     onChange={(e) => setAnnualLeaveRemaining(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   />
                 </div>
 
@@ -757,7 +757,7 @@ export const EmployeeFormModal: React.FC<Props> = ({
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs min-h-[40px]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0875D9] focus:bg-white text-xs min-h-[40px]"
                   >
                     <option value="ACTIVE">Chính thức (Active)</option>
                     <option value="PROBATION">Thử việc (Probation)</option>

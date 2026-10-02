@@ -108,7 +108,7 @@ export const AuditDetailModal: React.FC<Props> = ({
             </div>
             <div>
               <div className="text-slate-500 font-medium flex items-center gap-1 mb-1">
-                <User className="w-3.5 h-3.5 text-indigo-500" />
+                <User className="w-3.5 h-3.5 text-[#0875D9]" />
                 <span>Nhân sự kiểm</span>
               </div>
               <div className="font-bold text-slate-900 dark:text-slate-100">{audit.auditorName}</div>
