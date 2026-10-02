@@ -214,7 +214,7 @@ export const PayrollView: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
           <div className="p-4 border-b border-slate-200 flex items-center justify-between">
             <h3 className="text-xs font-bold text-slate-900">Bảng Tổng Hợp Công Nhật & Dự Toán Lương T9/2026</h3>
-            <span className="font-mono text-xs text-slate-500">Công chuẩn: 22 ngày</span>
+            <span className="font-mono text-xs text-slate-500">Công chuẩn: 24 ngày (Thứ 7 xen kẽ)</span>
           </div>
 
           <div className="overflow-x-auto">

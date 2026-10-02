@@ -526,10 +526,10 @@ export const DashboardView: React.FC = () => {
           />
           <KPICard
             label="Ngày Đúng Giờ"
-            value={onTimeDays + '/22'}
-            delta={Math.round((onTimeDays / 22) * 100) + '%'}
-            deltaLabel="chuyên cần tháng này"
-            positive={onTimeDays >= 20}
+            value={onTimeDays + '/24'}
+            delta={Math.round((onTimeDays / 24) * 100) + '%'}
+            deltaLabel="chuẩn 24 ngày (T7 xen kẽ)"
+            positive={onTimeDays >= 22}
             sparkData={[18, 19, 20, 20, 21, 21, 22, onTimeDays]}
             color="#8B5CF6"
             gradientBg="linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)"
@@ -884,7 +884,7 @@ export const DashboardView: React.FC = () => {
                   </span>
                 </div>
                 <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                  Chuẩn 22 ngày
+                  Chuẩn 24 ngày (T7 xen kẽ)
                 </span>
               </div>
 
@@ -901,7 +901,7 @@ export const DashboardView: React.FC = () => {
                       strokeWidth="3.5"
                       fill="none"
                       strokeDasharray="106.8"
-                      strokeDashoffset={106.8 - (Math.min(22, onTimeDays) / 22) * 106.8}
+                      strokeDashoffset={106.8 - (Math.min(24, onTimeDays) / 24) * 106.8}
                       strokeLinecap="round"
                     />
                   </svg>
@@ -916,17 +916,20 @@ export const DashboardView: React.FC = () => {
                       {onTimeDays}
                     </span>
                     <span className="text-xs font-semibold text-slate-500">
-                      / 22 ngày đúng giờ
+                      / 24 ngày đúng giờ
                     </span>
                   </div>
                   <h4 className="text-xs font-bold text-emerald-800 truncate mt-0.5">
-                    {Math.round((onTimeDays / 22) * 100)}% — {onTimeDays >= 20 ? 'Đạt chuẩn khen thưởng' : 'Cần duy trì đều đặn'}
+                    {Math.round((onTimeDays / 24) * 100)}% — {onTimeDays >= 20 ? 'Đạt chuẩn khen thưởng' : 'Cần duy trì đều đặn'}
                   </h4>
+                  <p className="text-[10px] text-emerald-700/80 mt-0.5 font-medium">
+                    Nghỉ xen kẽ Thứ 7 (2 T7 làm việc, 2 T7 nghỉ/tháng)
+                  </p>
                   <div className="w-full bg-emerald-100/80 h-2 rounded-full mt-2 overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-500"
                       style={{
-                        width: `${Math.min(100, Math.round((onTimeDays / 22) * 100))}%`,
+                        width: `${Math.min(100, Math.round((onTimeDays / 24) * 100))}%`,
                         background: 'linear-gradient(90deg, #10B981 0%, #34D399 100%)'
                       }}
                     />
