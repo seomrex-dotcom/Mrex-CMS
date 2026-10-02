@@ -371,6 +371,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const setCurrentUser = (user: Employee) => {
     setCurrentUserState(user);
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER_ID, user.id);
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        const channel = new BroadcastChannel('mrex_auth_channel');
+        channel.postMessage({ type: 'USER_SWITCH', userId: user.id });
+        channel.close();
+      }
+    } catch {}
   };
 
   const login = (email: string, password?: string) => {
@@ -398,6 +405,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUser(found);
     setIsAuthenticated(true);
     localStorage.setItem('mrex_auth', 'true');
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        const channel = new BroadcastChannel('mrex_auth_channel');
+        channel.postMessage({ type: 'LOGIN', userId: found.id });
+        channel.close();
+      }
+    } catch {}
     celebrate();
     return { success: true, message: `Chào mừng ${found.name} (${found.roleTitle}) đăng nhập thành công!` };
   };
@@ -405,7 +419,63 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.setItem('mrex_auth', 'false');
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        const channel = new BroadcastChannel('mrex_auth_channel');
+        channel.postMessage({ type: 'LOGOUT' });
+        channel.close();
+      }
+    } catch {}
   };
+  // Cross-tab synchronization: Instant logout, login & user session sync across all open tabs
+  useEffect(() => {
+    let authChannel: BroadcastChannel | null = null;
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        authChannel = new BroadcastChannel('mrex_auth_channel');
+        authChannel.onmessage = (event) => {
+          if (event.data?.type === 'LOGOUT') {
+            setIsAuthenticated(false);
+          } else if (event.data?.type === 'LOGIN') {
+            setIsAuthenticated(true);
+          } else if (event.data?.type === 'USER_SWITCH' && event.data?.userId) {
+            const found = employees.find(emp => emp.id === event.data.userId);
+            if (found) {
+              setCurrentUserState(found);
+            }
+          }
+        };
+      }
+    } catch {}
+
+    const handleStorageChange = (e: StorageEvent) => {
+      // 1. Sync logout & login across all open tabs
+      if (e.key === 'mrex_auth') {
+        if (e.newValue === 'false') {
+          setIsAuthenticated(false);
+        } else if (e.newValue === 'true') {
+          setIsAuthenticated(true);
+        }
+      }
+      // 2. Sync user switch across tabs
+      if (e.key === STORAGE_KEYS.CURRENT_USER_ID && e.newValue) {
+        const found = employees.find(emp => emp.id === e.newValue);
+        if (found) {
+          setCurrentUserState(found);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      if (authChannel) {
+        authChannel.close();
+      }
+    };
+  }, [employees]);
+
 
   const VALID_TABS: ActiveNavTab[] = [
     'dashboard',
