@@ -576,7 +576,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Performance Reviews
   const [reviews, setReviews] = useState<PerformanceReview[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.REVIEWS);
-    return saved ? JSON.parse(saved) : INITIAL_REVIEWS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error('Failed to parse reviews:', e);
+      }
+    }
+    return INITIAL_REVIEWS;
   });
 
   // OKRs

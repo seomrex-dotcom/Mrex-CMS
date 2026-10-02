@@ -365,7 +365,52 @@ export const INITIAL_TASKS: Task[] = [
 
 export const INITIAL_OKRS: OKRObjective[] = [];
 
-export const INITIAL_REVIEWS: PerformanceReview[] = [];
+export const INITIAL_REVIEWS: PerformanceReview[] = [
+  {
+    id: 'rev-sample-1',
+    employeeId: 'emp-04',
+    reviewerId: 'emp-02',
+    period: 'Q3/2026',
+    status: 'COMPLETED',
+    criteria: [
+      { id: 'cr-1', name: 'Hoàn thành khối lượng công việc & Tiến độ cam kết', weight: 35, selfScore: 4.5, managerScore: 4.5 },
+      { id: 'cr-2', name: 'Chất lượng chuyên môn, kiến trúc & Giải quyết vấn đề', weight: 25, selfScore: 4.5, managerScore: 5.0 },
+      { id: 'cr-3', name: 'Tinh thần phối hợp đồng đội & Lắng nghe phản hồi', weight: 20, selfScore: 4.0, managerScore: 4.5 },
+      { id: 'cr-4', name: 'Kỷ luật công việc, chấm công & Tuân thủ quy định', weight: 10, selfScore: 4.0, managerScore: 4.5 },
+      { id: 'cr-5', name: 'Sáng kiến cải tiến quy trình & Đóng góp ý tưởng mới', weight: 10, selfScore: 4.0, managerScore: 4.5 },
+    ],
+    selfScoreTotal: 4.25,
+    managerScoreTotal: 4.65,
+    finalRating: 'A_PLUS',
+    employeeStrengths: 'Chuyên môn kỹ thuật vững vàng, giải quyết dứt điểm các sự cố hệ thống và chủ động nghiên cứu công nghệ mới.',
+    employeeImprovements: 'Cần tài liệu hóa kiến trúc chi tiết hơn cho các module phát triển mới.',
+    managerFeedback: 'Lê Phương Lan (Trưởng Phòng IT & SEO): Đạt xuất sắc các chỉ số KPI kỹ thuật quý 3. Khả năng làm việc độc lập và hỗ trợ đồng đội rất tốt.',
+    developmentPlan: 'Tham gia khóa bồi dưỡng Quản trị Kiến trúc Hệ thống Phân tán và AI Integration.',
+    updatedAt: '2026-10-01 15:30'
+  },
+  {
+    id: 'rev-sample-2',
+    employeeId: 'emp-08',
+    reviewerId: 'emp-07',
+    period: 'Q3/2026',
+    status: 'COMPLETED',
+    criteria: [
+      { id: 'cr-1', name: 'Hoàn thành khối lượng công việc & Tiến độ cam kết', weight: 35, selfScore: 4.0, managerScore: 4.0 },
+      { id: 'cr-2', name: 'Chất lượng chuyên môn, kiến trúc & Giải quyết vấn đề', weight: 25, selfScore: 4.0, managerScore: 4.5 },
+      { id: 'cr-3', name: 'Tinh thần phối hợp đồng đội & Lắng nghe phản hồi', weight: 20, selfScore: 4.0, managerScore: 4.0 },
+      { id: 'cr-4', name: 'Kỷ luật công việc, chấm công & Tuân thủ quy định', weight: 10, selfScore: 4.5, managerScore: 4.5 },
+      { id: 'cr-5', name: 'Sáng kiến cải tiến quy trình & Đóng góp ý tưởng mới', weight: 10, selfScore: 4.0, managerScore: 4.0 },
+    ],
+    selfScoreTotal: 4.05,
+    managerScoreTotal: 4.15,
+    finalRating: 'A',
+    employeeStrengths: 'Quản lý xuất nhập tồn kho vận chặt chẽ, kiểm kê vật tư chính xác không để xảy ra thất thoát.',
+    employeeImprovements: 'Cần đẩy nhanh tiến độ số hóa biên bản giấy lên phần mềm quản lý.',
+    managerFeedback: 'Võ Văn Lực (Quản Đốc Phân Xưởng): Hoàn thành tốt định mức KPI kho vận, bảo đảm an toàn hàng hóa.',
+    developmentPlan: 'Bồi dưỡng nghiệp vụ Quản trị Chuỗi cung ứng và Tối ưu hóa Sắp xếp Kho.',
+    updatedAt: '2026-10-01 16:00'
+  }
+];
 
 export const INITIAL_ANNOUNCEMENTS: Announcement[] = [];
 
