@@ -57,6 +57,10 @@ export const EmployeesView: React.FC = () => {
   const [defaultManagerId, setDefaultManagerId] = useState<string | undefined>(undefined);
   const [defaultDepartmentId, setDefaultDepartmentId] = useState<DepartmentId | undefined>(undefined);
 
+  // Delete confirmation modal state & toast
+  const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   // View credentials modal state
   const [viewingCredentials, setViewingCredentials] = useState<Employee | null>(null);
   const [showCredentialsPass, setShowCredentialsPass] = useState(false);
@@ -470,10 +474,13 @@ export const EmployeesView: React.FC = () => {
                         {emp.id !== 'emp-01' && (
                           <button
                             type="button"
-                            onClick={() => {
-                              if (window.confirm(`Bạn có chắc chắn muốn xóa vĩnh viễn nhân sự "${emp.name}" khỏi hệ thống?`)) {
-                                deleteEmployee(emp.id);
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (emp.id === currentUser.id) {
+                                alert('Bạn đang đăng nhập bằng tài khoản này. Vui lòng chuyển sang vai trò khác trước khi xóa.');
+                                return;
                               }
+                              setEmployeeToDelete(emp);
                             }}
                             className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg text-xs transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center cursor-pointer border border-transparent hover:border-rose-200"
                             title="Xóa nhân sự này"
@@ -607,6 +614,88 @@ export const EmployeesView: React.FC = () => {
       />
 
       {/* MODAL XEM & QUẢN LÝ TÀI KHOẢN NHÂN SỰ */}
+      {/* MODAL XÁC NHẬN XÓA VĨNH VIỄN NHÂN SỰ */}
+      {employeeToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
+            onClick={() => setEmployeeToDelete(null)}
+          />
+          <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 animate-in zoom-in-95 p-6 space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
+                  <Trash2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">Xác Nhận Xóa Vĩnh Viễn</h3>
+                  <p className="text-[11px] text-slate-500">Thao tác này không thể hoàn tác</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEmployeeToDelete(null)}
+                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Thông tin nhân sự bị xóa */}
+            <div className="p-3.5 bg-rose-50/70 border border-rose-200 rounded-xl space-y-2.5">
+              <div className="flex items-center gap-3">
+                <img
+                  src={employeeToDelete.avatar}
+                  alt={employeeToDelete.name}
+                  referrerPolicy="no-referrer"
+                  className="w-10 h-10 rounded-full object-cover border border-rose-200 shrink-0"
+                />
+                <div className="min-w-0">
+                  <div className="font-bold text-slate-900 text-sm truncate">{employeeToDelete.name}</div>
+                  <div className="text-[11px] text-slate-500 font-mono truncate">{employeeToDelete.code} · {employeeToDelete.roleTitle}</div>
+                </div>
+              </div>
+              <p className="text-xs text-rose-800 leading-relaxed">
+                Bạn có chắc chắn muốn xóa vĩnh viễn nhân sự <strong>"{employeeToDelete.name}"</strong>? Toàn bộ dữ liệu và tài khoản đăng nhập sẽ bị xóa khỏi hệ thống.
+              </p>
+            </div>
+
+            <div className="pt-2 flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setEmployeeToDelete(null)}
+                className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const id = employeeToDelete.id;
+                  const name = employeeToDelete.name;
+                  deleteEmployee(id);
+                  setEmployeeToDelete(null);
+                  setToastMessage(`Đã xóa vĩnh viễn nhân sự "${name}" khỏi hệ thống thành công!`);
+                  setTimeout(() => setToastMessage(null), 3500);
+                }}
+                className="py-2.5 px-5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Xác Nhận Xóa</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-slate-900 text-white rounded-xl shadow-xl border border-slate-700 animate-in fade-in slide-in-from-bottom-2 text-xs font-semibold">
+          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {viewingCredentials && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
