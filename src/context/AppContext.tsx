@@ -81,8 +81,8 @@ interface AppContextType {
   // Attendance
   attendanceRecords: AttendanceRecord[];
   todayAttendance: AttendanceRecord | undefined;
-  checkIn: (location: WorkLocation, note?: string) => { success: boolean; message: string };
-  checkOut: (note?: string) => { success: boolean; message: string };
+  checkIn: (location: WorkLocation, note?: string, gpsLocation?: string) => { success: boolean; message: string };
+  checkOut: (note?: string, gpsLocation?: string) => { success: boolean; message: string };
   leaveRequests: LeaveRequest[];
   createLeaveRequest: (type: LeaveType, startDate: string, endDate: string, days: number, reason: string) => void;
   approveLeaveRequest: (id: string, note?: string) => void;
@@ -661,7 +661,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Check In handler
-  const checkIn = (location: WorkLocation, note?: string) => {
+  const checkIn = (location: WorkLocation, note?: string, gpsLocation?: string) => {
     const now = new Date();
     const timeStr = now.toTimeString().split(' ')[0]; // e.g. "08:15:30"
     const hours = now.getHours();
@@ -690,10 +690,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       location: location,
       locationDetails:
         location === 'OFFICE'
-          ? 'Trụ sở Tầng 18, Keangnam Landmark 72 (GPS Verified)'
+          ? (gpsLocation ? `Trụ sở HQ (${gpsLocation})` : 'Trụ sở Tầng 18, Keangnam Landmark 72 (GPS Verified)')
           : location === 'REMOTE'
-          ? 'Làm việc từ xa (WFH - Đã đăng ký)'
-          : 'Công tác ngoại nghiệp / Gặp khách hàng',
+          ? (gpsLocation ? `Làm việc từ xa (${gpsLocation})` : 'Làm việc từ xa (WFH - Đã đăng ký)')
+          : (gpsLocation ? `Công tác ngoại nghiệp (${gpsLocation})` : 'Công tác ngoại nghiệp / Gặp khách hàng'),
       ipAddress: '118.70.180.25 (OmniCorp_HQ_Secure)',
       note: note || undefined,
     };
@@ -714,7 +714,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Check Out handler
-  const checkOut = (note?: string) => {
+  const checkOut = (note?: string, gpsLocation?: string) => {
     const now = new Date();
     const timeStr = now.toTimeString().split(' ')[0];
 
@@ -746,6 +746,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       workHours: diffHours,
       overtimeHours: ot,
       note: note ? (record.note ? `${record.note} | ${note}` : note) : record.note,
+      locationDetails: gpsLocation ? `${record.locationDetails} · Ra về: ${gpsLocation}` : record.locationDetails,
     };
 
     setAttendanceRecords(updated);
