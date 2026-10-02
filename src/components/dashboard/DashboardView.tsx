@@ -819,12 +819,24 @@ export const DashboardView: React.FC = () => {
 
               {/* Main Content with 3D Glass Icon */}
               <div className="my-4 flex items-center gap-4">
-                <div className="relative w-16 h-16 shrink-0 rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(8,117,217,0.22)] border border-white/90 group-hover:scale-105 transition-transform">
-                  <img
-                    src="/kpi_glass_3d.jpg"
-                    alt="KPI 3D Glass Icon"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-16 h-16 shrink-0 rounded-2xl bg-white/90 border border-blue-200/90 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <svg viewBox="0 0 44 44" className="w-14 h-14 -rotate-90">
+                    <circle cx="22" cy="22" r="17" className="stroke-blue-100" strokeWidth="3.5" fill="none" />
+                    <circle
+                      cx="22"
+                      cy="22"
+                      r="17"
+                      stroke="#0875D9"
+                      strokeWidth="3.5"
+                      fill="none"
+                      strokeDasharray="106.8"
+                      strokeDashoffset={106.8 - (Math.min(100, myKpi) / 100) * 106.8}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center font-mono font-black text-xs text-[#0875D9]">
+                    {myKpi >= 90 ? 'A+' : myKpi >= 80 ? 'A' : myKpi >= 70 ? 'B' : 'C'}
+                  </span>
                 </div>
 
                 <div className="min-w-0 flex-1">

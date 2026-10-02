@@ -82,12 +82,8 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
         {/* Top Brand & Title with 3D Glass Icon */}
         <div className="flex items-center justify-between pb-3 border-b border-sky-100/80">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="relative w-10 h-10 shrink-0 rounded-xl overflow-hidden shadow-[0_6px_16px_rgba(8,117,217,0.18)] border border-white/90 group-hover:scale-105 transition-transform">
-              <img
-                src="/tasks_glass_3d.jpg"
-                alt="Tasks 3D Glass Icon"
-                className="w-full h-full object-cover"
-              />
+            <div className="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200/80 flex items-center justify-center text-[#0875D9] shadow-xs shrink-0 group-hover:scale-105 transition-transform">
+              <CheckSquare className="w-5 h-5 text-[#0875D9]" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
