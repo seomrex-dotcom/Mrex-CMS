@@ -278,7 +278,90 @@ export const INITIAL_LEAVE_REQUESTS: LeaveRequest[] = [
   }
 ];
 
-export const INITIAL_TASKS: Task[] = [];
+export const INITIAL_TASKS: Task[] = [
+  {
+    id: 'task-sample-team-1',
+    title: 'Triển khai chiến dịch truyền thông ra mắt sản phẩm Q4',
+    description: 'Phối hợp liên phòng ban xây dựng nội dung, viral video và chạy quảng cáo đa kênh cho sự kiện ra mắt.',
+    departmentId: 'social',
+    assignmentType: 'TEAM',
+    teamName: 'Phòng Social Media',
+    assigneeId: 'emp-06',
+    assigneeIds: ['emp-06', 'emp-08', 'emp-05'],
+    reporterId: 'emp-01',
+    status: 'IN_PROGRESS',
+    priority: 'HIGH',
+    startDate: '2026-10-01',
+    dueDate: '2026-10-15',
+    estimatedHours: 48,
+    actualHours: 20,
+    progress: 60,
+    subtasks: [
+      { id: 'sb-1', title: 'Lập kế hoạch nội dung & thông điệp chính', completed: true },
+      { id: 'sb-2', title: 'Thiết kế bộ nhận diện & banner truyền thông', completed: true },
+      { id: 'sb-3', title: 'Thiết lập các chiến dịch quảng cáo TikTok & Facebook', completed: false },
+      { id: 'sb-4', title: 'Báo cáo chỉ số tương tác và chuyển đổi', completed: false }
+    ],
+    comments: [
+      {
+        id: 'cm-1',
+        authorId: 'emp-06',
+        authorName: 'Hoàng Kim Oanh',
+        authorAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80',
+        content: 'Team đã hoàn thành bộ ấn phẩm giai đoạn 1, đang tiến hành setup ad campaigns.',
+        createdAt: '2026-10-01 16:30'
+      }
+    ],
+    tags: ['Việc Team', 'Social Media', 'Chiến Dịch Q4'],
+    createdAt: '2026-10-01 09:00'
+  },
+  {
+    id: 'task-sample-ind-1',
+    title: 'Tối ưu hóa Core Web Vitals và Technical SEO cho Landing Page',
+    description: 'Nâng điểm Google PageSpeed lên trên 90, nén ảnh định dạng WebP và tối ưu TTFB máy chủ.',
+    departmentId: 'it_seo',
+    assignmentType: 'INDIVIDUAL',
+    assigneeId: 'emp-02',
+    reporterId: 'emp-01',
+    status: 'TODO',
+    priority: 'MEDIUM',
+    startDate: '2026-10-02',
+    dueDate: '2026-10-08',
+    estimatedHours: 16,
+    actualHours: 0,
+    progress: 0,
+    subtasks: [
+      { id: 'sb-5', title: 'Audit toàn diện báo cáo PageSpeed Insights', completed: false },
+      { id: 'sb-6', title: 'Tối ưu lazy load và bộ nhớ cache trình duyệt', completed: false }
+    ],
+    comments: [],
+    tags: ['Việc Cá Nhân', 'IT & SEO', 'Tối Ưu Tốc Độ'],
+    createdAt: '2026-10-02 08:00'
+  },
+  {
+    id: 'task-sample-ind-2',
+    title: 'Phê duyệt định biên nhân sự và ngân sách chiến lược quý 4/2026',
+    description: 'Rà soát kế hoạch tuyển dụng, chi phí vận hành và phương án đầu tư công cụ làm việc số.',
+    departmentId: 'exec',
+    assignmentType: 'INDIVIDUAL',
+    assigneeId: 'emp-01',
+    reporterId: 'emp-01',
+    status: 'IN_PROGRESS',
+    priority: 'URGENT',
+    startDate: '2026-10-01',
+    dueDate: '2026-10-05',
+    estimatedHours: 8,
+    actualHours: 4,
+    progress: 50,
+    subtasks: [
+      { id: 'sb-7', title: 'Xem xét báo cáo tài chính tháng 9', completed: true },
+      { id: 'sb-8', title: 'Ký duyệt hạn mức ngân sách các phòng ban', completed: false }
+    ],
+    comments: [],
+    tags: ['Việc Cá Nhân', 'Ban Giám Đốc', 'Kế Hoạch'],
+    createdAt: '2026-10-01 08:30'
+  }
+];
 
 export const INITIAL_OKRS: OKRObjective[] = [];
 

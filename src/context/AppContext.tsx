@@ -562,7 +562,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Tasks
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.TASKS);
-    return saved ? JSON.parse(saved) : INITIAL_TASKS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error('Failed to parse tasks:', e);
+      }
+    }
+    return INITIAL_TASKS;
   });
 
   // Performance Reviews

@@ -158,6 +158,8 @@ export interface Subtask {
   completed: boolean;
 }
 
+export type TaskAssignmentType = 'INDIVIDUAL' | 'TEAM';
+
 export interface TaskComment {
   id: string;
   authorId: string;
@@ -173,6 +175,9 @@ export interface Task {
   description: string;
   departmentId: DepartmentId;
   assigneeId: string;
+  assigneeIds?: string[];
+  assignmentType?: TaskAssignmentType;
+  teamName?: string;
   reporterId: string;
   status: TaskStatus;
   priority: TaskPriority;

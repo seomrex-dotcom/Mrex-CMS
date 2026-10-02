@@ -3,6 +3,8 @@ import { useApp } from '../../context/AppContext';
 import { TaskPriority, TaskStatus } from '../../types';
 import {
   X,
+  Users,
+  User,
   CheckCircle2,
   Clock,
   Sparkles,
@@ -157,6 +159,46 @@ export const TaskDetailModal: React.FC<Props> = ({ taskId, onClose }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
           {/* Main Column (2 cols): Description, Progress Execution, Subtasks, Comments */}
           <div className="lg:col-span-2 p-6 space-y-6 max-h-[72vh] overflow-y-auto">
+            {/* Assignment Type Banner */}
+            {task.assignmentType === 'TEAM' ? (
+              <div className="p-3 bg-gradient-to-r from-indigo-50 via-blue-50/50 to-white border border-indigo-200/90 rounded-xl flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-indigo-950 flex items-center gap-2">
+                      <span>Nhiệm Vụ Phối Hợp Team: {task.teamName || department?.name}</span>
+                      <span className="px-2 py-0.5 bg-indigo-600 text-white rounded text-[10px] font-bold">Việc Team</span>
+                    </div>
+                    <div className="text-[11px] text-slate-600 mt-0.5 flex flex-wrap items-center gap-2">
+                      <span>Đầu mối chính: <strong>{assignee?.name}</strong></span>
+                      {task.assigneeIds && task.assigneeIds.length > 0 && (
+                        <span>· {task.assigneeIds.length} thành viên phối hợp</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center font-bold">
+                    <User className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-900 flex items-center gap-2">
+                      <span>Nhiệm Vụ Giao Cho Cá Nhân</span>
+                      <span className="px-2 py-0.5 bg-slate-200 text-slate-700 rounded text-[10px] font-bold">Cá Nhân</span>
+                    </div>
+                    <div className="text-[11px] text-slate-600 mt-0.5">
+                      Chỉ định trực tiếp: <strong>{assignee?.name}</strong> ({assignee?.roleTitle})
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Description */}
             <div>
               <h4 className="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider">Mô tả mục tiêu & Yêu cầu</h4>

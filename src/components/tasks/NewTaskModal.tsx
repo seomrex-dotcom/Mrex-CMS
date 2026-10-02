@@ -1,69 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
-import { DepartmentId, TaskPriority, TaskStatus } from '../../types';
-import { X, Sparkles, Plus, Trash2, Shield, Lock, UserCheck, AlertCircle } from 'lucide-react';
+import { DepartmentId, TaskPriority, TaskStatus, TaskAssignmentType } from '../../types';
+import {
+  X,
+  Sparkles,
+  Plus,
+  Trash2,
+  Shield,
+  UserCheck,
+  Users,
+  User,
+  Check,
+  Calendar,
+  Layers,
+  Info
+} from 'lucide-react';
 import { breakdownTaskWithAI } from '../../services/aiService';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  initialType?: TaskAssignmentType;
 }
 
-export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
+export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose, initialType = 'INDIVIDUAL' }) => {
   const { currentUser, employees, departments, createTask, celebrate } = useApp();
 
   const isManagement = currentUser.role === 'CEO' || currentUser.role === 'MANAGER';
 
-  // Subordinate employees or team members (exclude currentUser if manager wants to assign to employees)
+  // Assignment mode: INDIVIDUAL vs TEAM
+  const [assignmentType, setAssignmentType] = useState<TaskAssignmentType>(initialType);
+
+  useEffect(() => {
+    if (initialType) {
+      setAssignmentType(initialType);
+    }
+  }, [initialType, isOpen]);
+
+  // Default candidate employees
   const employeeCandidates = employees.filter(e => e.role === 'EMPLOYEE');
-  const defaultAssignee = employeeCandidates.length > 0 ? employeeCandidates[0].id : employees[0]?.id;
+  const defaultAssignee = isManagement
+    ? (employeeCandidates.length > 0 ? employeeCandidates[0].id : employees[0]?.id)
+    : currentUser.id;
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [departmentId, setDepartmentId] = useState<DepartmentId>('exec');
+  const [departmentId, setDepartmentId] = useState<DepartmentId>('social');
   const [assigneeId, setAssigneeId] = useState(defaultAssignee || currentUser.id);
+
+  // Team Assignment State
+  const [teamLeadId, setTeamLeadId] = useState<string>(currentUser.id);
+  const [selectedTeamMembers, setSelectedTeamMembers] = useState<string[]>([]);
+
+  // Update selected team members when departmentId changes
+  useEffect(() => {
+    const deptEmployees = employees.filter(e => e.departmentId === departmentId);
+    const deptEmpIds = deptEmployees.map(e => e.id);
+    setSelectedTeamMembers(deptEmpIds.length > 0 ? deptEmpIds : [currentUser.id]);
+
+    const dept = departments.find(d => d.id === departmentId);
+    if (dept && dept.managerId) {
+      setTeamLeadId(dept.managerId);
+    } else if (deptEmpIds.length > 0) {
+      setTeamLeadId(deptEmpIds[0]);
+    } else {
+      setTeamLeadId(currentUser.id);
+    }
+  }, [departmentId, departments, employees, currentUser.id]);
+
   const [priority, setPriority] = useState<TaskPriority>('HIGH');
-  const [startDate, setStartDate] = useState('2026-10-01');
-  const [dueDate, setDueDate] = useState('2026-10-08');
+  const [startDate, setStartDate] = useState('2026-10-02');
+  const [dueDate, setDueDate] = useState('2026-10-09');
   const [estimatedHours, setEstimatedHours] = useState(24);
-  const [tagsInput, setTagsInput] = useState('Sprint, Feature');
+  const [tagsInput, setTagsInput] = useState('');
   const [subtasks, setSubtasks] = useState<{ id: string; title: string; completed: boolean }[]>([
     { id: '1', title: 'Thu thập yêu cầu chi tiết & phân tích nghiệp vụ', completed: false },
     { id: '2', title: 'Triển khai kỹ thuật và kiểm thử chất lượng', completed: false }
   ]);
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
 
-  if (!isOpen) return null;
+  // Reset form when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setAssignmentType(initialType || 'INDIVIDUAL');
+      if (!isManagement) {
+        setAssigneeId(currentUser.id);
+        setDepartmentId(currentUser.departmentId);
+      }
+    }
+  }, [isOpen, initialType, isManagement, currentUser]);
 
-  // Access control guard: Only Management and Board of Directors can assign tasks
-  if (!isManagement) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
-        <div className="bg-white rounded-2xl shadow-2xl border border-red-200 w-full max-w-md overflow-hidden p-6 text-center space-y-4 animate-in fade-in zoom-in-95 duration-150">
-          <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto border border-red-100">
-            <Lock className="w-6 h-6" />
-          </div>
-          <div>
-            <h3 className="text-base font-bold text-slate-900">Giới Hạn Quyền Hạn Giao Việc</h3>
-            <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-              Theo quy định phân quyền hệ thống: <strong>Chỉ cấp Quản lý và Ban Quản trị</strong> mới có quyền giao việc cho nhân viên.
-            </p>
-            <p className="text-xs text-slate-500 mt-1">
-              Tài khoản cấp <strong>Nhân viên</strong> ({currentUser.name}) chỉ được thực hiện công việc được giao.
-            </p>
-          </div>
-          <div className="pt-2">
-            <button
-              onClick={onClose}
-              className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors"
-            >
-              Đã hiểu & Đóng lại
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (!isOpen) return null;
 
   const handleAiBreakdown = async () => {
     if (!title.trim()) {
@@ -88,50 +115,97 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
     setSubtasks(subtasks.filter(s => s.id !== id));
   };
 
+  const toggleTeamMember = (empId: string) => {
+    if (selectedTeamMembers.includes(empId)) {
+      if (selectedTeamMembers.length === 1) return; // keep at least 1 member
+      setSelectedTeamMembers(selectedTeamMembers.filter(id => id !== empId));
+    } else {
+      setSelectedTeamMembers([...selectedTeamMembers, empId]);
+    }
+  };
+
+  const handleSelectAllDeptMembers = () => {
+    const deptEmployees = employees.filter(e => e.departmentId === departmentId);
+    setSelectedTeamMembers(deptEmployees.map(e => e.id));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    const tags = tagsInput
+    const parsedTags = tagsInput
       .split(',')
       .map(t => t.trim())
       .filter(t => t.length > 0);
 
     const validSubtasks = subtasks.filter(s => s.title.trim().length > 0);
+    const targetDept = departments.find(d => d.id === departmentId);
 
-    createTask({
-      title: title.trim(),
-      description: description.trim(),
-      departmentId,
-      assigneeId,
-      reporterId: currentUser.id,
-      status: 'TODO' as TaskStatus,
-      priority,
-      startDate,
-      dueDate,
-      estimatedHours: Number(estimatedHours) || 8,
-      actualHours: 0,
-      progress: 0,
-      tags: tags.length > 0 ? tags : ['Nhiệm vụ'],
-      subtasks: validSubtasks,
-    });
+    if (assignmentType === 'TEAM') {
+      const teamTags = parsedTags.length > 0 ? parsedTags : ['Việc Team', targetDept?.name || 'Team'];
+      createTask({
+        title: title.trim(),
+        description: description.trim(),
+        departmentId,
+        assigneeId: teamLeadId || assigneeId,
+        assigneeIds: selectedTeamMembers.length > 0 ? selectedTeamMembers : [teamLeadId],
+        assignmentType: 'TEAM',
+        teamName: targetDept?.name || 'Team',
+        reporterId: currentUser.id,
+        status: 'TODO' as TaskStatus,
+        priority,
+        startDate,
+        dueDate,
+        estimatedHours: Number(estimatedHours) || 16,
+        actualHours: 0,
+        progress: 0,
+        tags: teamTags,
+        subtasks: validSubtasks,
+      });
+    } else {
+      const indTags = parsedTags.length > 0 ? parsedTags : ['Việc Cá Nhân'];
+      createTask({
+        title: title.trim(),
+        description: description.trim(),
+        departmentId,
+        assigneeId: isManagement ? assigneeId : currentUser.id,
+        assigneeIds: [isManagement ? assigneeId : currentUser.id],
+        assignmentType: 'INDIVIDUAL',
+        reporterId: currentUser.id,
+        status: 'TODO' as TaskStatus,
+        priority,
+        startDate,
+        dueDate,
+        estimatedHours: Number(estimatedHours) || 8,
+        actualHours: 0,
+        progress: 0,
+        tags: indTags,
+        subtasks: validSubtasks,
+      });
+    }
 
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200/80 w-full max-w-xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200/80 w-full max-w-xl overflow-hidden my-6 animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-[#EAF5FF] via-white to-white">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-blue-50/70 via-indigo-50/40 to-white">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-[#0875D9]/15 text-[#0875D9] flex items-center justify-center font-bold">
-              <Shield className="w-4 h-4" />
+              {assignmentType === 'TEAM' ? <Users className="w-4 h-4" /> : <User className="w-4 h-4" />}
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#063B78]">Giao Việc Cho Nhân Viên</h2>
+              <h2 className="text-base font-bold text-[#063B78]">
+                {assignmentType === 'TEAM' ? 'Giao Việc Cho Team / Phòng Ban' : 'Giao Việc Cho Cá Nhân'}
+              </h2>
               <p className="text-[11px] text-[#0875D9] font-medium">
-                Ban Quản Trị & Cấp Quản Lý điều phối nhiệm vụ
+                {assignmentType === 'TEAM'
+                  ? 'Phân công nhiệm vụ nhóm đa thành viên phối hợp thực hiện'
+                  : isManagement
+                  ? 'Chỉ định trực tiếp nhân sự chịu trách nhiệm thực thi'
+                  : 'Tự lập kế hoạch và đầu việc cá nhân cần hoàn thành'}
               </p>
             </div>
           </div>
@@ -144,7 +218,42 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs max-h-[80vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs max-h-[82vh] overflow-y-auto">
+          {/* Mode Switcher: Giao việc cá nhân vs Giao việc team */}
+          <div className="p-1 bg-slate-100 rounded-xl flex items-center gap-1 border border-slate-200">
+            <button
+              type="button"
+              onClick={() => setAssignmentType('INDIVIDUAL')}
+              className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                assignmentType === 'INDIVIDUAL'
+                  ? 'bg-white text-indigo-700 shadow-xs border border-slate-200/80'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <User className="w-3.5 h-3.5" />
+              <span>Giao Việc Cá Nhân</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (!isManagement) {
+                  alert('Tài khoản cấp Nhân viên chỉ có quyền tạo việc cá nhân. Chỉ Ban Quản trị và Quản lý mới có quyền điều phối việc cho Team.');
+                  return;
+                }
+                setAssignmentType('TEAM');
+              }}
+              className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                assignmentType === 'TEAM'
+                  ? 'bg-white text-indigo-700 shadow-xs border border-slate-200/80'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Giao Việc Cho Team</span>
+            </button>
+          </div>
+
           {/* Reporter Preview Banner */}
           <div className="p-3 bg-gradient-to-r from-blue-50/80 to-indigo-50/60 border border-[#0875D9]/25 rounded-xl flex items-center justify-between">
             <div className="flex items-center gap-2.5 min-w-0">
@@ -158,17 +267,18 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 <div className="flex items-center gap-1.5">
                   <span className="font-bold text-slate-900 truncate">{currentUser.name}</span>
                   <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[#0875D9] text-white">
-                    {currentUser.role === 'CEO' ? 'Ban Quản Trị' : 'Cấp Quản Lý'}
+                    {currentUser.role === 'CEO' ? 'Ban Giám Đốc' : currentUser.role === 'MANAGER' ? 'Cấp Quản Lý' : 'Nhân Viên'}
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-500 truncate">
-                  Người giao việc: {currentUser.roleTitle}
+                  {isManagement ? `Người điều phối: ${currentUser.roleTitle}` : 'Tự tạo việc cá nhân để theo dõi'}
                 </div>
               </div>
             </div>
             <div className="text-right shrink-0">
               <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-semibold border border-emerald-200">
-                <UserCheck className="w-3 h-3" /> Đủ quyền giao việc
+                <UserCheck className="w-3 h-3" />
+                {isManagement ? 'Quyền Quản Trị' : 'Việc Cá Nhân'}
               </span>
             </div>
           </div>
@@ -182,7 +292,11 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="VD: Triển khai cổng thanh toán QR code cho khách hàng..."
+              placeholder={
+                assignmentType === 'TEAM'
+                  ? 'VD: Chiến dịch truyền thông ra mắt sản phẩm Q4...'
+                  : 'VD: Hoàn thiện báo cáo tiến độ tuần và tối ưu giao diện...'
+              }
               className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#0875D9]/30 focus:border-[#0875D9] transition-all"
               required
             />
@@ -191,59 +305,173 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
           {/* Description */}
           <div>
             <label className="block font-semibold text-slate-700 mb-1">
-              Mô tả chi tiết & Tiêu chí nghiệm thu (DoD)
+              Mô tả chi tiết & Tiêu chuẩn nghiệm thu (DoD)
             </label>
             <textarea
-              rows={3}
+              rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Nêu rõ yêu cầu kỹ thuật, tài liệu bàn giao hoặc kết quả mong muốn nhân viên đạt được..."
+              placeholder="Nêu rõ yêu cầu chất lượng, tài liệu bàn giao hoặc kết quả mong muốn đạt được..."
               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#0875D9]/30 focus:border-[#0875D9] transition-all"
             />
           </div>
 
-          {/* Department & Assignee (Target Employee) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block font-semibold text-slate-700 mb-1">Phòng ban phụ trách</label>
-              <select
-                value={departmentId}
-                onChange={(e) => setDepartmentId(e.target.value as DepartmentId)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px]"
-              >
-                {departments.map(d => (
-                  <option key={d.id} value={d.id}>{d.name}</option>
-                ))}
-              </select>
-            </div>
+          {/* Section: TEAM Assignment Specific Inputs */}
+          {assignmentType === 'TEAM' ? (
+            <div className="p-3.5 bg-indigo-50/50 border border-indigo-200/80 rounded-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 font-bold text-indigo-950">
+                  <Users className="w-4 h-4 text-indigo-600" />
+                  <span>Cấu hình Đội Nhóm Thực Hiện</span>
+                </div>
+                <span className="text-[10.5px] text-indigo-600 font-semibold bg-white px-2 py-0.5 rounded-full border border-indigo-100">
+                  {selectedTeamMembers.length} thành viên được chọn
+                </span>
+              </div>
 
-            <div>
-              <label className="block font-semibold text-slate-700 mb-1">
-                Giao cho nhân viên (Assignee) <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={assigneeId}
-                onChange={(e) => setAssigneeId(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px] font-medium"
-              >
-                {/* Group employees */}
-                <optgroup label="Cấp Nhân Viên (Thực hiện)">
-                  {employees.filter(e => e.role === 'EMPLOYEE').map(emp => (
-                    <option key={emp.id} value={emp.id}>
-                      {emp.name} — {emp.roleTitle}
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label="Cán bộ / Trưởng bộ phận khác">
-                  {employees.filter(e => e.role !== 'EMPLOYEE').map(emp => (
-                    <option key={emp.id} value={emp.id}>
-                      {emp.name} ({emp.roleTitle})
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Team / Phòng ban nhận việc</label>
+                  <select
+                    value={departmentId}
+                    onChange={(e) => setDepartmentId(e.target.value as DepartmentId)}
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-h-[40px] font-medium"
+                  >
+                    {departments.map(d => (
+                      <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Trưởng nhóm / Đầu mối chịu trách nhiệm (Team Lead)
+                  </label>
+                  <select
+                    value={teamLeadId}
+                    onChange={(e) => setTeamLeadId(e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-h-[40px] font-medium"
+                  >
+                    {employees.map(emp => (
+                      <option key={emp.id} value={emp.id}>
+                        {emp.name} — {emp.roleTitle} {emp.departmentId === departmentId ? '★ (Cùng Team)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Members multi-select checklist */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="font-semibold text-slate-700 text-[11px]">
+                    Thành viên trong Team cùng tham gia:
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleSelectAllDeptMembers}
+                    className="text-[10.5px] text-indigo-600 hover:text-indigo-800 font-semibold cursor-pointer underline"
+                  >
+                    Chọn tất cả thành viên trong phòng
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-36 overflow-y-auto p-1 bg-white rounded-lg border border-slate-200">
+                  {employees.map(emp => {
+                    const isSelected = selectedTeamMembers.includes(emp.id);
+                    const isLead = emp.id === teamLeadId;
+
+                    return (
+                      <label
+                        key={emp.id}
+                        className={`flex items-center gap-2 p-1.5 rounded-md cursor-pointer transition-colors border ${
+                          isSelected
+                            ? 'bg-indigo-50/70 border-indigo-200 text-indigo-950'
+                            : 'bg-white border-transparent hover:bg-slate-50 text-slate-700'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleTeamMember(emp.id)}
+                          className="rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                        />
+                        <img
+                          src={emp.avatar}
+                          alt=""
+                          className="w-5 h-5 rounded-full object-cover shrink-0"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <span className="font-medium truncate block text-[11px] leading-tight">
+                            {emp.name} {isLead && <strong className="text-indigo-600 font-bold">(Lead)</strong>}
+                          </span>
+                          <span className="text-[9.5px] text-slate-400 block truncate">
+                            {emp.roleTitle}
+                          </span>
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
+          ) : (
+            /* Section: INDIVIDUAL Assignment Inputs */
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Phòng ban phụ trách</label>
+                <select
+                  value={departmentId}
+                  onChange={(e) => setDepartmentId(e.target.value as DepartmentId)}
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px]"
+                >
+                  {departments.map(d => (
+                    <option key={d.id} value={d.id}>{d.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">
+                  Người nhận việc (Assignee) <span className="text-red-500">*</span>
+                </label>
+                {isManagement ? (
+                  <select
+                    value={assigneeId}
+                    onChange={(e) => {
+                      const empId = e.target.value;
+                      setAssigneeId(empId);
+                      const emp = employees.find(x => x.id === empId);
+                      if (emp && emp.departmentId) {
+                        setDepartmentId(emp.departmentId);
+                      }
+                    }}
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px] font-medium"
+                  >
+                    <optgroup label="Cấp Nhân Viên">
+                      {employees.filter(e => e.role === 'EMPLOYEE').map(emp => (
+                        <option key={emp.id} value={emp.id}>
+                          {emp.name} — {emp.roleTitle}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Cán bộ / Trưởng bộ phận khác">
+                      {employees.filter(e => e.role !== 'EMPLOYEE').map(emp => (
+                        <option key={emp.id} value={emp.id}>
+                          {emp.name} ({emp.roleTitle})
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+                ) : (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 min-h-[40px]">
+                    <img src={currentUser.avatar} alt="" className="w-5 h-5 rounded-full object-cover" />
+                    <span>{currentUser.name} (Tự làm)</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Priority & Estimated hours */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -262,19 +490,21 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Ước tính thời gian (Giờ)</label>
+              <label className="block font-semibold text-slate-700 mb-1">
+                Ước tính thời gian thực hiện (Giờ)
+              </label>
               <input
                 type="number"
                 min="1"
                 max="500"
                 value={estimatedHours}
-                onChange={(e) => setEstimatedHours(parseInt(e.target.value) || 0)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px]"
+                onChange={(e) => setEstimatedHours(Number(e.target.value))}
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px]"
               />
             </div>
           </div>
 
-          {/* Dates */}
+          {/* Schedule */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block font-semibold text-slate-700 mb-1">Ngày bắt đầu</label>
@@ -282,28 +512,29 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px]"
               />
             </div>
+
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Hạn chót bàn giao (Deadline)</label>
+              <label className="block font-semibold text-slate-700 mb-1">Hạn hoàn thành (Deadline)</label>
               <input
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30 min-h-[40px]"
               />
             </div>
           </div>
 
           {/* Tags */}
           <div>
-            <label className="block font-semibold text-slate-700 mb-1">Thẻ phân loại (ngăn cách bằng dấu phẩy)</label>
+            <label className="block font-semibold text-slate-700 mb-1">Nhãn thẻ (Tags phân loại, cách nhau bằng dấu phẩy)</label>
             <input
               type="text"
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
-              placeholder="Backend, API, Release-V3..."
+              placeholder={assignmentType === 'TEAM' ? 'Việc Team, Social Media, Q4' : 'Việc Cá Nhân, Sprint, Fix Bug'}
               className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D9]/30"
             />
           </div>
@@ -373,9 +604,19 @@ export const NewTaskModal: React.FC<Props> = ({ isOpen, onClose }) => {
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-gradient-to-r from-[#0875D9] to-[#0B4FA8] hover:from-[#0B4FA8] hover:to-[#063B78] text-white font-semibold rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer"
+              className="px-5 py-2.5 bg-gradient-to-r from-[#0875D9] to-[#0B4FA8] hover:from-[#0B4FA8] hover:to-[#063B78] text-white font-semibold rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-1.5"
             >
-              Xác Nhận Giao Việc Cho Nhân Viên
+              {assignmentType === 'TEAM' ? (
+                <>
+                  <Users className="w-4 h-4" />
+                  <span>Xác Nhận Giao Việc Cho Team</span>
+                </>
+              ) : (
+                <>
+                  <User className="w-4 h-4" />
+                  <span>Xác Nhận Giao Việc Cá Nhân</span>
+                </>
+              )}
             </button>
           </div>
         </form>

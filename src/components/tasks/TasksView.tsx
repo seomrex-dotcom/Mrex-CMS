@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
-import { TaskPriority, TaskStatus, Task } from '../../types';
+import { TaskPriority, TaskStatus, Task, TaskAssignmentType } from '../../types';
 import {
   Plus,
   Search,
@@ -48,6 +48,8 @@ export const TasksView: React.FC = () => {
   const [filterDepartment, setFilterDepartment] = useState<string>('all');
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+  const [newTaskType, setNewTaskType] = useState<TaskAssignmentType>('INDIVIDUAL');
+  const [taskTypeFilter, setTaskTypeFilter] = useState<'ALL' | 'TEAM' | 'INDIVIDUAL'>('ALL');
 
   // Scope filter:
   // For Employee: 'MY_TASKS' (default & primary) or 'ALL_DEPT'
@@ -62,6 +64,9 @@ export const TasksView: React.FC = () => {
   }, [tasks, currentUser.id]);
 
   // Tasks assigned by currentUser (if management)
+  const teamTasksCount = useMemo(() => tasks.filter(t => t.assignmentType === 'TEAM').length, [tasks]);
+  const individualTasksCount = useMemo(() => tasks.filter(t => t.assignmentType !== 'TEAM').length, [tasks]);
+
   const tasksAssignedByMe = useMemo(() => {
     return tasks.filter(t => t.reporterId === currentUser.id);
   }, [tasks, currentUser.id]);
@@ -96,6 +101,10 @@ export const TasksView: React.FC = () => {
       }
 
       // 2. Search query
+      // Task Assignment Type Filter (Team vs Individual)
+      if (taskTypeFilter === 'TEAM' && task.assignmentType !== 'TEAM') return false;
+      if (taskTypeFilter === 'INDIVIDUAL' && task.assignmentType === 'TEAM') return false;
+
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const assignee = employees.find(e => e.id === task.assigneeId);
@@ -236,22 +245,46 @@ export const TasksView: React.FC = () => {
           {/* Action button based on Permission:
               Only CEO and MANAGER can assign tasks to employees */}
           {isManagement ? (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setNewTaskType('TEAM');
+                  setShowNewTaskModal(true);
+                }}
+                className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs hover:shadow-md transition-all min-h-[40px] cursor-pointer"
+                title="Giao việc cho cả Phòng ban / Đội nhóm cùng phối hợp"
+              >
+                <Users className="w-4 h-4" />
+                <span>Giao Việc Team</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setNewTaskType('INDIVIDUAL');
+                  setShowNewTaskModal(true);
+                }}
+                className="flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#0875D9] to-[#0B4FA8] hover:from-[#0B4FA8] hover:to-[#063B78] rounded-xl shadow-xs hover:shadow-md transition-all min-h-[40px] cursor-pointer"
+                title="Chỉ định giao việc cho từng nhân sự cụ thể"
+              >
+                <User className="w-4 h-4" />
+                <span>Giao Việc Cá Nhân</span>
+              </button>
+            </div>
+          ) : (
             <button
-              onClick={() => setShowNewTaskModal(true)}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#0875D9] to-[#0B4FA8] hover:from-[#0B4FA8] hover:to-[#063B78] rounded-xl shadow-xs hover:shadow-md transition-all min-h-[40px] cursor-pointer"
-              title="Chỉ cấp Quản lý & Ban Quản trị có quyền giao việc cho nhân viên"
+              type="button"
+              onClick={() => {
+                setNewTaskType('INDIVIDUAL');
+                setShowNewTaskModal(true);
+              }}
+              className="flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#0875D9] bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl shadow-2xs transition-all min-h-[40px] cursor-pointer"
+              title="Tự lập công việc cá nhân cần làm"
             >
               <Plus className="w-4 h-4" />
-              <span>Giao Việc Cho Nhân Viên</span>
+              <span>+ Việc Cá Nhân Mới</span>
             </button>
-          ) : (
-            <div
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-500 bg-slate-100/90 rounded-xl border border-slate-200"
-              title="Tài khoản cấp Nhân viên chỉ có quyền thực hiện công việc, không có quyền giao việc"
-            >
-              <Lock className="w-3.5 h-3.5 text-slate-400" />
-              <span>Cấp Nhân Viên: Chỉ Thực Hiện</span>
-            </div>
           )}
         </div>
       </div>
@@ -581,6 +614,19 @@ export const TasksView: React.FC = () => {
                             {dept?.name}
                           </span>
                         </div>
+
+                        {/* Assignment Type Badge */}
+                        {task.assignmentType === 'TEAM' ? (
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-50 border border-indigo-200/80 text-indigo-700 rounded-md font-semibold text-[10px] w-fit">
+                            <Users className="w-3 h-3 text-indigo-600 shrink-0" />
+                            <span>Việc Team: {task.teamName || dept?.name || 'Team'}</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-700 rounded-md font-semibold text-[10px] w-fit">
+                            <User className="w-3 h-3 text-slate-500 shrink-0" />
+                            <span>Cá nhân: {assignee?.name || 'Nhân sự'}</span>
+                          </div>
+                        )}
 
                         {/* Title & Description */}
                         <div>
