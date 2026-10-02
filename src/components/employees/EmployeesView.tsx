@@ -793,7 +793,7 @@ export const EmployeesView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setViewingCredentials(null)}
-                  className="py-2 px-4 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs transition-colors"
+                  className="py-2 px-4 bg-[#0875D9] hover:bg-[#065eb0] text-white font-bold rounded-xl text-xs transition-colors"
                 >
                   Đóng
                 </button>

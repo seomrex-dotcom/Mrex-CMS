@@ -61,62 +61,62 @@ export const BoardView: React.FC = () => {
 
   return (
     <div className="p-3.5 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
-      {/* Header Banner */}
-      <div className="bg-slate-900 text-white rounded-xl p-5 sm:p-6 shadow-sm space-y-4">
+      {/* Header Banner - Harmonious White / Soft-Blue Theme */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-              <Award className="w-5 h-5" />
+            <div className="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-amber-600 shadow-2xs">
+              <Award className="w-5 h-5 text-amber-600" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-bold tracking-tight">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-base sm:text-lg font-bold tracking-tight text-slate-900">
                   Phân Hệ Ban Quản Trị & Hội Đồng Điều Hành
                 </h1>
-                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-semibold border border-amber-400/30">
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 font-bold border border-amber-200">
                   C-Level Executive
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Phê duyệt ngân sách quỹ thưởng KPI, thẩm định mục tiêu chiến lược OKR và giám sát tài chính nhân sự
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 text-xs">
-            <span className="text-slate-400">Người đại diện:</span>
-            <span className="font-semibold text-white bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+            <span className="text-slate-500 font-medium">Người đại diện:</span>
+            <span className="font-semibold text-slate-800 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
               {currentUser.name} ({currentUser.roleTitle})
             </span>
           </div>
         </div>
 
         {/* Executive Quick Metrics */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2 border-t border-slate-800">
-          <div>
-            <div className="text-[11px] text-slate-400">Tổng quỹ lương thực tế tháng</div>
-            <div className="text-lg font-bold font-mono text-white tabular-nums">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-3 border-t border-slate-100">
+          <div className="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+            <div className="text-[11px] font-medium text-slate-500">Tổng quỹ lương thực tế tháng</div>
+            <div className="text-lg font-bold font-mono text-slate-900 tabular-nums">
               {formatVND(totalMonthlyPayroll)}
             </div>
           </div>
 
-          <div>
-            <div className="text-[11px] text-slate-400">Chi phí làm thêm giờ (OT)</div>
-            <div className="text-lg font-bold font-mono text-amber-400 tabular-nums">
+          <div className="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+            <div className="text-[11px] font-medium text-slate-500">Chi phí làm thêm giờ (OT)</div>
+            <div className="text-lg font-bold font-mono text-amber-600 tabular-nums">
               {formatVND(totalOtCost)}
             </div>
           </div>
 
-          <div>
-            <div className="text-[11px] text-slate-400">Đề xuất ngân sách đang chờ duyệt</div>
-            <div className="text-lg font-bold font-mono text-rose-400 tabular-nums">
+          <div className="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+            <div className="text-[11px] font-medium text-slate-500">Đề xuất ngân sách đang chờ duyệt</div>
+            <div className="text-lg font-bold font-mono text-rose-600 tabular-nums">
               {pendingBudgets.length} đề xuất
             </div>
           </div>
 
-          <div>
-            <div className="text-[11px] text-slate-400">Quỹ thưởng quý đã chuẩn y</div>
-            <div className="text-lg font-bold font-mono text-emerald-400 tabular-nums">
+          <div className="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+            <div className="text-[11px] font-medium text-slate-500">Quỹ thưởng quý đã chuẩn y</div>
+            <div className="text-lg font-bold font-mono text-emerald-600 tabular-nums">
               {formatVND(approvedBudgetsTotal)}
             </div>
           </div>

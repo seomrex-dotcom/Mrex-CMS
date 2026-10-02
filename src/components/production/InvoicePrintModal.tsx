@@ -44,7 +44,7 @@ export const InvoicePrintModal: React.FC<Props> = ({ invoice, isOpen, onClose })
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
-        <div className="px-6 py-3.5 bg-slate-900 text-white flex items-center justify-between">
+        <div className="px-6 py-3.5 bg-slate-50 border-b border-slate-200 text-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <FileText className="w-4 h-4 text-blue-400" />
             <span>Xem & In Hóa Đơn Kho Điện Tử: {invoice.code}</span>

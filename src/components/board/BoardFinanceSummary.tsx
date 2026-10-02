@@ -289,7 +289,7 @@ export const BoardFinanceSummary: React.FC = () => {
         {/* Export Button */}
         <button
           onClick={handleExportSummaryCSV}
-          className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold shadow-xs transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-[#0875D9] hover:bg-[#065eb0] text-white rounded-xl font-bold shadow-xs transition-colors flex items-center gap-2"
         >
           <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
           <span>Xuất Báo Cáo Tài Chính HĐQT (CSV)</span>

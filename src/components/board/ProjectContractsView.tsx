@@ -649,16 +649,16 @@ export const ProjectContractsView: React.FC = () => {
 
           <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl z-10 overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150">
             {/* Modal Header */}
-            <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-white via-blue-50/20 to-white text-slate-900">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-[#0875D9]/20 border border-indigo-400/40 flex items-center justify-center text-indigo-400">
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold">
+                  <h3 className="text-sm sm:text-base font-bold text-slate-900">
                     {contractToEdit ? 'Chỉnh Sửa Hợp Đồng Dự Án' : 'Thêm Hợp Đồng Doanh Thu Dự Án Mới'}
                   </h3>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-500">
                     Khai báo doanh thu, ngày ký, tệp hợp đồng và thiết lập lịch nhắc thanh toán
                   </p>
                 </div>

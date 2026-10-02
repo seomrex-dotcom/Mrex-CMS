@@ -359,8 +359,8 @@ export const BoardBrandSettings: React.FC = () => {
       )}
 
       {/* 1. REAL-TIME LIVE PREVIEW CARD */}
-      <div className="bg-slate-900 text-white rounded-2xl p-5 sm:p-6 shadow-md border border-slate-800 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      <div className="bg-white text-slate-800 rounded-2xl p-5 sm:p-6 shadow-xs border border-slate-200/80 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-xs"
@@ -369,18 +369,18 @@ export const BoardBrandSettings: React.FC = () => {
               <Eye className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-bold tracking-tight">
+              <h2 className="text-sm font-bold tracking-tight text-slate-900">
                 Mô Phỏng Trực Tiếp Thương Hiệu (Live Brand Preview)
               </h2>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500">
                 Giao diện và nhận diện sẽ hiển thị ngay lập tức trên hệ sinh thái phần mềm
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] text-slate-400 font-mono">
-              Phông chữ: <strong className="text-white">{formData.fontFamily}</strong>
+            <span className="text-[11px] text-slate-500 font-mono">
+              Phông chữ: <strong className="text-slate-800">{formData.fontFamily}</strong>
             </span>
             <span className="text-slate-600">|</span>
             <span className="text-[11px] text-slate-400 font-mono">
@@ -466,7 +466,7 @@ export const BoardBrandSettings: React.FC = () => {
         </div>
 
         {/* Live Typography Preview String */}
-        <div className="p-3 bg-slate-950/70 rounded-xl border border-slate-800 text-xs space-y-1">
+        <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
           <div className="text-[10px] text-slate-400 uppercase tracking-widest font-mono font-bold">
             Kiểm tra hiển thị dấu Tiếng Việt & Số học theo phông {formData.fontFamily}:
           </div>
