@@ -53,6 +53,7 @@ export const AttendanceView: React.FC = () => {
   const [activeSubTab, setActiveSubTab] = useState<'records' | 'leaves'>('records');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [filterEmployeeId, setFilterEmployeeId] = useState<string>('all');
+  const [leaveFilter, setLeaveFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'>('ALL');
 
   // GPS Real-time Telemetry State
   const [gps, setGps] = useState<GpsState>({
@@ -161,6 +162,14 @@ export const AttendanceView: React.FC = () => {
   };
 
   const canApprove = currentUser.role === 'CEO' || currentUser.role === 'MANAGER' || currentUser.role === 'HR';
+  const myLeaveRequests = leaveRequests.filter(r => r.employeeId === currentUser.id);
+  const pendingCount = leaveRequests.filter(r => r.status === 'PENDING').length;
+  const approvedCount = leaveRequests.filter(r => r.status === 'APPROVED').length;
+  const rejectedCount = leaveRequests.filter(r => r.status === 'REJECTED').length;
+  const filteredLeaves = leaveRequests.filter(req => {
+    if (leaveFilter === 'ALL') return true;
+    return req.status === leaveFilter;
+  });
 
   // Filter attendance records
   const filteredRecords = attendanceRecords.filter(rec => {
@@ -455,54 +464,164 @@ export const AttendanceView: React.FC = () => {
             </div>
           </div>
 
-          {/* GPS Radar Telemetry Panel (Replaces Camera) */}
-          <div className="p-3.5 bg-gradient-to-br from-emerald-50/70 via-slate-50 to-blue-50/50 border border-emerald-200/80 rounded-xl space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                  <Navigation className={`w-4 h-4 ${isLocating ? 'animate-spin' : ''}`} />
+          {/* Tích Hợp: Trạm Định Vị GPS & Theo Dõi Đơn Nghỉ Phép Nhân Sự */}
+          <div className="p-3.5 bg-gradient-to-br from-emerald-50/70 via-white to-blue-50/40 border border-emerald-200/80 rounded-xl space-y-3 shadow-xs">
+            {/* 1. Phần GPS Tinh Gọn */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                    <Navigation className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin' : ''}`} />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-slate-900 block leading-tight">Định Vị Vệ Tinh GPS</span>
+                    <span className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
+                      {gps.status === 'SUCCESS' ? 'Tín hiệu GPS chuẩn' : isLocating ? 'Đang lấy vị trí...' : 'Sẵn sàng ghi nhận'}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-xs font-bold text-slate-900 block leading-tight">Định Vị Vệ Tinh GPS</span>
-                  <span className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
-                    {gps.status === 'SUCCESS' ? 'Tín hiệu GPS chuẩn' : isLocating ? 'Đang định vị...' : 'Sẵn sàng ghi nhận'}
-                  </span>
+
+                <div className="flex items-center gap-1.5">
+                  <span className="font-mono text-[10.5px] text-slate-400">{gps.updatedAt}</span>
+                  <button
+                    type="button"
+                    onClick={fetchRealtimeGps}
+                    disabled={isLocating}
+                    className="p-1 text-slate-500 hover:text-emerald-700 hover:bg-emerald-100 rounded-md transition-all cursor-pointer"
+                    title="Cập nhật lại GPS hiện tại"
+                  >
+                    <RotateCcw className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin text-emerald-600' : ''}`} />
+                  </button>
                 </div>
               </div>
-              <span className="font-mono text-[10.5px] text-slate-400">{gps.updatedAt}</span>
+
+              {/* Thông số GPS thu gọn dạng 2 cột */}
+              <div className="p-2 bg-white/95 rounded-lg border border-emerald-100/90 font-mono text-[11px] grid grid-cols-2 gap-x-2 gap-y-0.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400 font-sans">Vĩ độ:</span>
+                  <span className="font-bold text-emerald-800">{gps.latitude}° N</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400 font-sans">Kinh độ:</span>
+                  <span className="font-bold text-emerald-800">{gps.longitude}° E</span>
+                </div>
+                <div className="col-span-2 flex items-center justify-between pt-1 border-t border-slate-100 text-[10px] text-slate-500 font-sans">
+                  <span>Bán kính: <strong className="text-slate-700">±{gps.accuracy}m</strong></span>
+                  <span className="truncate max-w-[150px] text-slate-400 font-sans" title={gps.address}>Manhattan Glory, Q.9</span>
+                </div>
+              </div>
             </div>
 
-            <div className="p-2 bg-white/90 rounded-lg border border-emerald-100 space-y-1 font-mono text-[11px]">
-              <div className="flex items-center justify-between text-slate-700">
-                <span className="text-slate-400">Vĩ độ (Lat):</span>
-                <span className="font-bold text-emerald-800">{gps.latitude}° N</span>
+            {/* 2. Phần Theo Dõi Đơn Nghỉ Phép (Hiển thị ngay ở mục GPS để nhân sự dễ theo dõi) */}
+            <div className="pt-2.5 border-t border-slate-200/80 space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5 text-indigo-600" />
+                  <span className="text-xs font-bold text-slate-900">Theo Dõi Đơn Nghỉ</span>
+                  {myLeaveRequests.length > 0 && (
+                    <span className="px-1.5 py-0.2 bg-indigo-100 text-indigo-800 text-[10px] font-bold rounded-full">
+                      {myLeaveRequests.length}
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowLeaveModal(true)}
+                  className="px-2 py-0.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-[11px] font-semibold flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
+                  title="Tạo đơn xin nghỉ phép hoặc làm thêm giờ"
+                >
+                  <Plus className="w-3 h-3" />
+                  <span>Tạo đơn</span>
+                </button>
               </div>
-              <div className="flex items-center justify-between text-slate-700">
-                <span className="text-slate-400">Kinh độ (Lng):</span>
-                <span className="font-bold text-emerald-800">{gps.longitude}° E</span>
-              </div>
-              <div className="flex items-center justify-between text-slate-700">
-                <span className="text-slate-400">Sai số bán kính:</span>
-                <span className="font-bold text-slate-800">± {gps.accuracy} mét</span>
+
+              {/* Danh sách đơn rút gọn trực quan */}
+              {myLeaveRequests.length === 0 ? (
+                <div className="p-2.5 bg-white/90 rounded-lg border border-dashed border-slate-200 text-center space-y-1">
+                  <p className="text-[11px] text-slate-600 font-medium">Chưa có đơn nghỉ nào</p>
+                  <p className="text-[10px] text-slate-400">
+                    Phép năm còn lại: <strong className="text-indigo-600 font-mono">{currentUser.annualLeaveRemaining} ngày</strong>
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-1.5 max-h-[175px] overflow-y-auto pr-0.5">
+                  {myLeaveRequests.slice(0, 3).map(req => {
+                    const isApproved = req.status === 'APPROVED';
+                    const isRejected = req.status === 'REJECTED';
+                    return (
+                      <div
+                        key={req.id}
+                        className="p-2 bg-white rounded-lg border border-slate-200/90 shadow-2xs hover:border-indigo-300 transition-all text-xs space-y-1"
+                      >
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-semibold text-slate-800 text-[11.5px] truncate">
+                            {req.type === 'ANNUAL'
+                              ? '🏖️ Phép năm'
+                              : req.type === 'OVERTIME'
+                              ? '⚡ Làm thêm (OT)'
+                              : req.type === 'SICK'
+                              ? '🏥 Nghỉ ốm'
+                              : '📝 Đơn nghỉ'}
+                          </span>
+                          <span
+                            className={`text-[9.5px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${
+                              isApproved
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : isRejected
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-amber-100 text-amber-800'
+                            }`}
+                          >
+                            {isApproved ? '✓ Đã duyệt' : isRejected ? '✕ Từ chối' : '⏳ Chờ duyệt'}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[10.5px] text-slate-500 font-mono">
+                          <span>{req.startDate}{req.startDate !== req.endDate ? ` → ${req.endDate}` : ''}</span>
+                          <span className="font-bold text-slate-700 font-sans">{req.totalDays} ngày</span>
+                        </div>
+
+                        {req.reason && (
+                          <p className="text-[10.5px] text-slate-500 truncate italic">
+                            "{req.reason}"
+                          </p>
+                        )}
+
+                        {req.approverName && (
+                          <div className="text-[9.5px] text-slate-400 pt-0.5 border-t border-slate-100 flex items-center justify-between">
+                            <span>Duyệt bởi: {req.approverName}</span>
+                            <span>{req.approvalDate || 'Đã duyệt'}</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Footer link to bottom full list */}
+              <div className="pt-1 flex items-center justify-between text-[10.5px] text-slate-500">
+                <span>Phép năm còn: <strong className="text-indigo-600 font-mono">{currentUser.annualLeaveRemaining} ngày</strong></span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveSubTab('leaves');
+                    document.getElementById('attendance-subtabs')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="text-indigo-600 hover:text-indigo-800 font-semibold cursor-pointer"
+                >
+                  Xem bảng đầy đủ ({leaveRequests.length}) ↓
+                </button>
               </div>
             </div>
-
-            <button
-              type="button"
-              onClick={fetchRealtimeGps}
-              disabled={isLocating}
-              className="w-full py-2 px-3 bg-white hover:bg-emerald-50 text-emerald-700 border border-emerald-300 font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
-            >
-              <RotateCcw className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin text-emerald-600' : ''}`} />
-              <span>{isLocating ? 'Đang cập nhật GPS...' : 'Cập nhật lại GPS hiện tại'}</span>
-            </button>
           </div>
         </div>
       </div>
 
       {/* Tabs: Bảng Chấm Công vs Quản Lý Đơn Từ */}
-      <div className="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
+      <div id="attendance-subtabs" className="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
         <div className="flex items-center justify-between px-6 pt-4 border-b border-slate-200">
           <div className="flex items-center gap-6">
             <button
@@ -641,101 +760,170 @@ export const AttendanceView: React.FC = () => {
             </table>
           </div>
         ) : (
-          /* Leave Requests Workflow Table */
+          /* Streamlined & Compact Leave Requests Workflow Table */
           <div className="p-4 space-y-3">
-            <div className="text-xs text-slate-500 flex items-center justify-between pb-2 border-b border-slate-100">
-              <span>Danh sách các đề xuất nghỉ phép, làm thêm giờ và phê duyệt</span>
-              <span className="font-mono font-bold text-indigo-600">
-                {leaveRequests.filter(r => r.status === 'PENDING').length} đơn đang chờ phê duyệt
-              </span>
+            {/* Filter bar & counts */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setLeaveFilter('ALL')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                    leaveFilter === 'ALL'
+                      ? 'bg-indigo-600 text-white shadow-2xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  Tất cả ({leaveRequests.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLeaveFilter('PENDING')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                    leaveFilter === 'PENDING'
+                      ? 'bg-amber-500 text-white shadow-2xs'
+                      : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
+                  }`}
+                >
+                  Chờ duyệt ({pendingCount})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLeaveFilter('APPROVED')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                    leaveFilter === 'APPROVED'
+                      ? 'bg-emerald-600 text-white shadow-2xs'
+                      : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                  }`}
+                >
+                  Đã duyệt ({approvedCount})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLeaveFilter('REJECTED')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                    leaveFilter === 'REJECTED'
+                      ? 'bg-red-600 text-white shadow-2xs'
+                      : 'bg-red-50 text-red-700 hover:bg-red-100'
+                  }`}
+                >
+                  Từ chối ({rejectedCount})
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowLeaveModal(true)}
+                className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Tạo Đơn Mới</span>
+              </button>
             </div>
 
-            <div className="space-y-2">
-              {leaveRequests.map(req => {
-                const isPending = req.status === 'PENDING';
-                return (
-                  <div
-                    key={req.id}
-                    className="p-4 border border-slate-200 rounded-lg hover:border-slate-300 transition-colors bg-white flex flex-col md:flex-row md:items-center justify-between gap-4"
-                  >
-                    <div className="space-y-1.5">
-                      <div className="flex items-center gap-3">
-                        <span className="font-semibold text-slate-900 text-xs">{req.employeeName}</span>
-                        <span className="text-slate-400 text-xs">·</span>
-                        <span className="font-medium text-indigo-700 text-xs">
-                          {req.type === 'ANNUAL'
-                            ? 'Nghỉ phép năm'
-                            : req.type === 'OVERTIME'
-                            ? 'Làm thêm giờ (OT)'
-                            : req.type === 'SICK'
-                            ? 'Nghỉ ốm'
-                            : req.type}
-                        </span>
-                        <span className="text-slate-400 text-xs">·</span>
-                        <span className="font-mono text-slate-500 text-xs">
-                          {req.startDate} {req.startDate !== req.endDate ? `đến ${req.endDate}` : ''} ({req.totalDays} ngày)
-                        </span>
+            {/* Compact Leave Request Rows */}
+            {filteredLeaves.length === 0 ? (
+              <div className="py-8 text-center text-slate-400 text-xs">
+                Không tìm thấy đơn nào theo trạng thái đã chọn.
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {filteredLeaves.map(req => {
+                  const isPending = req.status === 'PENDING';
+                  const isMine = req.employeeId === currentUser.id;
+                  return (
+                    <div
+                      key={req.id}
+                      className="p-3 border border-slate-200 rounded-lg hover:border-slate-300 transition-colors bg-white flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs"
+                    >
+                      <div className="space-y-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-bold text-slate-900">{req.employeeName}</span>
+                          {isMine && (
+                            <span className="px-1.5 py-0.2 bg-indigo-50 text-indigo-600 font-semibold text-[10px] rounded border border-indigo-200/60">
+                              Đơn của bạn
+                            </span>
+                          )}
+                          <span className="text-slate-300">·</span>
+                          <span className="font-semibold text-indigo-700">
+                            {req.type === 'ANNUAL'
+                              ? '🏖️ Nghỉ phép năm'
+                              : req.type === 'OVERTIME'
+                              ? '⚡ Làm thêm giờ (OT)'
+                              : req.type === 'SICK'
+                              ? '🏥 Nghỉ ốm'
+                              : req.type}
+                          </span>
+                          <span className="text-slate-300">·</span>
+                          <span className="font-mono text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100 text-[11px]">
+                            {req.startDate} {req.startDate !== req.endDate ? `→ ${req.endDate}` : ''} ({req.totalDays} ngày)
+                          </span>
+                        </div>
+
+                        {req.reason && <p className="text-slate-600 line-clamp-1">{req.reason}</p>}
+
+                        <div className="flex flex-wrap items-center gap-2 text-[10.5px] text-slate-400">
+                          <span>Gửi: {req.createdAt}</span>
+                          {req.approverName && (
+                            <>
+                              <span>·</span>
+                              <span className="text-slate-600 font-medium">Người duyệt: {req.approverName} ({req.approvalDate || 'Đã duyệt'})</span>
+                            </>
+                          )}
+                          {req.approvalNote && (
+                            <>
+                              <span>·</span>
+                              <span className="text-slate-500 italic">Ghi chú: {req.approvalNote}</span>
+                            </>
+                          )}
+                        </div>
                       </div>
 
-                      <p className="text-xs text-slate-600">{req.reason}</p>
-
-                      <div className="flex items-center gap-3 text-[11px] text-slate-400">
-                        <span>Gửi lúc: {req.createdAt}</span>
-                        {req.approverName && (
-                          <>
-                            <span>·</span>
-                            <span>Người duyệt: {req.approverName} ({req.approvalDate})</span>
-                          </>
-                        )}
-                        {req.approvalNote && (
-                          <>
-                            <span>·</span>
-                            <span className="text-slate-600">Ghi chú: {req.approvalNote}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Status & Approval Actions */}
-                    <div className="flex items-center gap-3 shrink-0">
-                      <div className="flex items-center gap-1.5 text-xs">
+                      {/* Status & Quick Approval Actions */}
+                      <div className="flex items-center gap-2.5 shrink-0 self-end md:self-center">
                         <span
-                          className={`w-2 h-2 rounded-full ${
+                          className={`px-2 py-0.5 rounded-full text-[11px] font-bold inline-flex items-center gap-1 ${
                             req.status === 'APPROVED'
-                              ? 'bg-emerald-500'
+                              ? 'bg-emerald-100 text-emerald-700'
                               : req.status === 'REJECTED'
-                              ? 'bg-red-500'
-                              : 'bg-amber-400'
+                              ? 'bg-red-100 text-red-700'
+                              : 'bg-amber-100 text-amber-800'
                           }`}
-                        />
-                        <span className="font-medium text-slate-700">
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full ${
+                            req.status === 'APPROVED' ? 'bg-emerald-500' : req.status === 'REJECTED' ? 'bg-red-500' : 'bg-amber-500 animate-ping'
+                          }`} />
                           {req.status === 'APPROVED' ? 'Đã duyệt' : req.status === 'REJECTED' ? 'Từ chối' : 'Chờ duyệt'}
                         </span>
-                      </div>
 
-                      {isPending && canApprove && (
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            onClick={() => approveLeaveRequest(req.id, 'Đồng ý phê duyệt')}
-                            className="px-2.5 py-1.5 text-xs font-medium text-emerald-700 hover:text-white bg-emerald-50 hover:bg-emerald-600 border border-emerald-200 rounded-md transition-colors flex items-center gap-1 cursor-pointer"
-                          >
-                            <Check className="w-3.5 h-3.5" />
-                            <span>Duyệt</span>
-                          </button>
-                          <button
-                            onClick={() => rejectLeaveRequest(req.id, 'Chưa đủ điều kiện xét duyệt')}
-                            className="px-2.5 py-1.5 text-xs font-medium text-red-700 hover:text-white bg-red-50 hover:bg-red-600 border border-red-200 rounded-md transition-colors flex items-center gap-1 cursor-pointer"
-                          >
-                            <X className="w-3.5 h-3.5" />
-                            <span>Từ chối</span>
-                          </button>
-                        </div>
-                      )}
+                        {isPending && canApprove && (
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => approveLeaveRequest(req.id, 'Đồng ý phê duyệt')}
+                              className="px-2 py-1 text-xs font-semibold text-emerald-700 hover:text-white bg-emerald-50 hover:bg-emerald-600 border border-emerald-200 rounded-md transition-colors flex items-center gap-1 cursor-pointer"
+                              title="Phê duyệt đơn"
+                            >
+                              <Check className="w-3 h-3" />
+                              <span>Duyệt</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => rejectLeaveRequest(req.id, 'Từ chối yêu cầu')}
+                              className="px-2 py-1 text-xs font-semibold text-red-700 hover:text-white bg-red-50 hover:bg-red-600 border border-red-200 rounded-md transition-colors flex items-center gap-1 cursor-pointer"
+                              title="Từ chối đơn"
+                            >
+                              <X className="w-3 h-3" />
+                              <span>Từ chối</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>

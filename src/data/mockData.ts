@@ -235,7 +235,48 @@ export const TODAY_STR = '2026-10-01';
 
 export const INITIAL_ATTENDANCE: AttendanceRecord[] = [];
 
-export const INITIAL_LEAVE_REQUESTS: LeaveRequest[] = [];
+export const INITIAL_LEAVE_REQUESTS: LeaveRequest[] = [
+  {
+    id: 'leave-sample-1',
+    employeeId: 'emp-1',
+    employeeName: 'Trần Hoàng Nam',
+    type: 'ANNUAL',
+    startDate: '2026-10-15',
+    endDate: '2026-10-16',
+    totalDays: 2,
+    reason: 'Nghỉ giải quyết việc gia đình',
+    status: 'APPROVED',
+    approverId: 'emp-3',
+    approverName: 'Nguyễn Lan Chi',
+    approvalDate: '2026-10-01',
+    approvalNote: 'Đã duyệt kế hoạch bàn giao công việc',
+    createdAt: '2026-10-01 09:30:00'
+  },
+  {
+    id: 'leave-sample-2',
+    employeeId: 'emp-1',
+    employeeName: 'Trần Hoàng Nam',
+    type: 'OVERTIME',
+    startDate: '2026-10-05',
+    endDate: '2026-10-05',
+    totalDays: 1,
+    reason: 'Làm thêm giờ tối hoàn thiện kế hoạch Q4',
+    status: 'PENDING',
+    createdAt: '2026-10-02 08:00:00'
+  },
+  {
+    id: 'leave-sample-3',
+    employeeId: 'emp-2',
+    employeeName: 'Lê Minh Tuấn',
+    type: 'SICK',
+    startDate: '2026-10-03',
+    endDate: '2026-10-03',
+    totalDays: 1,
+    reason: 'Khám sức khỏe định kỳ',
+    status: 'PENDING',
+    createdAt: '2026-10-02 07:45:00'
+  }
+];
 
 export const INITIAL_TASKS: Task[] = [];
 
