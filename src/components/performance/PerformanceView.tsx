@@ -32,6 +32,10 @@ export const PerformanceView: React.FC = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [editingReview, setEditingReview] = useState<PerformanceReview | null>(null);
 
+  const isCEO = currentUser.role === 'CEO';
+  const isManager = currentUser.role === 'MANAGER' || departments.some(d => d.managerId === currentUser.id);
+  const isEmployee = currentUser.role === 'EMPLOYEE';
+
   // ROLE RESTRICTION: Employees only see their own review
   const filteredReviews = reviews.filter(r => {
     if (r.period !== selectedPeriod) return false;
@@ -51,10 +55,6 @@ export const PerformanceView: React.FC = () => {
         return { text: 'Cần nỗ lực (C)', color: 'text-rose-700 bg-rose-50 border-rose-200' };
     }
   };
-
-  const isCEO = currentUser.role === 'CEO';
-  const isManager = currentUser.role === 'MANAGER' || departments.some(d => d.managerId === currentUser.id);
-  const isEmployee = currentUser.role === 'EMPLOYEE';
 
   const managedDept = departments.find(d => d.managerId === currentUser.id) || departments.find(d => d.id === currentUser.departmentId);
   const managedDeptId = managedDept?.id || currentUser.departmentId;
