@@ -155,7 +155,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
               {urgentCount > 0 ? (
                 /* URGENT STATE: FIERY GLOWING ALERT BUTTON */
                 <button
-                  onClick={() => setShowTasksDropdown(!showTasksDropdown)}
+                  onClick={() => { setShowTasksDropdown(!showTasksDropdown); setDismissedUrgentToast(true); }}
                   className="relative flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 text-white rounded-xl text-[11px] font-extrabold transition-all cursor-pointer active:scale-95 shadow-md shadow-rose-500/30 ring-2 ring-rose-400/80 animate-pulse bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:brightness-110"
                   title={`Bạn có ${pendingTasksCount} việc cá nhân cần giải quyết (${urgentCount} việc KHẨN CẤP)!`}
                 >
@@ -173,7 +173,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
               ) : pendingTasksCount > 0 ? (
                 /* ACTIVE NORMAL STATE: VIBRANT GLOWING BLUE PILL */
                 <button
-                  onClick={() => setShowTasksDropdown(!showTasksDropdown)}
+                  onClick={() => { setShowTasksDropdown(!showTasksDropdown); setDismissedUrgentToast(true); }}
                   className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 text-white rounded-xl text-[11px] font-bold transition-all shadow-[0_4px_14px_rgba(8,117,217,0.35)] ring-1 ring-blue-300/50 cursor-pointer active:scale-95 bg-gradient-to-r from-[#0875D9] via-[#0066CC] to-[#2590F6] hover:brightness-105"
                   title={`Bạn có ${pendingTasksCount} việc cá nhân cần giải quyết`}
                 >
@@ -184,7 +184,7 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
               ) : (
                 /* ALL DONE ZERO STATE */
                 <button
-                  onClick={() => setShowTasksDropdown(!showTasksDropdown)}
+                  onClick={() => { setShowTasksDropdown(!showTasksDropdown); setDismissedUrgentToast(true); }}
                   className="flex items-center gap-1 px-2.5 sm:px-3 py-1 bg-emerald-50/90 hover:bg-emerald-100/90 text-emerald-700 border border-emerald-200/80 rounded-xl text-[11px] font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
                   title="Bạn đã hoàn thành tất cả công việc cá nhân!"
                 >
