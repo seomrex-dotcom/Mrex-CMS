@@ -10,7 +10,8 @@ import {
   ChevronRight,
   Layers,
   Sparkles,
-  RotateCcw
+  RotateCcw,
+  ShieldCheck
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
@@ -20,8 +21,6 @@ interface QuickLinkItem {
   subtitle: string;
   badge: string;
   url: string;
-  colorGradient: string;
-  glowColor: string;
   icon: React.ElementType;
 }
 
@@ -35,6 +34,10 @@ const DEFAULT_LINKS: Record<string, string> = {
 
 export const FloatingQuickAccessDock: React.FC = () => {
   const { currentUser, setActiveTab } = useApp();
+  
+  // Quyền: Chỉ cấp Ban Giám Đốc (CEO) mới được chỉnh sửa liên kết
+  const isBoardOfDirectors = currentUser.role === 'CEO';
+
   const [urls, setUrls] = useState<Record<string, string>>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -53,6 +56,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isBoardOfDirectors) return;
     setUrls(tempUrls);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(tempUrls));
@@ -65,6 +69,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
   };
 
   const handleReset = () => {
+    if (!isBoardOfDirectors) return;
     setTempUrls(DEFAULT_LINKS);
   };
 
@@ -72,21 +77,17 @@ export const FloatingQuickAccessDock: React.FC = () => {
     {
       id: 'fanpage',
       title: 'CMS Quản Trị Fanpage',
-      subtitle: 'Quản lý Fanpage, tin nhắn & Social Media',
+      subtitle: 'Quản lý Fanpage, tin nhắn khách hàng & Social',
       badge: 'Fanpage Hub',
       url: urls.fanpage || DEFAULT_LINKS.fanpage,
-      colorGradient: 'from-[#1877F2] via-[#0A66C2] to-[#3B5998]',
-      glowColor: 'shadow-blue-500/35 border-blue-400/40',
       icon: Share2,
     },
     {
       id: 'ads',
       title: 'CMS Web Ads',
-      subtitle: 'Quản trị chiến dịch quảng cáo & chi phí Ads',
+      subtitle: 'Quản trị chiến dịch quảng cáo đa kênh & chi phí',
       badge: 'Ads Manager',
       url: urls.ads || DEFAULT_LINKS.ads,
-      colorGradient: 'from-[#FF5E36] via-[#FF3366] to-[#E11D48]',
-      glowColor: 'shadow-rose-500/35 border-rose-400/40',
       icon: Target,
     },
     {
@@ -95,8 +96,6 @@ export const FloatingQuickAccessDock: React.FC = () => {
       subtitle: 'Hệ thống ERP, nhân sự, tài chính & điều hành',
       badge: 'Core Enterprise',
       url: urls.enterprise || DEFAULT_LINKS.enterprise,
-      colorGradient: 'from-[#0875D9] via-[#0284C7] to-[#0D9488]',
-      glowColor: 'shadow-cyan-500/35 border-cyan-400/40',
       icon: Building2,
     },
   ];
@@ -113,16 +112,16 @@ export const FloatingQuickAccessDock: React.FC = () => {
   return (
     <>
       {/* ============================================================
-           FLOATING QUICK ACCESS DOCK (Right Middle Edge)
+           BRIGHT BLUE GLASS FLOATING DOCK (Cạnh Phải Giữa Màn Hình)
            ============================================================ */}
       <aside
-        aria-label="Thanh công cụ liên kết nhanh CMS"
-        className="fixed right-2 sm:right-3.5 top-1/2 -translate-y-1/2 z-40 select-none flex flex-col items-center gap-2.5 p-1.5 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/60 dark:border-slate-700/60 shadow-xl shadow-slate-900/10 group/dock transition-all"
+        aria-label="Thanh phím tắt liên kết nhanh CMS (Bright Blue Glass)"
+        className="fixed right-2 sm:right-3.5 top-1/2 -translate-y-1/2 z-40 select-none flex flex-col items-center gap-2.5 p-1.5 rounded-2xl bg-sky-950/20 dark:bg-slate-900/40 backdrop-blur-2xl border border-sky-300/40 dark:border-sky-500/30 shadow-2xl shadow-sky-900/25 ring-1 ring-white/30 group/dock transition-all"
       >
-        {/* Subtle Grip indicator */}
-        <div className="w-4 h-1 bg-slate-300 dark:bg-slate-600 rounded-full opacity-60" />
+        {/* Subtle Grip Bar */}
+        <div className="w-4 h-1 bg-sky-400/50 rounded-full" />
 
-        {/* 3 Main Floating Action Buttons */}
+        {/* 3 Floating Bright Blue Glass Buttons */}
         {linksConfig.map((item) => {
           const Icon = item.icon;
           return (
@@ -131,28 +130,28 @@ export const FloatingQuickAccessDock: React.FC = () => {
                 type="button"
                 onClick={() => handleButtonClick(item)}
                 aria-label={item.title}
-                className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${item.colorGradient} text-white flex items-center justify-center shadow-lg ${item.glowColor} border cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0875D9] relative overflow-hidden`}
+                className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-sky-400/35 via-blue-500/30 to-[#0875D9]/40 hover:from-[#0875D9]/90 hover:via-sky-500/90 hover:to-blue-600/90 backdrop-blur-xl border border-sky-300/70 hover:border-white shadow-lg shadow-sky-500/30 hover:shadow-xl hover:shadow-sky-400/50 ring-1 ring-white/40 text-white flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-sky-400 relative overflow-hidden group-hover/btn:ring-2 group-hover/btn:ring-sky-200"
               >
-                {/* Subtle shine overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-white/20 pointer-events-none" />
+                {/* Top Glass Gloss Reflection Highlight */}
+                <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/35 via-white/10 to-transparent pointer-events-none rounded-t-xl" />
 
-                {/* Animated pulse dot for active indicator */}
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-white shadow-xs animate-ping opacity-60" />
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-white/90 shadow-xs" />
+                {/* Animated Pulsing Active Cyan Dot */}
+                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-sky-200 shadow-sm animate-ping opacity-75" />
+                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-white shadow-sm" />
 
-                <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 relative z-10 transition-transform group-hover/btn:rotate-6" />
+                <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 relative z-10 transition-transform duration-300 group-hover/btn:rotate-6 drop-shadow-md" />
               </button>
 
-              {/* Flyout Preview Tooltip Card (Appears to the left on hover) */}
-              <div className="absolute right-full mr-3.5 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-start px-3.5 py-2.5 bg-slate-900/95 backdrop-blur-md text-white rounded-xl shadow-2xl border border-slate-700/80 min-w-[240px] max-w-[280px] pointer-events-none opacity-0 translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 group-hover/btn:pointer-events-auto transition-all duration-200 z-50">
+              {/* Flyout Preview Tooltip Card (Slide from right to left on hover) */}
+              <div className="absolute right-full mr-3.5 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-start px-3.5 py-2.5 bg-slate-900/95 backdrop-blur-xl text-white rounded-xl shadow-2xl border border-sky-400/40 min-w-[240px] max-w-[280px] pointer-events-none opacity-0 translate-x-3 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 group-hover/btn:pointer-events-auto transition-all duration-200 z-50">
                 {/* Caret arrow pointing to the button */}
-                <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-slate-900 rotate-45 border-r border-t border-slate-700/80" />
+                <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-slate-900 rotate-45 border-r border-t border-sky-400/40" />
 
                 <div className="flex items-center justify-between w-full gap-2 mb-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/15 text-slate-200 border border-white/10">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30">
                     {item.badge}
                   </span>
-                  <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover/btn:text-white" />
+                  <ExternalLink className="w-3.5 h-3.5 text-sky-400 group-hover/btn:text-white" />
                 </div>
 
                 <h4 className="text-xs font-bold text-white tracking-tight flex items-center gap-1.5">
@@ -166,44 +165,45 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   <span className="truncate max-w-[170px] text-sky-300 underline underline-offset-2">
                     {item.url.replace(/^https?:\/\//, '')}
                   </span>
-                  <span className="text-[9px] text-slate-400 font-sans">Bấm để mở ↗</span>
+                  <span className="text-[9px] text-sky-400 font-sans">Bấm để mở ↗</span>
                 </div>
               </div>
             </div>
           );
         })}
 
-        {/* Small Settings Gear for CEO/Manager */}
-        {(currentUser.role === 'CEO' || currentUser.role === 'MANAGER') && (
+        {/* Nút Bánh Răng Cài Đặt (CHỈ HIỂN THỊ VỚI CẤP BAN GIÁM ĐỐC / CEO) */}
+        {isBoardOfDirectors && (
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            title="Cấu hình URL hệ thống CMS liên kết"
-            className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors flex items-center justify-center cursor-pointer mt-0.5"
+            title="Ban Giám Đốc: Cấu hình liên kết hệ thống"
+            className="w-7 h-7 rounded-lg text-sky-400 hover:text-white hover:bg-sky-500/30 backdrop-blur-md border border-sky-400/30 transition-all flex items-center justify-center cursor-pointer mt-0.5 shadow-sm"
           >
-            <Settings className="w-3.5 h-3.5" />
+            <Settings className="w-3.5 h-3.5 animate-spin-slow" />
           </button>
         )}
       </aside>
 
       {/* ============================================================
-           MODAL CẤU HÌNH LIÊN KẾT CMS FLOATING
+           MODAL CẤU HÌNH LIÊN KẾT CMS FLOATING (DÀNH RIÊNG BAN GIÁM ĐỐC)
            ============================================================ */}
-      {isEditing && (
+      {isEditing && isBoardOfDirectors && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+            <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-sky-50/70 dark:bg-slate-800/50">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#0875D9] text-white flex items-center justify-center">
-                  <Layers className="w-4 h-4" />
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-[#0875D9] text-white flex items-center justify-center shadow-sm">
+                  <ShieldCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-                    Cấu Hình Liên Kết Floating CMS
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    <span>Cấu Hình Liên Kết CMS Floating</span>
+                    <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Ban Giám Đốc</span>
                   </h3>
                   <p className="text-[11px] text-slate-500">
-                    Tuỳ chỉnh 3 đường dẫn web nhanh ở cạnh phải màn hình
+                    Chỉ cấp Ban Giám Đốc có quyền điều chỉnh 3 liên kết cạnh phải
                   </p>
                 </div>
               </div>
@@ -220,7 +220,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
             <form onSubmit={handleSave} className="p-5 space-y-4 text-xs">
               <div>
                 <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Share2 className="w-3.5 h-3.5 text-blue-600" />
+                  <Share2 className="w-3.5 h-3.5 text-sky-600" />
                   <span>1. Link Web CMS Quản Trị Fanpage</span>
                 </label>
                 <input
@@ -229,13 +229,13 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   onChange={e => setTempUrls({ ...tempUrls, fanpage: e.target.value })}
                   placeholder="https://fanpage.mrex.vn"
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
                 <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Target className="w-3.5 h-3.5 text-rose-600" />
+                  <Target className="w-3.5 h-3.5 text-sky-600" />
                   <span>2. Link CMS Web Ads (Quảng Cáo)</span>
                 </label>
                 <input
@@ -244,13 +244,13 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   onChange={e => setTempUrls({ ...tempUrls, ads: e.target.value })}
                   placeholder="https://ads.mrex.vn"
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
                 <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Building2 className="w-3.5 h-3.5 text-cyan-600" />
+                  <Building2 className="w-3.5 h-3.5 text-sky-600" />
                   <span>3. Link Web CMS Quản Trị Doanh Nghiệp</span>
                 </label>
                 <input
@@ -259,14 +259,14 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   onChange={e => setTempUrls({ ...tempUrls, enterprise: e.target.value })}
                   placeholder="https://cms.mrex.vn"
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0875D9]"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               {savedSuccess && (
                 <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-semibold flex items-center gap-2 border border-emerald-200">
                   <Check className="w-4 h-4 text-emerald-600" />
-                  <span>Đã lưu cấu hình đường dẫn thành công!</span>
+                  <span>Ban Giám Đốc đã lưu cấu hình đường dẫn thành công!</span>
                 </div>
               )}
 
@@ -289,10 +289,10 @@ export const FloatingQuickAccessDock: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-xl bg-[#0875D9] hover:bg-[#065eb0] text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-[#0875D9] hover:from-sky-600 hover:to-[#065eb0] text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20 cursor-pointer"
                   >
                     <Check className="w-3.5 h-3.5" />
-                    <span>Lưu Cấu Hình</span>
+                    <span>Lưu Cấu Hình (CEO)</span>
                   </button>
                 </div>
               </div>
