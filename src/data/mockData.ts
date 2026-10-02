@@ -392,6 +392,29 @@ export const INITIAL_TASKS: Task[] = [
     comments: [],
     tags: ['Việc Cá Nhân', 'Ban Giám Đốc', 'Kế Hoạch'],
     createdAt: '2026-10-01 08:30'
+  },
+  {
+    id: 'task-sample-urgent-wh',
+    title: '[Khẩn Cấp] Kiểm kê gấp vật tư chiến dịch Q4 & bàn giao xuất kho',
+    description: 'Xử lý khẩn cấp yêu cầu kiểm kê và bàn giao vật tư quà tặng, ấn phẩm truyền thông cho sự kiện chiều nay.',
+    departmentId: 'production',
+    assignmentType: 'INDIVIDUAL',
+    assigneeId: 'emp-08',
+    reporterId: 'emp-07',
+    status: 'IN_PROGRESS',
+    priority: 'URGENT',
+    startDate: '2026-10-02',
+    dueDate: '2026-10-02',
+    estimatedHours: 4,
+    actualHours: 2,
+    progress: 50,
+    subtasks: [
+      { id: 'sb-wh-1', title: 'Kiểm tra tồn kho vật tư banner và quà tặng', completed: true },
+      { id: 'sb-wh-2', title: 'Ký bàn giao biên bản vận chuyển cho đối tác', completed: false }
+    ],
+    comments: [],
+    tags: ['Khẩn Cấp', 'Kho Vận', 'Việc Cá Nhân'],
+    createdAt: '2026-10-02 08:15'
   }
 ];
 

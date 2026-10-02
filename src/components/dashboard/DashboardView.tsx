@@ -332,7 +332,7 @@ export const DashboardView: React.FC = () => {
   const totalCollected = contracts.reduce((s, c) => s + c.collectedVND, 0);
   const pendingBudgets = budgetApprovals.filter(b => b.status === 'PENDING').length;
 
-  const myTasks = useMemo(() => tasks.filter(t => t.assigneeId === currentUser.id), [tasks, currentUser.id]);
+  const myTasks = useMemo(() => tasks.filter(t => t.assigneeId === currentUser.id || Boolean(t.assigneeIds && t.assigneeIds.includes(currentUser.id))), [tasks, currentUser.id]);
   const myDone  = myTasks.filter(t => t.status === 'COMPLETED').length;
   const myKpi   = myTasks.length > 0 ? Math.round((myDone / myTasks.length) * 100) : 0;
   const myAtt   = useMemo(() => attendanceRecords.filter(r => r.employeeId === currentUser.id), [attendanceRecords, currentUser.id]);

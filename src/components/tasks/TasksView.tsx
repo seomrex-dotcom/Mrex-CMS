@@ -60,7 +60,7 @@ export const TasksView: React.FC = () => {
 
   // Employee's own tasks
   const myTasks = useMemo(() => {
-    return tasks.filter(t => t.assigneeId === currentUser.id);
+    return tasks.filter(t => t.assigneeId === currentUser.id || Boolean(t.assigneeIds && t.assigneeIds.includes(currentUser.id)));
   }, [tasks, currentUser.id]);
 
   // Tasks assigned by currentUser (if management)
@@ -87,14 +87,14 @@ export const TasksView: React.FC = () => {
       if (isEmployee) {
         if (employeeScope === 'MY_TASKS') {
           // Employee strictly views their own assigned tasks
-          if (task.assigneeId !== currentUser.id) return false;
+          if (task.assigneeId !== currentUser.id && !task.assigneeIds?.includes(currentUser.id)) return false;
         }
       } else {
         // Management Scope
         if (managementScope === 'ASSIGNED_BY_ME') {
           if (task.reporterId !== currentUser.id) return false;
         } else if (managementScope === 'ASSIGNED_TO_ME') {
-          if (task.assigneeId !== currentUser.id) return false;
+          if (task.assigneeId !== currentUser.id && !task.assigneeIds?.includes(currentUser.id)) return false;
         } else if (managementScope === 'MEMBER' && selectedMemberId !== 'all') {
           if (task.assigneeId !== selectedMemberId) return false;
         }

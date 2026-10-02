@@ -8,36 +8,64 @@ import {
   Sparkles,
   ExternalLink,
   ChevronRight,
-  Laptop
+  Laptop,
+  Flame,
+  AlertTriangle
 } from 'lucide-react';
 import { OnlineUsersModal } from '../common/OnlineUsersModal';
+import { Task } from '../../types';
 
 interface Props {
   variant?: 'executive' | 'employee';
 }
 
 export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' }) => {
-  const { employees, tasks, currentUser, setActiveTab, celebrate, onlineCount, activeCount, idleCount, offlineCount, presenceList } = useApp();
+  const {
+    employees,
+    tasks,
+    currentUser,
+    setActiveTab,
+    celebrate,
+    onlineCount,
+    activeCount,
+    idleCount,
+    offlineCount,
+    presenceList,
+    setSelectedTaskId
+  } = useApp();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Computations
   const totalEmployeesCount = employees.length > 0 ? employees.length : 45;
 
-  // Pending tasks computation (status !== 'COMPLETED')
+  // Realtime Personal Pending Tasks Calculation
+  const isAssignedToMe = (t: Task) =>
+    t.assigneeId === currentUser.id || Boolean(t.assigneeIds && t.assigneeIds.includes(currentUser.id));
+
   const pendingTasks = tasks.filter(t => t.status !== 'COMPLETED');
   const totalPendingCount = pendingTasks.length;
 
-  const myPendingTasks = tasks.filter(
-    t => t.assigneeId === currentUser.id && t.status !== 'COMPLETED'
-  );
+  const myPendingTasks = tasks.filter(t => isAssignedToMe(t) && t.status !== 'COMPLETED');
   const myPendingCount = myPendingTasks.length;
 
-  const inProgressCount = pendingTasks.filter(t => t.status === 'IN_PROGRESS').length;
-  const todoCount = pendingTasks.filter(t => t.status === 'TODO').length;
-  const reviewCount = pendingTasks.filter(t => t.status === 'REVIEW').length;
+  // Urgent tasks: priority URGENT or HIGH or tagged with Khẩn cấp/Gấp
+  const myUrgentTasks = myPendingTasks.filter(
+    t =>
+      t.priority === 'URGENT' ||
+      t.priority === 'HIGH' ||
+      t.tags?.some(tag => tag.toLowerCase().includes('khẩn') || tag.toLowerCase().includes('gấp'))
+  );
+  const myUrgentCount = myUrgentTasks.length;
+
+  // When variant === 'employee', the status pills reflect personal tasks
+  const targetTaskList = variant === 'employee' ? myPendingTasks : pendingTasks;
+  const inProgressCount = targetTaskList.filter(t => t.status === 'IN_PROGRESS').length;
+  const todoCount = targetTaskList.filter(t => t.status === 'TODO').length;
+  const reviewCount = targetTaskList.filter(t => t.status === 'REVIEW').length;
 
   // Active avatars from online users
-  const onlineEmployeeIds = presenceList.filter(p => p.status === "ACTIVE" || p.status === "IDLE").map(p => p.employeeId);
+  const onlineEmployeeIds = presenceList.filter(p => p.status === 'ACTIVE' || p.status === 'IDLE').map(p => p.employeeId);
   const onlineAvatars = employees.filter(e => onlineEmployeeIds.includes(e.id)).slice(0, 5);
 
   return (
@@ -157,7 +185,7 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
         <div className="border-t border-slate-100 my-1" />
 
         {/* SECTION 2: Số lượng Công việc cần hoàn thành */}
-        <div className="my-2 space-y-1.5">
+        <div className="my-2 space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <CheckSquare className="w-3.5 h-3.5 text-amber-500" />
@@ -174,6 +202,34 @@ export const OnlineAndTasksWidget: React.FC<Props> = ({ variant = 'executive' })
               </span>
             </div>
           </div>
+
+          {/* Urgent Callout if there are urgent tasks */}
+          {variant === 'employee' && myUrgentCount > 0 && (
+            <div className="p-2 rounded-xl bg-gradient-to-r from-red-500/10 via-rose-500/15 to-amber-500/10 border border-red-300/90 flex items-center justify-between gap-2 shadow-xs animate-pulse">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                </span>
+                <Flame className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                <div className="min-w-0">
+                  <div className="text-[10px] font-black text-red-700 truncate">
+                    ⚡ {myUrgentCount} việc khẩn cấp cần xử lý!
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  if (myUrgentTasks[0]) setSelectedTaskId(myUrgentTasks[0].id);
+                  setActiveTab('tasks');
+                  celebrate();
+                }}
+                className="shrink-0 px-2 py-0.5 bg-red-600 hover:bg-red-700 text-white text-[9px] font-extrabold rounded-md shadow-xs cursor-pointer active:scale-95 transition-all"
+              >
+                Xử lý ngay
+              </button>
+            </div>
+          )}
 
           {/* Task Status Breakdown Pills */}
           <div className="grid grid-cols-3 gap-1.5 pt-0.5 text-center text-[10px]">
