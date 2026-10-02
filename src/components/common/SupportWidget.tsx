@@ -138,37 +138,6 @@ export const SupportWidget: React.FC = () => {
         aria-label="Thông báo sinh nhật, nhân sự nghỉ và tin nhắn nhóm Mrex"
         className="hidden md:flex fixed bottom-6 right-6 z-40 select-none flex-col items-center animate-in fade-in slide-in-from-bottom-3 duration-300"
       >
-        {/* Mascot GIF - Click to open Company Chat */}
-        <button
-          type="button"
-          onClick={() => {
-            if (!isCardVisible) {
-              toggleCardVisible(true);
-            } else {
-              setIsChatOpen(true);
-            }
-          }}
-          title={isCardVisible ? "Bấm vào Linh vật để mở Khung Chat Nội Bộ" : "Bấm để mở lại thông báo"}
-          className="relative group transition-transform hover:scale-105 active:scale-95 cursor-pointer focus:outline-none"
-        >
-          <img
-            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5eGpkZXE2bWN6aXF0NWRyeHRsOWY1Z2d4eGpscnQxejR5YXRvbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/L3NtwUki9lF7nCgW3k/giphy.gif"
-            alt="Mrex AI Assistant Mascot"
-            className="w-16 h-16 drop-shadow-xl"
-            onError={(e) => {
-              (e.target as HTMLElement).style.display = 'none';
-            }}
-          />
-          {chatMessages.length > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-rose-500 text-white text-[9px] font-bold items-center justify-center">
-                {chatMessages.length > 9 ? '9+' : chatMessages.length}
-              </span>
-            </span>
-          )}
-        </button>
-
         {/* Floating Mini Card */}
         {isCardVisible ? (
           <div
