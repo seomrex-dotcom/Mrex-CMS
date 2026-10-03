@@ -7,7 +7,6 @@ import {
   ChevronRight,
   UserPlus,
   Edit3,
-  UserCheck,
   Building,
   Mail,
   Phone,
@@ -32,7 +31,6 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
     employees,
     departments,
     currentUser,
-    setCurrentUser,
     tasks,
     celebrate
   } = useApp();
@@ -200,21 +198,7 @@ export const OrgChartView: React.FC<Props> = ({ onEditEmployee, onAddSubordinate
               </div>
             )}
 
-            <button
-              onClick={() => {
-                setCurrentUser(emp);
-                celebrate();
-              }}
-              disabled={isCurrentUser}
-              className={`hidden md:flex py-1.5 px-2 rounded-lg text-[11px] transition-colors items-center justify-center ${
-                isCurrentUser
-                  ? 'bg-slate-100 text-slate-400 cursor-default'
-                  : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
-              }`}
-              title="Chuyển quyền đăng nhập sang người này (chỉ khả dụng trên máy tính)"
-            >
-              <UserCheck className="w-3 h-3 text-slate-500" />
-            </button>
+
           </div>
 
           {/* Subordinates Collapse Toggle Button on bottom edge */}

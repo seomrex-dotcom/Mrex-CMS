@@ -9,7 +9,6 @@ import {
   Calendar,
   CheckCircle2,
   Search,
-  UserCheck,
   Award,
   UserPlus,
   GitFork,
@@ -38,7 +37,6 @@ export const EmployeesView: React.FC = () => {
     departments,
     tasks,
     currentUser,
-    setCurrentUser,
     deleteEmployee,
     celebrate
   } = useApp();
@@ -442,55 +440,44 @@ export const EmployeesView: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Action buttons: Switch role + Edit profile */}
-                  <div className="pt-1 flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setCurrentUser(emp);
-                        celebrate();
-                      }}
-                      className={`hidden md:flex flex-1 py-2 text-center text-xs font-semibold rounded-lg transition-colors items-center justify-center gap-1.5 min-h-[38px] ${
-                        isCurrentActive
-                          ? 'bg-slate-100 text-slate-500 cursor-default'
-                          : 'bg-[#EAF5FF] hover:bg-blue-100 text-[#0B4FA8]'
-                      }`}
-                    >
-                      <UserCheck className="w-3.5 h-3.5" />
-                      <span>{isCurrentActive ? 'Đang kích hoạt' : 'Đăng nhập vai trò này'}</span>
-                    </button>
+                  {/* Action buttons: Edit profile + Delete */}
+                  {canManageEmployees ? (
+                    <div className="pt-1 flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEditModal(emp)}
+                        className="flex-1 py-2 px-3 bg-[#EAF5FF] hover:bg-blue-100 text-[#0875D9] rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 min-h-[38px] cursor-pointer border border-[#0875D9]/20"
+                        title="Chỉnh sửa thông tin hồ sơ nhân sự"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>Chỉnh sửa hồ sơ</span>
+                      </button>
 
-                    {canManageEmployees && (
-                      <div className="flex items-center gap-1">
+                      {emp.id !== 'emp-01' && (
                         <button
                           type="button"
-                          onClick={() => handleOpenEditModal(emp)}
-                          className="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 min-h-[38px] cursor-pointer"
-                          title="Sửa thông tin hồ sơ nhân sự"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (emp.id === currentUser.id) {
+                              alert('Bạn đang đăng nhập bằng tài khoản này. Không thể tự xóa tài khoản của chính mình.');
+                              return;
+                            }
+                            setEmployeeToDelete(emp);
+                          }}
+                          className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg text-xs transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center cursor-pointer border border-rose-200"
+                          title="Xóa hồ sơ nhân sự"
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          <span>Sửa</span>
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
-                        {emp.id !== 'emp-01' && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (emp.id === currentUser.id) {
-                                alert('Bạn đang đăng nhập bằng tài khoản này. Vui lòng chuyển sang vai trò khác trước khi xóa.');
-                                return;
-                              }
-                              setEmployeeToDelete(emp);
-                            }}
-                            className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg text-xs transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center cursor-pointer border border-transparent hover:border-rose-200"
-                            title="Xóa nhân sự này"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        )}
+                      )}
+                    </div>
+                  ) : (
+                    <div className="pt-1">
+                      <div className="py-2 text-center text-xs text-slate-500 bg-slate-50 border border-slate-100 rounded-lg font-medium">
+                        {isCurrentActive ? '✓ Đang đăng nhập tài khoản này' : 'Hồ sơ nhân sự chính thức'}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               );
             })}

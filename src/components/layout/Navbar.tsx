@@ -54,14 +54,12 @@ const BG_THEMES: { id: BackgroundTheme; label: string; desc: string; preview: st
 export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobileMenu }) => {
   const {
     currentUser,
-    setCurrentUser,
     employees,
     activeTab,
     setActiveTab,
     todayAttendance,
     leaveRequests,
     announcements,
-    resetToDefaultData,
     logout,
     bgTheme,
     setBgTheme
@@ -281,18 +279,7 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
           </div>
           )}
 
-          {/* Reset data button for testing (hidden on smallest screen) */}
-          <button
-            onClick={() => {
-              if (confirm('Đặt lại toàn bộ dữ liệu mẫu ban đầu?')) {
-                resetToDefaultData();
-              }
-            }}
-            className="hidden sm:flex p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors min-h-[44px] min-w-[44px] items-center justify-center"
-            title="Khôi phục dữ liệu mẫu mặc định"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-          </button>
+
 
           {/* Role Switcher Dropdown */}
           <div className="relative">
@@ -314,70 +301,22 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = ({ onOpenMobi
             </button>
 
             {showUserDropdown && (
-              <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="px-3.5 py-2 border-b border-slate-100 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
-                    Chuyển tài khoản nhân sự
-                  </span>
-                  <span className="text-[10px] font-mono text-[#0875D9] bg-[#EAF5FF] px-2 py-0.5 rounded font-semibold">
-                    {currentUser.role}
-                  </span>
+              <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="p-3 border-b border-slate-100 space-y-1">
+                  <div className="font-bold text-slate-900 text-xs truncate">{currentUser.name}</div>
+                  <div className="text-[11px] text-[#0875D9] font-semibold">{currentUser.roleTitle}</div>
+                  <div className="text-[10px] text-slate-400 truncate">{currentUser.email}</div>
                 </div>
-                <div className="py-1 max-h-72 overflow-y-auto">
-                  {employees.map(emp => (
-                    <button
-                      key={emp.id}
-                      onClick={() => {
-                        setCurrentUser(emp);
-                        setShowUserDropdown(false);
-                      }}
-                      className={`w-full text-left px-3.5 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors ${
-                        emp.id === currentUser.id ? 'bg-blue-50/70' : ''
-                      }`}
-                    >
-                      <img
-                        src={emp.avatar}
-                        alt={emp.name}
-                        referrerPolicy="no-referrer"
-                        className="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-semibold text-slate-800 truncate">{emp.name}</span>
-                          <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded font-semibold ${
-                            emp.role === 'CEO' ? 'bg-amber-100 text-amber-800' :
-                            emp.role === 'MANAGER' ? 'bg-blue-100 text-[#063B78]' :
-                            emp.role === 'HR' ? 'bg-emerald-100 text-emerald-800' :
-                            'bg-slate-100 text-slate-700'
-                          }`}>
-                            {emp.role === 'CEO' ? 'Ban Quản Trị' :
-                             emp.role === 'MANAGER' ? 'Quản Lý' :
-                             emp.role === 'HR' ? 'Nhân Sự' : 'Nhân Viên'}
-                          </span>
-                        </div>
-                        <span className="text-[11px] text-slate-500 truncate block">{emp.roleTitle}</span>
-                      </div>
-                      {emp.id === currentUser.id && (
-                        <UserCheck className="w-4 h-4 text-[#0875D9] shrink-0" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Logout row */}
-                <div className="pt-1.5 mt-1 border-t border-slate-100 px-2">
+                <div className="p-2">
                   <button
                     onClick={() => {
                       setShowUserDropdown(false);
                       logout();
                     }}
-                    className="w-full px-3 py-2 text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg flex items-center justify-between transition-colors min-h-[40px]"
+                    className="w-full flex items-center justify-center gap-2 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                   >
-                    <span className="flex items-center gap-2">
-                      <LogOut className="w-4 h-4" />
-                      <span>Đăng xuất (Về màn hình đăng nhập)</span>
-                    </span>
-                    <KeyRound className="w-3.5 h-3.5 text-rose-400" />
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Đăng xuất tài khoản</span>
                   </button>
                 </div>
               </div>

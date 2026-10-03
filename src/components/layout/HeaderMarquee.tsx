@@ -4,7 +4,6 @@ import {
   Megaphone,
   Bell,
   ChevronDown,
-  UserCheck,
   UserCog,
   Clock,
   Sparkles,
@@ -32,7 +31,6 @@ interface Props {
 export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
   const {
     currentUser,
-    setCurrentUser,
     announcements,
     tasks,
     employees,
@@ -365,9 +363,8 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
                 <img
                   src={currentUser.avatar}
                   alt={currentUser.name}
-                  className="w-4 h-4 rounded-full object-cover shrink-0 ring-1 ring-slate-200 sm:hidden"
+                  className="w-5 h-5 rounded-full object-cover shrink-0 ring-1 ring-slate-200"
                 />
-                <UserCheck className="hidden sm:inline w-3.5 h-3.5 text-[#0875D9]" />
                 <span className="hidden sm:inline truncate max-w-[120px] font-semibold">{currentUser.name}</span>
                 <span className="font-mono text-[10px] text-[#0875D9] font-bold">
                   ({currentUser.role})
@@ -404,48 +401,6 @@ export const HeaderMarquee: React.FC<Props> = ({ onOpenMobileMenu }) => {
                       <UserCog className="w-4 h-4 text-[#0875D9]" />
                       <span>Cài Đặt Thông Tin Cá Nhân</span>
                     </button>
-
-                    {/* Chuyển Tài Khoản Nhân Sự */}
-                    <div className="hidden md:block pt-1 border-t border-slate-100">
-                      <div className="px-2 py-1.5 text-[10px] text-slate-400 uppercase font-bold tracking-wider">
-                        Chuyển Tài Khoản Nhân Sự
-                      </div>
-
-                      <div className="max-h-56 overflow-y-auto space-y-0.5">
-                        {employees.map(emp => (
-                          <button
-                            key={emp.id}
-                            onClick={() => {
-                              setCurrentUser(emp);
-                              setShowRoleDropdown(false);
-                              celebrate();
-                            }}
-                            className={`w-full flex items-center justify-between p-2 rounded-xl transition-colors text-left cursor-pointer ${
-                              currentUser.id === emp.id
-                                ? 'bg-[#0875D9]/12 text-[#0875D9] font-bold border border-[#0875D9]/20'
-                                : 'hover:bg-slate-50 text-slate-700'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2 min-w-0">
-                              <img
-                                src={emp.avatar}
-                                alt={emp.name}
-                                className="w-5 h-5 rounded-full object-cover shrink-0 ring-1 ring-slate-200"
-                              />
-                              <div className="truncate">
-                                <div className="truncate font-semibold text-xs">{emp.name}</div>
-                                <div className="text-[10px] text-slate-400 truncate">
-                                  {emp.roleTitle}
-                                </div>
-                              </div>
-                            </div>
-                            <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 shrink-0 ml-1 font-semibold">
-                              {emp.role}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
 
                     {/* Đăng xuất tài khoản */}
                     <button
