@@ -1,3 +1,4 @@
+import { ApiService } from '../services/apiService';
 import { verifyPassword, hashPassword, DEFAULT_PASSWORD_HASH } from '../utils/security';
 import { StorageOptimizer } from '../services/storageOptimizer';
 ﻿import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
@@ -1016,6 +1017,95 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     r => r.employeeId === currentUser.id && r.date === TODAY_STR
   );
 
+  // Central VPS Database Realtime & Cross-tab Synchronization
+  useEffect(() => {
+    let isMounted = true;
+
+    // 1. Listen for instant cross-tab sync in current browser
+    const unsubscribe = ApiService.onBroadcast((msg) => {
+      if (!isMounted || !msg.data) return;
+      const d = msg.data;
+      if (Array.isArray(d.employees)) setEmployees(d.employees);
+      if (Array.isArray(d.departments)) setDepartments(d.departments);
+      if (Array.isArray(d.tasks)) setTasks(d.tasks);
+      if (Array.isArray(d.attendance)) setAttendanceRecords(d.attendance);
+      if (Array.isArray(d.leaveRequests)) setLeaveRequests(d.leaveRequests);
+      if (Array.isArray(d.announcements)) setAnnouncements(d.announcements);
+      if (Array.isArray(d.googleDocs)) setGoogleDocs(d.googleDocs);
+      if (Array.isArray(d.vouchers)) setVouchers(d.vouchers);
+      if (Array.isArray(d.contracts)) setContracts(d.contracts);
+      if (Array.isArray(d.warehouseItems)) setWarehouseItems(d.warehouseItems);
+    });
+
+    // 2. Fetch authoritative database from VPS Server
+    async function loadServerDb() {
+      try {
+        const serverData = await ApiService.getDatabase();
+        if (!isMounted || !serverData) return;
+
+        if (Array.isArray(serverData.employees) && serverData.employees.length > 0) {
+          setEmployees(serverData.employees);
+          localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(serverData.employees));
+        } else {
+          // If server is empty, push local employees
+          const localSaved = localStorage.getItem(STORAGE_KEYS.EMPLOYEES);
+          if (localSaved) {
+            try {
+              const parsed = JSON.parse(localSaved);
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                ApiService.syncDatabase({ employees: parsed });
+              }
+            } catch {}
+          }
+        }
+
+        if (Array.isArray(serverData.departments) && serverData.departments.length > 0) {
+          setDepartments(serverData.departments);
+          localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(serverData.departments));
+        }
+
+        if (Array.isArray(serverData.tasks) && serverData.tasks.length > 0) {
+          setTasks(serverData.tasks);
+          localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(serverData.tasks));
+        }
+
+        if (Array.isArray(serverData.announcements) && serverData.announcements.length > 0) {
+          setAnnouncements(serverData.announcements);
+          localStorage.setItem(STORAGE_KEYS.ANNOUNCEMENTS, JSON.stringify(serverData.announcements));
+        }
+
+        if (Array.isArray(serverData.googleDocs) && serverData.googleDocs.length > 0) {
+          setGoogleDocs(serverData.googleDocs);
+          localStorage.setItem(STORAGE_KEYS.GOOGLE_DOCS, JSON.stringify(serverData.googleDocs));
+        }
+
+        if (Array.isArray(serverData.vouchers) && serverData.vouchers.length > 0) {
+          setVouchers(serverData.vouchers);
+          localStorage.setItem(STORAGE_KEYS.VOUCHERS, JSON.stringify(serverData.vouchers));
+        }
+
+        if (Array.isArray(serverData.contracts) && serverData.contracts.length > 0) {
+          setContracts(serverData.contracts);
+          localStorage.setItem(STORAGE_KEYS.CONTRACTS, JSON.stringify(serverData.contracts));
+        }
+
+        if (Array.isArray(serverData.warehouseItems) && serverData.warehouseItems.length > 0) {
+          setWarehouseItems(serverData.warehouseItems);
+          localStorage.setItem(STORAGE_KEYS.WAREHOUSE_ITEMS, JSON.stringify(serverData.warehouseItems));
+        }
+      } catch (err) {
+        console.warn('[Sync] Server database load failed, local cache active:', err);
+      }
+    }
+
+    loadServerDb();
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, []);
+
   const celebrate = () => {
     try {
       confetti({
@@ -1346,6 +1436,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setEmployees(prev => {
       const next = [...prev, newEmp];
       localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(next));
+      ApiService.syncDatabase({ employees: next });
       return next;
     });
     celebrate();
@@ -1363,6 +1454,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setEmployees(prev => {
       const next = prev.map(e => (e.id === id ? { ...e, ...safeUpdates } : e));
       localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(next));
+      ApiService.syncDatabase({ employees: next });
       return next;
     });
 
@@ -1387,6 +1479,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         .map(e => (e.managerId === id ? { ...e, managerId: fallbackManagerId } : e));
       nextEmployees = next;
       localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(next));
+      ApiService.syncDatabase({ employees: next });
 
       // If deleted user was active currentUser, fallback to CEO or first remaining employee
       if (currentUser.id === id) {
@@ -1624,7 +1717,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
     setDepartments(prev => {
       const next = [...prev, newDept];
-      localStorage.setItem('mrex_departments_v3', JSON.stringify(next));
+      localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(next));
+    ApiService.syncDatabase({ departments: next });
       return next;
     });
     celebrate();
@@ -1642,7 +1736,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             }
           : d
       );
-      localStorage.setItem('mrex_departments_v3', JSON.stringify(next));
+      localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(next));
+    ApiService.syncDatabase({ departments: next });
       return next;
     });
     celebrate();
@@ -1659,7 +1754,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     setDepartments(prev => {
       const next = prev.filter(d => d.id !== id);
-      localStorage.setItem('mrex_departments_v3', JSON.stringify(next));
+      localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(next));
+    ApiService.syncDatabase({ departments: next });
       return next;
     });
     return { success: true, message: 'Đã xoá phòng ban thành công.' };
