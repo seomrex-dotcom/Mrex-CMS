@@ -53,7 +53,7 @@ export const DOCK_ICON_REGISTRY: Record<string, { label: string; icon: React.Ele
   Layers: { label: 'Nền tảng / Khối', icon: Layers },
 };
 
-const STORAGE_KEY = 'mrex_floating_dock_links_v2';
+const STORAGE_KEY = 'mrex_v7_dock_links';
 
 export const DEFAULT_DOCK_LINKS: DockLinkItem[] = [
   {
@@ -117,10 +117,24 @@ export const FloatingQuickAccessDock: React.FC = () => {
     setTempLinks(links);
   }, [links]);
 
+  // Load authoritative dock config from VPS server database and cache locally
+  useEffect(() => {
+    ApiService.getDatabase().then(serverDb => {
+      if (serverDb && Array.isArray((serverDb as any).dockLinks) && (serverDb as any).dockLinks.length > 0) {
+        setLinks((serverDb as any).dockLinks);
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify((serverDb as any).dockLinks));
+        } catch {}
+      }
+    }).catch(() => {});
+  }, []);
+
   useEffect(() => {
     const unsubscribe = ApiService.onBroadcast((msg) => {
       if (msg.type === 'DOCK_CONFIG_UPDATED' && Array.isArray(msg.data)) {
         setLinks(msg.data);
+      } else if (msg.type === 'DATABASE_SYNC' && msg.data && Array.isArray((msg.data as any).dockLinks)) {
+        setLinks((msg.data as any).dockLinks);
       }
     });
     return () => unsubscribe();
@@ -133,6 +147,7 @@ export const FloatingQuickAccessDock: React.FC = () => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(tempLinks));
       ApiService.broadcast('DOCK_CONFIG_UPDATED', tempLinks);
+      ApiService.syncDatabase({ dockLinks: tempLinks } as any);
     } catch {}
     setSavedSuccess(true);
     setTimeout(() => {
@@ -144,6 +159,12 @@ export const FloatingQuickAccessDock: React.FC = () => {
   const handleReset = () => {
     if (!isBoardOfDirectors) return;
     setTempLinks(DEFAULT_DOCK_LINKS);
+    setLinks(DEFAULT_DOCK_LINKS);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DOCK_LINKS));
+      ApiService.broadcast('DOCK_CONFIG_UPDATED', DEFAULT_DOCK_LINKS);
+      ApiService.syncDatabase({ dockLinks: DEFAULT_DOCK_LINKS } as any);
+    } catch {}
   };
 
   const handleLinkChange = (index: number, field: keyof DockLinkItem, value: string) => {

@@ -23,6 +23,7 @@ export interface DatabasePayload {
   payroll?: PayrollRecord[];
   brandConfig?: CompanyBrandConfig | null;
   resources?: any[];
+  dockLinks?: any[];
 }
 
 export interface SyncResponse {

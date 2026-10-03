@@ -232,6 +232,7 @@ const STORAGE_KEYS = {
   RESOURCES: 'mrex_v7_resources',
   UNREAD_CHAT: 'mrex_v7_unread_chat',
   PRESENCE: 'mrex_v7_presence',
+  DOCK_LINKS: 'mrex_v7_dock_links',
 };
 
 // Automatic purge of all old demo storage keys to guarantee 100% empty business dataset
@@ -239,7 +240,7 @@ try {
   const toRemove: string[] = [];
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
-    if (k && (k.startsWith('mrex_') || k.startsWith('omnicorp_')) && !k.startsWith('mrex_v7_')) {
+    if (k && (k.startsWith('mrex_') || k.startsWith('omnicorp_')) && !k.startsWith('mrex_v7_') && !k.includes('dock')) {
       toRemove.push(k);
     }
   }

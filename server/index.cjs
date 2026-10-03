@@ -251,6 +251,7 @@ let db = {
   payroll: [],
   brandConfig: null,
   resources: [],
+  dockLinks: null,
   updatedAt: new Date().toISOString()
 };
 
@@ -352,7 +353,7 @@ const server = http.createServer(async (req, res) => {
         'employees', 'departments', 'tasks', 'attendance', 'leaveRequests',
         'announcements', 'googleDocs', 'vouchers', 'contracts', 'warehouseItems',
         'inventoryAudits', 'warehouseInvoices', 'chatMessages', 'budgets', 'payroll',
-        'brandConfig', 'resources'
+        'brandConfig', 'resources', 'dockLinks'
       ];
 
       syncableKeys.forEach(k => {
